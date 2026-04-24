@@ -35,10 +35,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
     const tl = gsap.timeline({ 
       onComplete: () => {
         if (videoRef.current) {
-          // Play the video once animation is done
-          videoRef.current.play().catch(console.error)
-
-          // Start counting animation
+          // Start counting animation (video playback has already started in the timeline)
           gsap.set(statsRef.current, { opacity: 1 })
           const counter = { val: 0 }
           gsap.to(counter, {
@@ -102,6 +99,8 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
       .to({}, { duration: 0.65 })
       // Subtitle + shadow exit before zoom
       .to([subtitleRef.current, shadowRef.current], { opacity: 0, duration: 0.28, ease: 'power2.in' })
+      // Start playing video right before the zoom punch to completely eliminate any gap
+      .call(() => { videoRef.current?.play().catch(console.error) })
       // Netflix zoom punch
       .to(logoRef.current,    { scale: 4.5, opacity: 0, duration: 0.95, ease: 'power3.in' })
       // Fade out overlay gradient to reveal video
@@ -126,7 +125,8 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         src="/start_video.mp4"
         style={{
           width: '100%', height: '100%',
-          objectFit: 'contain', position: 'absolute', inset: 0
+          objectFit: 'contain', position: 'absolute', inset: 0,
+          filter: 'saturate(1.25) contrast(1.15) brightness(1.05)' // Cinematic enhancement
         }}
         onEnded={onComplete}
         muted
@@ -141,13 +141,18 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           bottom: '10%',
           left: '50%',
           transform: 'translateX(-50%) scale(1, 1.4)', // stretches vertically
-          color: 'white',
           fontSize: 'clamp(36px, 5vw, 64px)',
           fontFamily: "'Oswald', 'Impact', 'Arial Narrow', sans-serif",
           fontWeight: 700,
           textTransform: 'uppercase',
           letterSpacing: '0.05em',
-          textShadow: '0 2px 10px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.4)',
+          filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.8))',
+          background: 'linear-gradient(to right, #e8d399 0%, #fcf6ba 20%, #b38728 50%, #fcf6ba 80%, #e8d399 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundSize: '200% auto',
+          lineHeight: 1.4,
+          padding: '0.2em 0',
           opacity: 0,
           zIndex: 10,
           pointerEvents: 'none',
@@ -163,20 +168,28 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           top: '6%',
           left: '50%',
           transform: 'translateX(-50%)',
-          color: 'white',
           fontSize: 'clamp(24px, 3.5vw, 42px)',
           fontFamily: "'Oswald', 'Impact', 'Arial Narrow', sans-serif",
           fontWeight: 700,
           textTransform: 'uppercase',
           letterSpacing: '0.1em',
-          textShadow: '0 2px 10px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.4)',
+          filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.8))',
           opacity: 0,
           zIndex: 10,
           pointerEvents: 'none',
           whiteSpace: 'nowrap'
         }}
       >
-        <span style={{ display: 'inline-block', transform: 'scale(1, 1.4)' }}>
+        <span style={{ 
+          display: 'inline-block', 
+          transform: 'scale(1, 1.4)',
+          background: 'linear-gradient(to right, #e8d399 0%, #fcf6ba 20%, #b38728 50%, #fcf6ba 80%, #e8d399 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundSize: '200% auto',
+          lineHeight: 1.4,
+          padding: '0.1em 0',
+        }}>
           - WoWhere everything exists -
         </span>
       </div>
@@ -189,20 +202,19 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           bottom: '5%',
           left: '50%',
           transform: 'translateX(-50%)',
-          color: 'rgba(255, 255, 255, 0.9)',
           fontSize: 'clamp(14px, 2vw, 20px)',
           fontFamily: "'Segoe UI', system-ui, sans-serif",
           fontWeight: 400,
           letterSpacing: '0.25em',
           textTransform: 'uppercase',
-          textShadow: '0 2px 8px rgba(0,0,0,0.8)',
+          filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.8))',
           opacity: 0,
           zIndex: 10,
           pointerEvents: 'none',
           whiteSpace: 'nowrap'
         }}
       >
-        Enter another world
+      
       </div>
 
       {/* Third Text Overlay */}
@@ -213,20 +225,28 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           bottom: '5%',
           left: '50%',
           transform: 'translateX(-50%)',
-          color: 'white',
           fontSize: 'clamp(24px, 3.5vw, 42px)',
           fontFamily: "'Oswald', 'Impact', 'Arial Narrow', sans-serif",
           fontWeight: 700,
           textTransform: 'uppercase',
           letterSpacing: '0.1em',
-          textShadow: '0 2px 10px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.4)',
+          filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.8))',
           opacity: 0,
           zIndex: 10,
           pointerEvents: 'none',
           whiteSpace: 'nowrap'
         }}
       >
-        <span style={{ display: 'inline-block', transform: 'scale(1, 1.4)' }}>
+        <span style={{ 
+          display: 'inline-block', 
+          transform: 'scale(1, 1.4)',
+          background: 'linear-gradient(to right, #e8d399 0%, #fcf6ba 20%, #b38728 50%, #fcf6ba 80%, #e8d399 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundSize: '200% auto',
+          lineHeight: 1.4,
+          padding: '0.1em 0',
+        }}>
           - Experience the extraordinary -
         </span>
       </div>
