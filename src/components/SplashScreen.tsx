@@ -122,7 +122,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
       {/* Video Element */}
       <video
         ref={videoRef}
-        src="/start_video.mp4"
+        src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/start_video.mp4"
         style={{
           width: '100%', height: '100%',
           objectFit: 'contain', position: 'absolute', inset: 0,
