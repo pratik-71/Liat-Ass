@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import SplashScreen from './components/SplashScreen'
-import ChoiceScreen from './components/ChoiceScreen'
-import RetailLeasing from './components/RetailLeasing.tsx'
+import CinematicIntro from './components/splash/CinematicIntro'
+import InvestorDashboard from './components/dashboard/InvestorDashboard'
+import RetailLeasingModule from './components/retail/RetailLeasingModule'
 import './App.css'
 
 /**
@@ -55,18 +55,19 @@ function App() {
         gap: '20px'
       }}>
         <div style={{
-          fontSize: '12px',
+          fontSize: '20px',
           color: '#C8A96A',
-          letterSpacing: '0.8em',
+          letterSpacing: '1.2em', // More elegant spacing
           textTransform: 'uppercase',
           fontFamily: "'Oswald', sans-serif",
-          animation: 'pulse 2s infinite'
+          animation: 'pulse 2s infinite',
+          fontWeight: 700
         }}>
           The Dubai Mall
         </div>
         <div style={{
-          width: '120px',
-          height: '1px',
+          width: '240px',
+          height: '2px', // Thicker line
           backgroundColor: 'rgba(200, 169, 106, 0.2)',
           position: 'relative',
           overflow: 'hidden'
@@ -75,7 +76,7 @@ function App() {
             position: 'absolute',
             inset: 0,
             backgroundColor: '#C8A96A',
-            animation: 'loadLine 1.5s infinite ease-in-out'
+            animation: 'loadLine 2s infinite ease-in-out'
           }} />
         </div>
         <style>{`
@@ -95,14 +96,14 @@ function App() {
   return (
     <>
       {showSplash ? (
-        <SplashScreen onComplete={() => setShowSplash(false)} />
+        <CinematicIntro onComplete={() => setShowSplash(false)} />
       ) : (
         <>
           {currentScreen === 'choice' && (
-            <ChoiceScreen onSelect={(id) => id === 1 && setCurrentScreen('retail')} />
+            <InvestorDashboard onSelect={(id) => id === 1 && setCurrentScreen('retail')} />
           )}
           {currentScreen === 'retail' && (
-            <RetailLeasing onBack={() => setCurrentScreen('choice')} />
+            <RetailLeasingModule onBack={() => setCurrentScreen('choice')} />
           )}
         </>
       )}

@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
+import type { OpportunityCardData } from '../../types'
+import OpportunityCard from './OpportunityCard'
 
-const CARDS = [
+const CARDS: OpportunityCardData[] = [
   { 
     id: 1, 
     title: 'RETAIL & LEASING', 
@@ -13,21 +15,21 @@ const CARDS = [
   },
   { 
     id: 2, 
-    title: 'GLOBAL PLATFORM', 
+    title: 'EVENTS & PLATFORM', 
     desc: 'Host activations, launches, and large-scale brand experiences.',
     target: 100,
     suffix: 'M+',
     label: 'ANNUAL FOOTFALL',
-    color: '#C8A96A' 
+    color: '#C8A96A'
   },
   { 
     id: 3, 
-    title: 'ICONIC DESTINATIONS', 
+    title: 'ATTRACTIONS & ENTERTAINMENT', 
     desc: 'Drive engagement through world-class destinations and experiences.',
     target: 80,
     suffix: '+',
     label: 'GLOBAL EXPERIENCES',
-    color: '#C8A96A' 
+    color: '#C8A96A'
   },
   { 
     id: 4, 
@@ -36,10 +38,15 @@ const CARDS = [
     target: 200,
     suffix: '+',
     label: 'LUXURY BRANDS',
-    color: '#C8A96A' 
-  },
+    color: '#C8A96A'
+  }
 ]
-export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => void }) {
+
+interface InvestorDashboardProps {
+  onSelect: (id: number) => void;
+}
+
+const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const introImageRef = useRef<HTMLImageElement>(null)
   const bgRef = useRef<HTMLDivElement>(null)
@@ -129,8 +136,8 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
       style={{
         height: '100vh',
         width: '100vw',
-        backgroundColor: '#0A0A0A', // Backdrop black (matte charcoal)
-        color: '#FFFFFF', // High-end white
+        backgroundColor: '#0A0A0A',
+        color: '#FFFFFF',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -141,7 +148,7 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
         perspective: '1200px',
         overflow: 'hidden',
         position: 'relative',
-        filter: 'saturate(1.2)' // Increased saturation for more vibrant gold/visuals
+        filter: 'saturate(1.2)'
       }}
     >
       <div 
@@ -154,11 +161,10 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
           zIndex: 0,
-          opacity: 0 // Initial state for timeline
+          opacity: 0
         }}
       />
 
-      {/* Luxury Backdrop Overlay (Vignette/Darkness) */}
       <div 
         className="luxury-backdrop-overlay"
         style={{
@@ -170,7 +176,6 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
           pointerEvents: 'none'
         }}
       />
-      
 
       <img 
         ref={introImageRef}
@@ -182,42 +187,11 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          zIndex: 100, // Stay on top during intro
+          zIndex: 100,
           pointerEvents: 'none',
           display: 'block'
         }}
       />
-
-      {/* Cinematic Noise Texture */}
-      <div className="noise-texture" />
-
-      {/* Mesmerizing Light Drifts (Particles) */}
-      {[...Array(8)].map((_, i) => (
-        <div 
-          key={i}
-          className="light-drift"
-          style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            opacity: Math.random() * 0.5,
-            animation: `float ${15 + Math.random() * 10}s infinite alternate ease-in-out`,
-            animationDelay: `${Math.random() * 5}s`
-          }}
-        />
-      ))}
-
-      {/* Hero Ambient Glows (Behind Card 2 & 3) */}
-      <div style={{
-        position: 'absolute',
-        top: '50%',
-        left: '42%',
-        width: '40vw',
-        height: '40vh',
-        background: 'radial-gradient(circle, rgba(200, 169, 106, 0.08) 0%, transparent 70%)',
-        zIndex: 1,
-        pointerEvents: 'none',
-        animation: 'ambient-pulse 8s infinite alternate ease-in-out'
-      }} />
 
       <div
         style={{
@@ -277,6 +251,34 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
         }
       `}</style>
 
+      <div className="noise-texture" />
+
+      {[...Array(8)].map((_, i) => (
+        <div 
+          key={i}
+          className="light-drift"
+          style={{
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            opacity: Math.random() * 0.5,
+            animation: `float ${15 + Math.random() * 10}s infinite alternate ease-in-out`,
+            animationDelay: `${Math.random() * 5}s`
+          }}
+        />
+      ))}
+
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        left: '42%',
+        width: '40vw',
+        height: '40vh',
+        background: 'radial-gradient(circle, rgba(200, 169, 106, 0.08) 0%, transparent 70%)',
+        zIndex: 1,
+        pointerEvents: 'none',
+        animation: 'ambient-pulse 8s infinite alternate ease-in-out'
+      }} />
+
       <div style={{ textAlign: 'center', marginBottom: '4vh', marginTop: '4vh', zIndex: 10 }}>
         <h2
           className="luxury-subtitle"
@@ -297,12 +299,12 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
           className="luxury-title"
           style={{
             fontSize: 'clamp(32px, 5vw, 60px)',
-            fontWeight: 600, // Reduced weight for elegance
+            fontWeight: 600,
             textTransform: 'uppercase',
             color: '#FFFFFF',
             margin: 0,
             fontFamily: "'Oswald', sans-serif",
-            letterSpacing: '0.3em', // Increased spacing
+            letterSpacing: '0.3em',
             textShadow: '0 4px 15px rgba(0,0,0,0.5)',
             opacity: 0
           }}
@@ -312,9 +314,9 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
         <div 
           className="luxury-stat-line"
           style={{
-            marginTop: '20px',
+            marginTop: '10px',
             fontSize: 'clamp(14px, 1.2vw, 18px)',
-            color: 'rgba(255, 255, 255, 0.7)', // Muted white
+            color: 'rgba(255, 255, 255, 0.7)',
             letterSpacing: '0.12em',
             fontWeight: 300,
             maxWidth: '800px',
@@ -340,143 +342,14 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
         opacity: 0
       }}>
         {CARDS.map((card) => (
-          <div
-              key={card.id}
-              className="luxury-card"
-              onClick={() => onSelect(card.id)}
-              style={{
-                position: 'relative',
-                flex: (card.id === 2 || card.id === 3) ? '1 1 340px' : '1 1 280px', // Both highlighted cards larger
-                maxWidth: (card.id === 2 || card.id === 3) ? '360px' : '300px',
-                height: (card.id === 2 || card.id === 3) ? '48vh' : '46vh',
-                minHeight: (card.id === 2 || card.id === 3) ? '380px' : '360px',
-                background: 'linear-gradient(160deg, #0f0f0f, #1a1a1a)',
-                backdropFilter: 'blur(30px)',
-                WebkitBackdropFilter: 'blur(30px)',
-                border: '1px solid rgba(200, 169, 106, 0.3)',
-                borderRadius: '16px',
-                boxShadow: (card.id === 2 || card.id === 3)
-                  ? '0 35px 100px rgba(0,0,0,0.6)' 
-                  : '0 25px 80px rgba(0,0,0,0.5)',
-                overflow: 'hidden',
-                cursor: 'pointer',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                padding: '52px 38px',
-                transition: 'all 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
-                transform: 'translateY(0)',
-                zIndex: (card.id === 2 || card.id === 3) ? 2 : 1
-              }}
-            onMouseEnter={(e) => {
-              const target = e.currentTarget;
-              target.style.transform = 'translateY(-18px) scale(1.03)';
-              target.style.border = '1px solid rgba(255, 255, 255, 0.6)'; // Brighter white/gold border on hover
-              target.style.boxShadow = '0 70px 150px rgba(0,0,0,0.95)';
-              
-              const shine = target.querySelector('.shine-sweep') as HTMLDivElement;
-              if (shine) {
-                shine.style.animation = 'none';
-                void shine.offsetWidth;
-                shine.style.animation = 'shine 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards';
-              }
-            }}
-            onMouseLeave={(e) => {
-              const target = e.currentTarget;
-              target.style.transform = 'translateY(0) scale(1)';
-              target.style.border = '1px solid rgba(200, 169, 106, 0.3)';
-              target.style.boxShadow = (target.style.zIndex === '2')
-                ? '0 35px 100px rgba(0,0,0,0.6)' 
-                : '0 25px 80px rgba(0,0,0,0.5)';
-              
-              const shine = target.querySelector('.shine-sweep') as HTMLDivElement;
-              if (shine) {
-                shine.style.animation = 'none';
-              }
-            }}
-          >
-            {/* Shine Sweep Overlay */}
-            <div 
-              className="shine-sweep"
-              style={{
-                position: 'absolute',
-                top: 0,
-                width: '100%', // Wider for better sweep
-                height: '100%',
-                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), rgba(255,255,255,0.2), rgba(255,255,255,0.1), transparent)',
-                transform: 'skewX(-25deg)',
-                pointerEvents: 'none',
-                zIndex: 5,
-                opacity: 0
-              }}
-            />
-
-            {/* Opportunity Content (Hierarchy: Title > Metric > Description) */}
-            <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column' }}>
-              <h3 style={{
-                fontSize: (card.id === 2 || card.id === 3) ? '16px' : '12px',
-                fontWeight: 700,
-                marginBottom: '20px',
-                color: (card.id === 2 || card.id === 3) ? '#C8A96A' : '#FFFFFF', // Gold or White
-                fontFamily: "'Oswald', sans-serif",
-                textTransform: 'uppercase',
-                letterSpacing: '0.3em',
-              }}>
-                {card.title}
-              </h3>
-
-              {/* Metric in the middle (Visually Dominant) */}
-              <div style={{ marginBottom: '28px', minHeight: '80px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <div
-                  id={`stat-count-${card.id}`}
-                  style={{
-                    fontSize: '68px',
-                    fontFamily: "'Oswald', sans-serif",
-                    fontWeight: 800,
-                    textTransform: 'uppercase',
-                    lineHeight: 1,
-                    marginBottom: '8px',
-                    letterSpacing: '-0.02em',
-                    background: 'linear-gradient(110deg, #E5C27A 40%, #FFF5D6 50%, #C8A96A 60%)',
-                    backgroundSize: '200% auto',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    animation: 'text-shimmer 3s infinite linear'
-                  }}
-                >
-                  0
-                </div>
-                {card.label && (
-                  <div
-                    style={{
-                      fontSize: '12px',
-                      color: 'rgba(255, 255, 255, 0.5)',
-                      letterSpacing: '0.2em',
-                      textTransform: 'uppercase',
-                      fontWeight: 700
-                    }}
-                  >
-                    {card.label}
-                  </div>
-                )}
-              </div>
-
-              <p style={{
-                fontSize: '13px',
-                color: 'rgba(255, 255, 255, 0.65)',
-                fontWeight: 300,
-                lineHeight: 1.6,
-                margin: 0,
-              }}>
-                {card.desc}
-              </p>
-              
-            </div>
-          </div>
+          <OpportunityCard 
+            key={card.id} 
+            card={card} 
+            onSelect={onSelect} 
+          />
         ))}
       </div>
 
-      {/* Supporting Line Below Cards */}
       <div 
         className="luxury-footer"
         style={{
@@ -488,7 +361,7 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
           textTransform: 'uppercase',
           textAlign: 'center',
           fontFamily: "'Inter', sans-serif",
-          opacity: 0, // Initial state for GSAP
+          opacity: 0,
           fontWeight: 600
         }}
       >
@@ -497,3 +370,5 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
     </div>
   )
 }
+
+export default InvestorDashboard;
