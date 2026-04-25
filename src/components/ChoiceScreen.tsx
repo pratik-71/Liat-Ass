@@ -4,40 +4,39 @@ import gsap from 'gsap'
 const CARDS = [
   { 
     id: 1, 
-    title: 'Retail & Leasing', 
+    title: 'RETAIL & LEASING', 
     desc: 'Secure prime locations in the world’s most visited destination.',
     target: 1200,
     suffix: '+',
-    label: 'Retail Outlets',
-    color: '#D4AF37'
+    label: 'RETAIL OUTLETS',
+    color: '#C8A96A'
   },
   { 
     id: 2, 
-    title: 'Events & Platform', 
-    desc: 'Host groundbreaking activations and reach global audiences.',
+    title: 'GLOBAL PLATFORM', 
+    desc: 'Host activations, launches, and large-scale brand experiences.',
     target: 100,
     suffix: 'M+',
-    label: 'Annual Footfall',
-    color: '#C0C0C0' 
+    label: 'ANNUAL FOOTFALL',
+    color: '#C8A96A' 
   },
   { 
     id: 3, 
-    title: 'Sponsorships', 
-    desc: 'Align your brand with unparalleled luxury and scale.',
-    target: 1,
-    prefix: 'No. ',
-    suffix: '',
-    label: 'Global Rank',
-    color: '#B87333' 
+    title: 'ICONIC DESTINATIONS', 
+    desc: 'Drive engagement through world-class destinations and experiences.',
+    target: 80,
+    suffix: '+',
+    label: 'GLOBAL EXPERIENCES',
+    color: '#C8A96A' 
   },
   { 
     id: 4, 
-    title: 'Attractions', 
-    desc: 'Integrate into our world-class entertainment ecosystem.',
-    target: 80,
+    title: 'LUXURY & DINING', 
+    desc: 'Position your brand among premium audiences through luxury retail and global dining.',
+    target: 200,
     suffix: '+',
-    label: 'Experiences',
-    color: '#E5E4E2' 
+    label: 'LUXURY BRANDS',
+    color: '#C8A96A' 
   },
 ]
 export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => void }) {
@@ -49,61 +48,75 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
     const mainTl = gsap.timeline({ delay: 0.2 })
 
     mainTl
+      // Phase 1: Building comes up (FASTER)
       .fromTo(introImageRef.current, 
         { y: '100%', opacity: 1 },
-        { y: '0%', duration: 1.5, ease: 'power4.out' }
+        { y: '0%', duration: 0.8, ease: 'power3.out' }
       )
-      .fromTo(bgRef.current, 
+      // Phase 2: Show home.png (FASTER)
+      .fromTo(bgRef.current,
         { opacity: 0 },
-        { opacity: 1, duration: 1, ease: 'power2.inOut' }, 
-        '-=0.5'
+        { opacity: 1, duration: 0.6, ease: 'power2.inOut' }
       )
       .to(introImageRef.current, { 
         opacity: 0, 
-        duration: 0.8, 
+        duration: 0.5, 
         ease: 'power2.inOut' 
-      }, '+=0.2')
+      }, '+=0.1')
+      
+      // Phase 3: Show backdrop (darkness/vignette) and cards (FASTER)
+      .fromTo('.luxury-backdrop-overlay',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8, ease: 'power2.inOut' },
+        '-=0.3'
+      )
       .fromTo('.luxury-title', 
-        { opacity: 0, letterSpacing: '0.3em', y: 20 },
-        { opacity: 1, letterSpacing: '0.10em', y: 0, duration: 1.2, ease: 'power3.out' }, 
-        '-=0.4'
+        { opacity: 0, letterSpacing: '0.3em', y: 30 },
+        { opacity: 1, letterSpacing: '0.2em', y: 0, duration: 0.8, ease: 'power3.out' }, 
+        '-=0.5'
       )
       .fromTo('.luxury-subtitle', 
-        { opacity: 0 },
-        { opacity: 1, duration: 1, ease: 'power2.out' }, 
-        '-=1'
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 
+        '-=0.6'
       )
       .fromTo('.luxury-stat-line',
         { opacity: 0, y: 10 },
-        { opacity: 0.6, y: 0, duration: 1, ease: 'power2.out' },
-        '-=0.8'
+        { opacity: 0.9, y: 0, duration: 0.8, ease: 'power2.out' },
+        '-=0.6'
       )
       .fromTo('.luxury-cards-container',
         { opacity: 0 },
         { opacity: 1, duration: 0.1 },
-        '-=1.2'
+        '-=0.4'
       )
       .fromTo('.luxury-card', 
-        { opacity: 0, y: 60, rotateX: 10 },
-        { opacity: 1, y: 0, rotateX: 0, duration: 1.4, stagger: 0.1, ease: 'expo.out' }, 
-        '-=1.2'
+        { opacity: 0, y: 80, rotateX: 15 },
+        { opacity: 1, y: 0, rotateX: 0, duration: 1.2, stagger: 0.1, ease: 'expo.out' }, 
+        '-=0.4'
+      )
+      .fromTo('.luxury-footer',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
+        '-=0.8'
       )
 
+    // Sync numeric counting with card reveals
     CARDS.forEach((card, index) => {
       const obj = { val: 0 }
-      const startDelay = 3.2 + (index * 0.1) 
+      // Start counting after cards are visible (sync with faster timeline)
+      const startOffset = 3.0 + (index * 0.1) 
       
       gsap.to(obj, {
-        val: card.target,
-        duration: 2.5,
+        val: card.target || 0,
+        duration: 1.5,
         ease: 'power2.out',
-        delay: startDelay,
+        delay: startOffset,
         onUpdate: () => {
           const el = document.getElementById(`stat-count-${card.id}`)
           if (el) {
             const displayVal = Math.floor(obj.val)
-            const formatted = displayVal.toLocaleString('en-US')
-            el.innerText = `${card.prefix || ''}${formatted}${card.suffix || ''}`
+            el.innerText = `${displayVal}${card.suffix || ''}`
           }
         }
       })
@@ -116,8 +129,8 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
       style={{
         height: '100vh',
         width: '100vw',
-        backgroundColor: '#000',
-        color: '#ffffff',
+        backgroundColor: '#0A0A0A', // Backdrop black (matte charcoal)
+        color: '#FFFFFF', // High-end white
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -127,7 +140,8 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
         fontFamily: "'Inter', sans-serif",
         perspective: '1200px',
         overflow: 'hidden',
-        position: 'relative'
+        position: 'relative',
+        filter: 'saturate(1.2)' // Increased saturation for more vibrant gold/visuals
       }}
     >
       <div 
@@ -135,13 +149,28 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.9) 100%), url("/home.png")',
+          backgroundImage: 'url("/home.png")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
-          zIndex: 0
+          zIndex: 0,
+          opacity: 0 // Initial state for timeline
         }}
       />
+
+      {/* Luxury Backdrop Overlay (Vignette/Darkness) */}
+      <div 
+        className="luxury-backdrop-overlay"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.95) 100%)',
+          zIndex: 1,
+          opacity: 0,
+          pointerEvents: 'none'
+        }}
+      />
+      
 
       <img 
         ref={introImageRef}
@@ -153,8 +182,9 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          zIndex: 5,
-          pointerEvents: 'none'
+          zIndex: 100, // Stay on top during intro
+          pointerEvents: 'none',
+          display: 'block'
         }}
       />
 
@@ -180,7 +210,7 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
         }
       `}</style>
 
-      <div style={{ textAlign: 'center', marginBottom: '8vh', zIndex: 10 }}>
+      <div style={{ textAlign: 'center', marginBottom: '4vh', marginTop: '4vh', zIndex: 10 }}>
         <h2
           className="luxury-subtitle"
           style={{
@@ -200,12 +230,13 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
           className="luxury-title"
           style={{
             fontSize: 'clamp(32px, 5vw, 60px)',
-            fontWeight: 400,
+            fontWeight: 600, // Reduced weight for elegance
             textTransform: 'uppercase',
-            color: '#ffffff',
+            color: '#FFFFFF',
             margin: 0,
             fontFamily: "'Oswald', sans-serif",
-            letterSpacing: '0.10em',
+            letterSpacing: '0.3em', // Increased spacing
+            textShadow: '0 4px 15px rgba(0,0,0,0.5)',
             opacity: 0
           }}
         >
@@ -214,17 +245,18 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
         <div 
           className="luxury-stat-line"
           style={{
-            marginTop: '16px',
-            fontSize: '16px',
-            color: 'rgba(255, 255, 255, 0.92)',
-            letterSpacing: '0.05em',
+            marginTop: '20px',
+            fontSize: 'clamp(14px, 1.2vw, 18px)',
+            color: 'rgba(255, 255, 255, 0.7)', // Muted white
+            letterSpacing: '0.12em',
             fontWeight: 300,
-            maxWidth: '600px',
-            margin: '16px auto 0',
-            opacity: 0
+            maxWidth: '800px',
+            margin: '10px auto 0',
+            opacity: 0,
+            lineHeight: 1.6
           }}
         >
-          Position Your Brand in Front of Millions Every Day
+          A Global Platform for Brands to Connect with Millions
         </div>
       </div>
 
@@ -242,136 +274,129 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
       }}>
         {CARDS.map((card) => (
           <div
-            key={card.id}
-            className="luxury-card"
-            onClick={() => onSelect(card.id)}
-            style={{
-              position: 'relative',
-              flex: '1 1 250px',
-              maxWidth: '300px',
-              height: '46vh',
-              minHeight: '360px',
-              background: 'linear-gradient(135deg, rgba(235, 230, 215, 0.18) 0%, rgba(200, 190, 170, 0.28) 100%)',
-              backdropFilter: 'blur(30px)',
-              WebkitBackdropFilter: 'blur(30px)',
-              border: '1px solid rgba(212, 175, 55, 0.25)',
-              borderRadius: '12px',
-              boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.2), 0 15px 35px rgba(0,0,0,0.3)',
-              overflow: 'hidden',
-              cursor: 'pointer',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              padding: '44px 32px',
-              transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-              transform: 'scale(1)',
-              zIndex: 1
-            }}
+              key={card.id}
+              className="luxury-card"
+              onClick={() => onSelect(card.id)}
+              style={{
+                position: 'relative',
+                flex: (card.id === 2 || card.id === 3) ? '1 1 340px' : '1 1 280px', // Both highlighted cards larger
+                maxWidth: (card.id === 2 || card.id === 3) ? '360px' : '300px',
+                height: (card.id === 2 || card.id === 3) ? '48vh' : '46vh',
+                minHeight: (card.id === 2 || card.id === 3) ? '380px' : '360px',
+                background: 'linear-gradient(160deg, #0f0f0f, #1a1a1a)',
+                backdropFilter: 'blur(30px)',
+                WebkitBackdropFilter: 'blur(30px)',
+                border: '1px solid rgba(200, 169, 106, 0.3)',
+                borderRadius: '16px',
+                boxShadow: (card.id === 2 || card.id === 3)
+                  ? '0 35px 100px rgba(0,0,0,0.6)' 
+                  : '0 25px 80px rgba(0,0,0,0.5)',
+                overflow: 'hidden',
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                padding: '52px 38px',
+                transition: 'all 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
+                transform: 'translateY(0)',
+                zIndex: (card.id === 2 || card.id === 3) ? 2 : 1
+              }}
             onMouseEnter={(e) => {
               const target = e.currentTarget;
-              target.style.transform = 'scale(1.04) translateY(-10px)';
-              target.style.border = `1px solid ${card.color}B0`;
-              target.style.background = 'linear-gradient(135deg, rgba(245, 240, 225, 0.3) 0%, rgba(215, 205, 185, 0.4) 100%)';
-              target.style.boxShadow = `0 45px 90px rgba(0,0,0,0.7), 0 0 35px ${card.color}30`;
-              target.style.backdropFilter = 'blur(45px)';
-
-              const bg = target.querySelector('.card-bg') as HTMLDivElement;
-              if (bg) { bg.style.transform = 'scale(1.4)'; bg.style.opacity = '1'; }
+              target.style.transform = 'translateY(-12px)';
+              target.style.border = '1px solid rgba(200, 169, 106, 0.8)';
+              target.style.boxShadow = '0 50px 120px rgba(0,0,0,0.8)';
             }}
             onMouseLeave={(e) => {
               const target = e.currentTarget;
-              target.style.transform = 'scale(1)';
-              target.style.border = '1px solid rgba(212, 175, 55, 0.25)';
-              target.style.background = 'linear-gradient(135deg, rgba(235, 230, 215, 0.18) 0%, rgba(200, 190, 170, 0.28) 100%)';
-              target.style.boxShadow = 'inset 0 1px 1px rgba(255,255,255,0.2), 0 15px 35px rgba(0,0,0,0.3)';
-              target.style.backdropFilter = 'blur(30px)';
-
-              const bg = target.querySelector('.card-bg') as HTMLDivElement;
-              if (bg) { bg.style.transform = 'scale(1)'; bg.style.opacity = '0.3'; }
+              target.style.transform = 'translateY(0)';
+              target.style.border = '1px solid rgba(200, 169, 106, 0.3)';
+              target.style.boxShadow = target.style.zIndex === '2' 
+                ? '0 35px 100px rgba(0,0,0,0.6)' 
+                : '0 25px 80px rgba(0,0,0,0.5)';
             }}
           >
-            {/* Glow / Material Texture */}
-            <div
-              className="card-bg"
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background: `radial-gradient(circle at top right, ${card.color}30 0%, transparent 75%)`,
-                opacity: 0.3,
-                transition: 'all 0.8s ease',
-                zIndex: 0
-              }}
-            />
 
-            {/* Metric Header */}
-            <div style={{ position: 'relative', zIndex: 1 }}>
-              <div
-                id={`stat-count-${card.id}`}
-                style={{
-                  fontSize: '60px',
-                  color: card.color,
-                  fontFamily: "'Oswald', sans-serif",
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  lineHeight: 0.9,
-                  marginBottom: '8px',
-                  letterSpacing: '-0.02em',
-                  textShadow: '0 2px 10px rgba(0,0,0,0.2)'
-                }}
-              >
-                0
-              </div>
-              <div
-                style={{
-                  fontSize: '11px',
-                  color: 'rgba(255,255,255,0.7)',
-                  letterSpacing: '0.35em',
-                  textTransform: 'uppercase',
-                  fontWeight: 600
-                }}
-              >
-                {card.label}
-              </div>
-            </div>
-
-            {/* Opportunity Content */}
-            <div style={{ position: 'relative', zIndex: 1 }}>
+            {/* Opportunity Content (Hierarchy: Title > Metric > Description) */}
+            <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column' }}>
               <h3 style={{
-                fontSize: '21px',
-                fontWeight: 600,
-                marginBottom: '10px',
-                color: '#ffffff',
+                fontSize: (card.id === 2 || card.id === 3) ? '16px' : '12px',
+                fontWeight: 700,
+                marginBottom: '20px',
+                color: (card.id === 2 || card.id === 3) ? '#C8A96A' : '#FFFFFF', // Gold or White
                 fontFamily: "'Oswald', sans-serif",
                 textTransform: 'uppercase',
-                letterSpacing: '0.04em',
-                textShadow: '0 2px 10px rgba(0,0,0,0.2)'
+                letterSpacing: '0.3em',
               }}>
                 {card.title}
               </h3>
+
+              {/* Metric in the middle (Visually Dominant) */}
+              <div style={{ marginBottom: '28px', minHeight: '80px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div
+                  id={`stat-count-${card.id}`}
+                  style={{
+                    fontSize: '68px',
+                    fontFamily: "'Oswald', sans-serif",
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    lineHeight: 1,
+                    marginBottom: '8px',
+                    letterSpacing: '-0.02em',
+                    background: 'linear-gradient(180deg, #E5C27A 0%, #C8A96A 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  0
+                </div>
+                {card.label && (
+                  <div
+                    style={{
+                      fontSize: '12px',
+                      color: 'rgba(255, 255, 255, 0.5)',
+                      letterSpacing: '0.2em',
+                      textTransform: 'uppercase',
+                      fontWeight: 700
+                    }}
+                  >
+                    {card.label}
+                  </div>
+                )}
+              </div>
+
               <p style={{
                 fontSize: '13px',
-                color: 'rgba(255,255,255,0.85)',
+                color: 'rgba(255, 255, 255, 0.65)',
                 fontWeight: 300,
-                lineHeight: 1.5,
+                lineHeight: 1.6,
                 margin: 0,
-                textShadow: '0 1px 5px rgba(0,0,0,0.2)'
               }}>
                 {card.desc}
               </p>
               
-              <div 
-                style={{
-                  height: '2px',
-                  width: '35px',
-                  backgroundColor: card.color,
-                  marginTop: '24px',
-                  opacity: 0.8,
-                  boxShadow: '0 0 10px rgba(212,175,55,0.3)'
-                }}
-              />
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Supporting Line Below Cards */}
+      <div 
+        className="luxury-footer"
+        style={{
+          marginTop: '4vh',
+          zIndex: 10,
+          color: '#C8A96A', 
+          fontSize: '12px',
+          letterSpacing: '0.5em',
+          textTransform: 'uppercase',
+          textAlign: 'center',
+          fontFamily: "'Inter', sans-serif",
+          opacity: 0, // Initial state for GSAP
+          fontWeight: 600
+        }}
+      >
+        A complete ecosystem of retail, luxury, entertainment, and global experiences.
       </div>
     </div>
   )

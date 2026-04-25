@@ -9,7 +9,7 @@ import './App.css'
  * Set ENABLE_SPLASH to true to show the cinematic intro video on load.
  * Set to false to jump directly to the Choice Screen.
  */
-const ENABLE_SPLASH = true;
+const ENABLE_SPLASH = false;
 
 function App() {
   const [showSplash, setShowSplash] = useState(ENABLE_SPLASH)
