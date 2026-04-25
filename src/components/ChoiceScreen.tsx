@@ -53,10 +53,10 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
         { y: '100%', opacity: 1 },
         { y: '0%', duration: 0.8, ease: 'power3.out' }
       )
-      // Phase 2: Show home.png (FASTER)
+      // Phase 2: Show home.png (Direct Fade In)
       .fromTo(bgRef.current,
         { opacity: 0 },
-        { opacity: 1, duration: 0.6, ease: 'power2.inOut' }
+        { opacity: 1, duration: 1, ease: 'power2.inOut' }
       )
       .to(introImageRef.current, { 
         opacity: 0, 
@@ -149,7 +149,7 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'url("/home.png")',
+          backgroundImage: 'url("https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/home.png")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
@@ -174,7 +174,7 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
 
       <img 
         ref={introImageRef}
-        src="/home ann.png"
+        src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/home%20ann.png"
         alt="Intro"
         style={{
           position: 'absolute',
@@ -187,6 +187,37 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
           display: 'block'
         }}
       />
+
+      {/* Cinematic Noise Texture */}
+      <div className="noise-texture" />
+
+      {/* Mesmerizing Light Drifts (Particles) */}
+      {[...Array(8)].map((_, i) => (
+        <div 
+          key={i}
+          className="light-drift"
+          style={{
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            opacity: Math.random() * 0.5,
+            animation: `float ${15 + Math.random() * 10}s infinite alternate ease-in-out`,
+            animationDelay: `${Math.random() * 5}s`
+          }}
+        />
+      ))}
+
+      {/* Hero Ambient Glows (Behind Card 2 & 3) */}
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        left: '42%',
+        width: '40vw',
+        height: '40vh',
+        background: 'radial-gradient(circle, rgba(200, 169, 106, 0.08) 0%, transparent 70%)',
+        zIndex: 1,
+        pointerEvents: 'none',
+        animation: 'ambient-pulse 8s infinite alternate ease-in-out'
+      }} />
 
       <div
         style={{
@@ -205,8 +236,44 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
 
       <style>{`
         @keyframes float {
-          0% { transform: translate(0, 0) rotate(0deg); }
-          100% { transform: translate(10vw, 5vh) rotate(5deg); }
+          0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.2; }
+          33% { transform: translate(5vw, 5vh) rotate(5deg) scale(1.1); opacity: 0.4; }
+          66% { transform: translate(-2vw, 10vh) rotate(-3deg) scale(0.9); opacity: 0.3; }
+          100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.2; }
+        }
+        @keyframes shine {
+          0% { left: -150%; opacity: 0; }
+          20% { opacity: 0.6; }
+          50% { opacity: 0.6; }
+          100% { left: 150%; opacity: 0; }
+        }
+        @keyframes ambient-pulse {
+          0% { opacity: 0.3; transform: scale(1); }
+          100% { opacity: 0.5; transform: scale(1.1); }
+        }
+        @keyframes text-shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
+        .noise-texture {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+          opacity: 0.04;
+          pointer-events: none;
+          z-index: 99;
+        }
+        .light-drift {
+          position: absolute;
+          width: 4px;
+          height: 4px;
+          background: #C8A96A;
+          border-radius: 50%;
+          filter: blur(2px);
+          pointer-events: none;
+          z-index: 2;
         }
       `}</style>
 
@@ -303,19 +370,46 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
               }}
             onMouseEnter={(e) => {
               const target = e.currentTarget;
-              target.style.transform = 'translateY(-12px)';
-              target.style.border = '1px solid rgba(200, 169, 106, 0.8)';
-              target.style.boxShadow = '0 50px 120px rgba(0,0,0,0.8)';
+              target.style.transform = 'translateY(-18px) scale(1.03)';
+              target.style.border = '1px solid rgba(255, 255, 255, 0.6)'; // Brighter white/gold border on hover
+              target.style.boxShadow = '0 70px 150px rgba(0,0,0,0.95)';
+              
+              const shine = target.querySelector('.shine-sweep') as HTMLDivElement;
+              if (shine) {
+                shine.style.animation = 'none';
+                void shine.offsetWidth;
+                shine.style.animation = 'shine 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+              }
             }}
             onMouseLeave={(e) => {
               const target = e.currentTarget;
-              target.style.transform = 'translateY(0)';
+              target.style.transform = 'translateY(0) scale(1)';
               target.style.border = '1px solid rgba(200, 169, 106, 0.3)';
-              target.style.boxShadow = target.style.zIndex === '2' 
+              target.style.boxShadow = (target.style.zIndex === '2')
                 ? '0 35px 100px rgba(0,0,0,0.6)' 
                 : '0 25px 80px rgba(0,0,0,0.5)';
+              
+              const shine = target.querySelector('.shine-sweep') as HTMLDivElement;
+              if (shine) {
+                shine.style.animation = 'none';
+              }
             }}
           >
+            {/* Shine Sweep Overlay */}
+            <div 
+              className="shine-sweep"
+              style={{
+                position: 'absolute',
+                top: 0,
+                width: '100%', // Wider for better sweep
+                height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), rgba(255,255,255,0.2), rgba(255,255,255,0.1), transparent)',
+                transform: 'skewX(-25deg)',
+                pointerEvents: 'none',
+                zIndex: 5,
+                opacity: 0
+              }}
+            />
 
             {/* Opportunity Content (Hierarchy: Title > Metric > Description) */}
             <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -343,9 +437,11 @@ export default function ChoiceScreen({ onSelect }: { onSelect: (id: number) => v
                     lineHeight: 1,
                     marginBottom: '8px',
                     letterSpacing: '-0.02em',
-                    background: 'linear-gradient(180deg, #E5C27A 0%, #C8A96A 100%)',
+                    background: 'linear-gradient(110deg, #E5C27A 40%, #FFF5D6 50%, #C8A96A 60%)',
+                    backgroundSize: '200% auto',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
+                    animation: 'text-shimmer 3s infinite linear'
                   }}
                 >
                   0

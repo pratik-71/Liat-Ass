@@ -54,7 +54,8 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
             ease: 'power2.out',
             onUpdate: () => {
               if (statsRef.current) {
-                statsRef.current.innerText = `- ${Math.floor(counter.val).toLocaleString('en-IN')}+ visits a day -`
+                // Removed toLocaleString to keep numbers clean and consistent with Home screen
+                statsRef.current.innerText = `- ${Math.floor(counter.val)}+ visits a day -`
               }
             },
             onComplete: () => {
@@ -79,9 +80,12 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
                         ease: 'power2.in',
                         onComplete: () => {
                           // Phase 3: Global Platform for Brands
+                          // FADE OUT VIDEO HERE to let text be on pure black
+                          gsap.to(videoRef.current, { opacity: 0, duration: 1, ease: 'power2.inOut' });
+
                           // Quickly fade in everything together
                           gsap.to([brandsPhaseRef.current, brandsHeadlineRef.current, brandsSubtextRef.current, brandsTagRef.current], {
-                            opacity: (i, t) => t === brandsTagRef.current ? 0.6 : 1,
+                            opacity: (_, t) => t === brandsTagRef.current ? 0.6 : 1,
                             duration: TIMING.phaseThreeFadeIn,
                             delay: TIMING.phaseThreeDelay,
                             ease: 'power2.out',
@@ -155,12 +159,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
       ease: 'power3.in'
     }, 0)
 
-    // Video remains static but fades out with container
-    tl.to(videoRef.current, {
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power2.inOut'
-    }, 0.2)
+    // Video is already gone by this phase
 
     // Fade out the entire container
     tl.to(containerRef.current, {
@@ -209,10 +208,11 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           textTransform: 'uppercase',
           letterSpacing: '0.05em',
           filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.8))',
-          background: 'linear-gradient(to right, #e8d399 0%, #fcf6ba 20%, #b38728 50%, #fcf6ba 80%, #e8d399 100%)',
+          background: 'linear-gradient(110deg, #e8d399 30%, #fcf6ba 50%, #e8d399 70%)',
+          backgroundSize: '200% auto',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
-          backgroundSize: '200% auto',
+          animation: 'text-shimmer 3s infinite linear',
           lineHeight: 1.4,
           padding: '0.2em 0',
           opacity: 0,
@@ -388,7 +388,12 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
             letterSpacing: '0.15em',
             textAlign: 'center',
             margin: '0 0 16px 0',
-            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.8))'
+            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.8))',
+            background: 'linear-gradient(110deg, #E5C27A 40%, #FFF5D6 50%, #C8A96A 60%)',
+            backgroundSize: '200% auto',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            animation: 'text-shimmer 4s infinite linear'
           }}
         >
           A GLOBAL PLATFORM <br /> FOR BRANDS
@@ -491,6 +496,18 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           </span>
         </p>
       </div>
+      <style>{`
+        @keyframes text-shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
+        @keyframes shine {
+          0% { left: -150%; opacity: 0; }
+          20% { opacity: 0.6; }
+          50% { opacity: 0.6; }
+          100% { left: 150%; opacity: 0; }
+        }
+      `}</style>
     </div>
   )
 }
