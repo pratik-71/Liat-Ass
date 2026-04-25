@@ -3,16 +3,19 @@ import gsap from 'gsap'
 
 export const TIMING = {
   // Video overlay text timings (in seconds)
-  counterCountUp: 1.5,
-  counterHold: 1.5,
+  counterCountUp: 0.8, // Faster counting as requested
+  counterHold: 1.0, // Increased hold time to keep total phase time same
   counterFadeOut: 0.5,
   
-  secondTextFadeIn: 0.5,
-  secondTextHold: 1.7, // Display time reduced by 0.30 seconds
-  secondTextFadeOut: 0.5,
+  phaseTwoDelay: 1.5, // Shifted 1.0s earlier (from 2.5s)
+  phaseTwoFadeIn: 0.5,
+  phaseTwoHold: 3.2, // "keep them for 3.2 seconds"
+  phaseTwoFadeOut: 0.5,
 
-  thirdTextDelay: 1.0, // 1 second gap after second text fades out
-  thirdTextFadeIn: 0.5,
+  phaseThreeDelay: 0.3, 
+  phaseThreeFadeIn: 0.2, // "quckly fade in in0.2 seocnd"
+  phaseThreeHold: 1.8, // "hold text for 1.8 seocnd"
+  phaseThreeFadeOut: 0.5,
 }
 
 interface SplashScreenProps {
@@ -21,22 +24,29 @@ interface SplashScreenProps {
 
 export default function SplashScreen({ onComplete }: SplashScreenProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const overlayRef  = useRef<HTMLDivElement>(null)
-  const logoRef     = useRef<HTMLImageElement>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
+  const logoRef = useRef<HTMLImageElement>(null)
   const subtitleRef = useRef<HTMLParagraphElement>(null)
-  const shadowRef   = useRef<HTMLDivElement>(null)
-  const videoRef    = useRef<HTMLVideoElement>(null)
-  const statsRef    = useRef<HTMLDivElement>(null)
-  const topTextRef  = useRef<HTMLDivElement>(null)
-  const bottomTextRef = useRef<HTMLDivElement>(null)
-  const thirdTextRef = useRef<HTMLDivElement>(null)
+  const shadowRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const statsRef = useRef<HTMLDivElement>(null)
+  const topStatsGroupRef = useRef<HTMLDivElement>(null)
+  const cornerTextsRef = useRef<HTMLDivElement>(null)
+  const dreamRef = useRef<HTMLDivElement>(null)
+  const brandsPhaseRef = useRef<HTMLDivElement>(null)
+  const brandsHeadlineRef = useRef<HTMLHeadingElement>(null)
+  const brandsSubtextRef = useRef<HTMLParagraphElement>(null)
+  const brandsTagRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const tl = gsap.timeline({ 
+    const tl = gsap.timeline({
       onComplete: () => {
         if (videoRef.current) {
-          // Start counting animation (video playback has already started in the timeline)
-          gsap.set(statsRef.current, { opacity: 1 })
+          // Fade in top stats while counting
+          // Fade in top stats while counting
+          gsap.set([statsRef.current, topStatsGroupRef.current], { opacity: 0 })
+          gsap.to([statsRef.current, topStatsGroupRef.current], { opacity: 1, duration: 0.5 })
+          
           const counter = { val: 0 }
           gsap.to(counter, {
             val: 300000,
@@ -48,26 +58,41 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
               }
             },
             onComplete: () => {
-              gsap.to(statsRef.current, { 
-                opacity: 0, 
-                duration: TIMING.counterFadeOut, 
+              gsap.to([statsRef.current, topStatsGroupRef.current], {
+                opacity: 0,
+                duration: TIMING.counterFadeOut,
                 delay: TIMING.counterHold,
                 onComplete: () => {
-                  gsap.to([topTextRef.current, bottomTextRef.current], {
+                  // Phase 2: Corner texts and "More than dream"
+                  gsap.to([cornerTextsRef.current, dreamRef.current], {
                     opacity: 1,
-                    duration: TIMING.secondTextFadeIn,
+                    scale: 1,
+                    duration: TIMING.phaseTwoFadeIn,
+                    delay: TIMING.phaseTwoDelay,
+                    ease: 'back.out(1.2)',
                     onComplete: () => {
-                      gsap.to([topTextRef.current, bottomTextRef.current], {
+                      gsap.to([cornerTextsRef.current, dreamRef.current], {
                         opacity: 0,
-                        duration: TIMING.secondTextFadeOut,
-                        delay: TIMING.secondTextHold,
+                        scale: 1.05,
+                        duration: TIMING.phaseTwoFadeOut,
+                        delay: TIMING.phaseTwoHold,
+                        ease: 'power2.in',
                         onComplete: () => {
-                          // Show third text after gap
-                          gsap.to(thirdTextRef.current, {
-                            opacity: 1,
-                            duration: TIMING.thirdTextFadeIn,
-                            delay: TIMING.thirdTextDelay
+                          // Phase 3: Global Platform for Brands
+                          // Quickly fade in everything together
+                          gsap.to([brandsPhaseRef.current, brandsHeadlineRef.current, brandsSubtextRef.current, brandsTagRef.current], {
+                            opacity: (i, t) => t === brandsTagRef.current ? 0.6 : 1,
+                            duration: TIMING.phaseThreeFadeIn,
+                            delay: TIMING.phaseThreeDelay,
+                            ease: 'power2.out',
+                            onComplete: () => {
+                              // Wait for the hold duration, then start the final zoom
+                              gsap.delayedCall(TIMING.phaseThreeHold, startZoom)
+                            }
                           })
+                          // Subtle scale reset
+                          gsap.set(brandsHeadlineRef.current, { scale: 1 })
+                          gsap.set(brandsSubtextRef.current, { y: 0 })
                         }
                       })
                     }
@@ -79,20 +104,21 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         } else {
           onComplete()
         }
-      } 
+      }
     })
 
-    gsap.set(logoRef.current,     { scale: 0.6, opacity: 0, willChange: 'transform, opacity' })
-    gsap.set(subtitleRef.current, { opacity: 0, y: 14,      willChange: 'transform, opacity' })
-    gsap.set(shadowRef.current,   { opacity: 0,             willChange: 'opacity' })
-    gsap.set(overlayRef.current,  { opacity: 1 })
-    gsap.set(videoRef.current,    { opacity: 0 })
+    gsap.set(logoRef.current, { scale: 0.6, opacity: 0, willChange: 'transform, opacity' })
+    gsap.set(subtitleRef.current, { opacity: 0, y: 14, willChange: 'transform, opacity' })
+    gsap.set(shadowRef.current, { opacity: 0, willChange: 'opacity' })
+    gsap.set(overlayRef.current, { opacity: 1 })
+    gsap.set(videoRef.current, { opacity: 0 })
+    gsap.set([cornerTextsRef.current, dreamRef.current, brandsPhaseRef.current], { opacity: 0, scale: 0.95 })
 
     tl
       // Logo fades + zooms in
-      .to(logoRef.current,     { scale: 1, opacity: 1, duration: 0.9, ease: 'power2.out' })
+      .to(logoRef.current, { scale: 1, opacity: 1, duration: 0.9, ease: 'power2.out' })
       // Shadow fades in with logo
-      .to(shadowRef.current,   { opacity: 1, duration: 0.7, ease: 'power2.out' }, '-=0.6')
+      .to(shadowRef.current, { opacity: 1, duration: 0.7, ease: 'power2.out' }, '-=0.6')
       // Subtitle rises in
       .to(subtitleRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.4')
       // Hold
@@ -102,11 +128,11 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
       // Start playing video right before the zoom punch to completely eliminate any gap
       .call(() => { videoRef.current?.play().catch(console.error) })
       // Netflix zoom punch
-      .to(logoRef.current,    { scale: 4.5, opacity: 0, duration: 0.95, ease: 'power3.in' })
+      .to(logoRef.current, { scale: 4.5, opacity: 0, duration: 0.95, ease: 'power3.in' })
       // Fade out overlay gradient to reveal video
       .to(overlayRef.current, { opacity: 0, duration: 0.4, ease: 'power2.inOut' }, '-=0.35')
       // Fade in video
-      .to(videoRef.current,   { opacity: 1, duration: 0.5 }, '-=0.4')
+      .to(videoRef.current, { opacity: 1, duration: 0.5 }, '-=0.4')
 
     return () => { tl.kill() }
   }, [onComplete])
@@ -121,37 +147,27 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
       onComplete: onComplete
     })
 
-    // Fade out all text overlays quickly
-    tl.to([statsRef.current, topTextRef.current, bottomTextRef.current, thirdTextRef.current], {
-      opacity: 0,
-      duration: 0.4,
-      ease: 'power2.in'
-    })
-    
-    // Zoom in the video (Netflix style punch-through) while it's still playing
-    tl.to(videoRef.current, {
+    // Zoom in Phase 3 text (Netflix style)
+    tl.to(brandsPhaseRef.current, {
       scale: 4,
       opacity: 0,
-      duration: 1.5,
-      ease: 'expo.inOut'
-    }, '-=0.2')
+      duration: 1.0,
+      ease: 'power3.in'
+    }, 0)
 
-    // Fade out the entire container to reveal the home section
+    // Video remains static but fades out with container
+    tl.to(videoRef.current, {
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power2.inOut'
+    }, 0.2)
+
+    // Fade out the entire container
     tl.to(containerRef.current, {
       opacity: 0,
       duration: 1.0,
       ease: 'power2.inOut'
-    }, '-=0.8')
-  }
-
-  const handleTimeUpdate = () => {
-    const video = videoRef.current
-    if (video && video.duration) {
-      // Trigger zoom 1.5 seconds before the video ends
-      if (video.duration - video.currentTime <= 1.5) {
-        startZoom()
-      }
-    }
+    }, '-=0.6')
   }
 
   return (
@@ -174,8 +190,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           willChange: 'transform, opacity',
           transformOrigin: 'center center'
         }}
-        onTimeUpdate={handleTimeUpdate}
-        onEnded={startZoom} // Fallback to ensure animation plays
+        onEnded={() => { /* Wait for text to finish */ }}
         muted
         playsInline
       />
@@ -207,95 +222,212 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         }}
       />
 
-      {/* Top Text Overlay */}
+      {/* Top Stats Group Overlay (Phase 1) */}
       <div
-        ref={topTextRef}
+        ref={topStatsGroupRef}
         style={{
           position: 'absolute',
           top: '6%',
           left: '50%',
           transform: 'translateX(-50%)',
-          fontSize: 'clamp(24px, 3.5vw, 42px)',
-          fontFamily: "'Oswald', 'Impact', 'Arial Narrow', sans-serif",
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          letterSpacing: '0.1em',
-          filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.8))',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: '24px',
           opacity: 0,
           zIndex: 10,
           pointerEvents: 'none',
           whiteSpace: 'nowrap'
         }}
       >
-        <span style={{ 
-          display: 'inline-block', 
-          transform: 'scale(1, 1.4)',
-          background: 'linear-gradient(to right, #e8d399 0%, #fcf6ba 20%, #b38728 50%, #fcf6ba 80%, #e8d399 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundSize: '200% auto',
-          lineHeight: 1.4,
-          padding: '0.1em 0',
+        <div style={{
+          fontSize: 'clamp(12px, 1.8vw, 18px)',
+          fontFamily: "'Oswald', sans-serif",
+          fontWeight: 800,
+          color: '#FFFFFF',
+          textTransform: 'uppercase',
+          letterSpacing: '0.15em',
+          backgroundColor: 'rgba(0, 0, 0, 0.45)',
+          backdropFilter: 'blur(8px)',
+          padding: '8px 20px',
+          borderRadius: '50px',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
+          filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))',
+          boxShadow: 'inset 0 0 10px rgba(255,255,255,0.1)'
         }}>
-          - Where everything exists -
-        </span>
+          12 million sq ft Area
+        </div>
+
+        <div style={{
+          fontSize: 'clamp(12px, 1.8vw, 18px)',
+          fontFamily: "'Oswald', sans-serif",
+          fontWeight: 800,
+          color: '#FFFFFF',
+          textTransform: 'uppercase',
+          letterSpacing: '0.15em',
+          backgroundColor: 'rgba(0, 0, 0, 0.45)',
+          backdropFilter: 'blur(8px)',
+          padding: '8px 20px',
+          borderRadius: '50px',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
+          filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))',
+          boxShadow: 'inset 0 0 10px rgba(255,255,255,0.1)'
+        }}>
+          VISITORS FROM 190+ COUNTRIES
+        </div>
       </div>
 
-      {/* Bottom Small Text Overlay */}
+      {/* Phase 2: Corner Texts Overlay */}
       <div
-        ref={bottomTextRef}
+        ref={cornerTextsRef}
         style={{
-          position: 'absolute',
-          bottom: '5%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          fontSize: 'clamp(14px, 2vw, 20px)',
-          fontFamily: "'Segoe UI', system-ui, sans-serif",
-          fontWeight: 400,
-          letterSpacing: '0.25em',
-          textTransform: 'uppercase',
-          filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.8))',
-          opacity: 0,
-          zIndex: 10,
-          pointerEvents: 'none',
-          whiteSpace: 'nowrap'
+          position: 'absolute', inset: 0,
+          pointerEvents: 'none', zIndex: 10, opacity: 0
         }}
       >
-      
+        {/* Top Left */}
+        <div style={{
+          position: 'absolute', top: '6%', left: '4%',
+          fontSize: 'clamp(12px, 1.8vw, 18px)',
+          fontFamily: "'Oswald', sans-serif", fontWeight: 800,
+          color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '0.15em',
+          backgroundColor: 'rgba(0, 0, 0, 0.55)', backdropFilter: 'blur(10px)',
+          padding: '8px 24px', borderRadius: '50px',
+          border: '1px solid rgba(179, 135, 40, 0.4)',
+          boxShadow: '0 4px 15px rgba(0,0,0,0.4), inset 0 0 10px rgba(179, 135, 40, 0.1)',
+          filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))'
+        }}>
+          Biggest Aquarium
+        </div>
+        {/* Top Right */}
+        <div style={{
+          position: 'absolute', top: '6%', right: '4%',
+          fontSize: 'clamp(12px, 1.8vw, 18px)',
+          fontFamily: "'Oswald', sans-serif", fontWeight: 800,
+          color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '0.15em',
+          backgroundColor: 'rgba(0, 0, 0, 0.55)', backdropFilter: 'blur(10px)',
+          padding: '8px 24px', borderRadius: '50px',
+          border: '1px solid rgba(179, 135, 40, 0.4)',
+          boxShadow: '0 4px 15px rgba(0,0,0,0.4), inset 0 0 10px rgba(179, 135, 40, 0.1)',
+          filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))'
+        }}>
+          Mesmerizing Chinatown
+        </div>
+        {/* Bottom Left */}
+        <div style={{
+          position: 'absolute', bottom: '15%', left: '4%',
+          fontSize: 'clamp(12px, 1.8vw, 18px)',
+          fontFamily: "'Oswald', sans-serif", fontWeight: 800,
+          color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '0.15em',
+          backgroundColor: 'rgba(0, 0, 0, 0.55)', backdropFilter: 'blur(10px)',
+          padding: '8px 24px', borderRadius: '50px',
+          border: '1px solid rgba(179, 135, 40, 0.4)',
+          boxShadow: '0 4px 15px rgba(0,0,0,0.4), inset 0 0 10px rgba(179, 135, 40, 0.1)',
+          filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))'
+        }}>
+          Ice Rink
+        </div>
+        {/* Bottom Right */}
+        <div style={{
+          position: 'absolute', bottom: '15%', right: '4%',
+          fontSize: 'clamp(12px, 1.8vw, 18px)',
+          fontFamily: "'Oswald', sans-serif", fontWeight: 800,
+          color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '0.15em',
+          backgroundColor: 'rgba(0, 0, 0, 0.55)', backdropFilter: 'blur(10px)',
+          padding: '8px 24px', borderRadius: '50px',
+          border: '1px solid rgba(179, 135, 40, 0.4)',
+          boxShadow: '0 4px 15px rgba(0,0,0,0.4), inset 0 0 10px rgba(179, 135, 40, 0.1)',
+          filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))'
+        }}>
+          VR Park
+        </div>
       </div>
 
-      {/* Third Text Overlay */}
+      {/* Phase 2: Top Center "More than dream" Overlay */}
       <div
-        ref={thirdTextRef}
+        ref={dreamRef}
         style={{
-          position: 'absolute',
-          bottom: '5%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          fontSize: 'clamp(24px, 3.5vw, 42px)',
-          fontFamily: "'Oswald', 'Impact', 'Arial Narrow', sans-serif",
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          letterSpacing: '0.1em',
-          filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.8))',
-          opacity: 0,
-          zIndex: 10,
-          pointerEvents: 'none',
-          whiteSpace: 'nowrap'
+          position: 'absolute', top: '6%', left: '50%', transform: 'translateX(-50%)',
+          opacity: 0, zIndex: 10, pointerEvents: 'none', whiteSpace: 'nowrap'
         }}
       >
-        <span style={{ 
-          display: 'inline-block', 
-          transform: 'scale(1, 1.4)',
-          background: 'linear-gradient(to right, #e8d399 0%, #fcf6ba 20%, #b38728 50%, #fcf6ba 80%, #e8d399 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundSize: '200% auto',
-          lineHeight: 1.4,
-          padding: '0.1em 0',
+        <div style={{
+          fontSize: 'clamp(14px, 2.2vw, 22px)',
+          fontFamily: "'Oswald', sans-serif", fontWeight: 800,
+          color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '0.2em',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)', backdropFilter: 'blur(10px)',
+          padding: '10px 28px', borderRadius: '50px',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          boxShadow: '0 0 20px rgba(179, 135, 40, 0.3)',
+          filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.6))'
         }}>
-          - Experience the extraordinary -
-        </span>
+          More than dream
+        </div>
+      </div>
+
+      {/* Phase 3: Brands Platform Overlay */}
+      <div
+        ref={brandsPhaseRef}
+        style={{
+          position: 'absolute', inset: 0,
+          display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          backgroundColor: 'rgba(0, 0, 0, 0.4)', // Increased dimming for readability
+          background: 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%)', // Stronger vignette
+          opacity: 0, zIndex: 15, pointerEvents: 'none'
+        }}
+      >
+        <h1
+          ref={brandsHeadlineRef}
+          style={{
+            fontSize: 'clamp(28px, 4.5vw, 64px)',
+            fontFamily: "'Oswald', sans-serif",
+            fontWeight: 800,
+            color: '#FFFFFF',
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            textAlign: 'center',
+            margin: '0 0 16px 0',
+            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.8))'
+          }}
+        >
+          A GLOBAL PLATFORM <br /> FOR BRANDS
+        </h1>
+        
+        <p
+          ref={brandsSubtextRef}
+          style={{
+            fontSize: 'clamp(16px, 2.2vw, 24px)',
+            fontFamily: "'Oswald', sans-serif",
+            fontWeight: 400,
+            color: '#FFFFFF',
+            letterSpacing: '0.05em',
+            textAlign: 'center',
+            maxWidth: '900px',
+            margin: '0 5% 0 5%',
+            lineHeight: 1.4,
+            filter: 'drop-shadow(0 4px 15px rgba(0,0,0,0.9))'
+          }}
+        >
+          Host activations, launches, and large-scale events that connect with millions.
+        </p>
+
+        <div
+          ref={brandsTagRef}
+          style={{
+            position: 'absolute',
+            bottom: '10%',
+            fontSize: 'clamp(10px, 1.2vw, 14px)',
+            fontFamily: "'Oswald', sans-serif",
+            fontWeight: 500,
+            color: '#FFFFFF',
+            letterSpacing: '0.4em',
+            textTransform: 'uppercase',
+            opacity: 0.9
+          }}
+        >
+          GLOBAL EVENTS • BRAND ACTIVATIONS • LIVE EXPERIENCES
+        </div>
       </div>
 
       <div
