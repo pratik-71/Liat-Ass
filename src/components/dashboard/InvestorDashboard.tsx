@@ -279,50 +279,53 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
         animation: 'ambient-pulse 8s infinite alternate ease-in-out'
       }} />
 
-      <div style={{ textAlign: 'center', marginBottom: '4vh', marginTop: '4vh', zIndex: 10 }}>
-        <h2
-          className="luxury-subtitle"
+      <div style={{ textAlign: 'center', marginBottom: '8vh', marginTop: '4vh', zIndex: 10 }}>
+        <h2 
+          className="luxury-subtitle" 
           style={{
-            fontSize: '12px',
+            fontSize: '11px',
             textTransform: 'uppercase',
-            letterSpacing: '0.6em',
-            color: '#D4AF37',
+            letterSpacing: '0.8em',
+            color: '#C8A96A',
             marginBottom: '16px',
-            fontWeight: 600,
+            fontWeight: 700,
             fontFamily: "'Oswald', sans-serif",
-            opacity: 0
+            opacity: 0,
+            textAlign: 'center'
           }}
         >
           The Dubai Mall
         </h2>
-        <h1
-          className="luxury-title"
+        <h1 
+          className="luxury-title" 
           style={{
-            fontSize: 'clamp(32px, 5vw, 60px)',
-            fontWeight: 600,
+            fontSize: 'clamp(32px, 5vw, 56px)',
+            fontWeight: 600, // Increased thickness
             textTransform: 'uppercase',
-            color: '#FFFFFF',
             margin: 0,
             fontFamily: "'Oswald', sans-serif",
-            letterSpacing: '0.3em',
-            textShadow: '0 4px 15px rgba(0,0,0,0.5)',
-            opacity: 0
+            letterSpacing: '0.1em',
+            textAlign: 'center',
+            color: '#E5C27A', // Solid light golden
+            opacity: 0,
+            textShadow: '0 4px 15px rgba(0,0,0,0.5)'
           }}
         >
           Explore Opportunities
         </h1>
         <div 
-          className="luxury-stat-line"
+          className="luxury-stat-line" 
           style={{
-            marginTop: '10px',
-            fontSize: 'clamp(14px, 1.2vw, 18px)',
-            color: 'rgba(255, 255, 255, 0.7)',
-            letterSpacing: '0.12em',
-            fontWeight: 300,
-            maxWidth: '800px',
-            margin: '10px auto 0',
+            marginTop: '20px',
+            fontSize: '12px',
+            color: 'rgba(255, 255, 255, 0.81)',
+            letterSpacing: '0.4em',
+            textTransform: 'uppercase',
+            fontWeight: 400,
+            maxWidth: '1000px',
+            margin: '20px auto 0',
             opacity: 0,
-            lineHeight: 1.6
+            textAlign: 'center'
           }}
         >
           A Global Platform for Brands to Connect with Millions

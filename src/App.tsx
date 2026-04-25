@@ -8,7 +8,7 @@ import './App.css'
  * GLOBAL CONFIG HOOK
  * Set ENABLE_SPLASH to true to show the cinematic intro video on load.
  */
-const ENABLE_SPLASH = true;
+const ENABLE_SPLASH = !true;
 
 const ASSETS = {
   splashLogo: "https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/dubai_mall_start.png",

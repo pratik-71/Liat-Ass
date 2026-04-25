@@ -28,28 +28,35 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect }) => 
         boxShadow: isHero 
           ? '0 35px 100px rgba(0,0,0,0.6)' 
           : '0 25px 80px rgba(0,0,0,0.5)',
-        overflow: 'hidden',
+        overflow: 'visible', // Keep visible for 3D depth
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         padding: '52px 38px',
-        transition: 'all 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
-        transform: 'translateY(0)',
+        transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
+        transform: 'translateY(0) rotateX(0) rotateY(0)',
+        transformStyle: 'preserve-3d',
         zIndex: isHero ? 2 : 1
       }}
       onMouseEnter={(e) => {
         const target = e.currentTarget;
-        target.style.transform = 'translateY(-18px) scale(1.03)';
-        target.style.border = '1px solid rgba(255, 255, 255, 0.6)';
-        target.style.boxShadow = '0 70px 150px rgba(0,0,0,0.95)';
+        target.style.transform = 'translateY(-20px) scale(1.05)';
+        target.style.border = '1px solid rgba(255, 255, 255, 0.5)';
+        target.style.boxShadow = '0 80px 180px rgba(0,0,0,0.9)';
         
-        const shine = target.querySelector('.shine-sweep') as HTMLDivElement;
+        const shine = target.querySelector('.shine-sweep') as HTMLElement;
+        const title = target.querySelector('.card-title') as HTMLElement;
+        const counter = target.querySelector('.card-counter') as HTMLElement;
+
         if (shine) {
           shine.style.animation = 'none';
           void shine.offsetWidth;
           shine.style.animation = 'shine 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards';
         }
+
+        if (title) title.style.transform = 'translateZ(40px) translateY(-8px) scale(1.05)';
+        if (counter) counter.style.transform = 'translateZ(80px) translateY(-15px) scale(1.1)';
       }}
       onMouseLeave={(e) => {
         const target = e.currentTarget;
@@ -59,44 +66,62 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect }) => 
           ? '0 35px 100px rgba(0,0,0,0.6)' 
           : '0 25px 80px rgba(0,0,0,0.5)';
         
-        const shine = target.querySelector('.shine-sweep') as HTMLDivElement;
-        if (shine) {
-          shine.style.animation = 'none';
-        }
+        const shine = target.querySelector('.shine-sweep') as HTMLElement;
+        const title = target.querySelector('.card-title') as HTMLElement;
+        const counter = target.querySelector('.card-counter') as HTMLElement;
+
+        if (shine) shine.style.animation = 'none';
+        if (title) title.style.transform = 'translateZ(0) translateY(0) scale(1)';
+        if (counter) counter.style.transform = 'translateZ(0) translateY(0) scale(1)';
       }}
     >
-      <div 
-        className="shine-sweep"
-        style={{
-          position: 'absolute',
-          top: 0,
-          width: '100%',
-          height: '100%',
-          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), rgba(255,255,255,0.2), rgba(255,255,255,0.1), transparent)',
-          transform: 'skewX(-25deg)',
-          pointerEvents: 'none',
-          zIndex: 5,
-          opacity: 0
-        }}
-      />
+      {/* SHIMMER CONTAINER (Handles Clipping) */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        borderRadius: '16px',
+        overflow: 'hidden',
+        pointerEvents: 'none',
+        zIndex: 0
+      }}>
+        <div 
+          className="shine-sweep"
+          style={{
+            position: 'absolute',
+            top: 0,
+            width: '100%',
+            height: '100%',
+            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), rgba(255,255,255,0.2), rgba(255,255,255,0.1), transparent)',
+            transform: 'skewX(-25deg)',
+            pointerEvents: 'none',
+            opacity: 0
+          }}
+        />
+      </div>
 
-      <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <h3 style={{
-          fontSize: isHero ? '16px' : '12px',
-          fontWeight: 700,
-          marginBottom: '20px',
-          letterSpacing: '0.4em',
-          textTransform: 'uppercase',
-          color: '#FFFFFF',
-          opacity: 0.9,
-          fontFamily: "'Oswald', sans-serif"
-        }}>
+      <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column', transformStyle: 'preserve-3d' }}>
+        <h3 
+          className="card-title"
+          style={{
+            fontSize: isHero ? '16px' : '12px',
+            fontWeight: 700,
+            marginBottom: '20px',
+            letterSpacing: '0.4em',
+            textTransform: 'uppercase',
+            color: '#FFFFFF',
+            opacity: 0.9,
+            fontFamily: "'Oswald', sans-serif",
+            transition: 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
+            transform: 'translateZ(0)'
+          }}
+        >
           {card.title}
         </h3>
 
-        <div style={{ marginBottom: 'auto', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ marginBottom: 'auto', display: 'flex', flexDirection: 'column', transformStyle: 'preserve-3d' }}>
           <div
             id={`stat-count-${card.id}`}
+            className="card-counter"
             style={{
               fontSize: '68px',
               fontFamily: "'Oswald', sans-serif",
@@ -109,7 +134,9 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect }) => 
               backgroundSize: '200% auto',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              animation: 'text-shimmer 3s infinite linear'
+              animation: 'text-shimmer 3s infinite linear',
+              transition: 'transform 0.7s cubic-bezier(0.23, 1, 0.32, 1)',
+              transform: 'translateZ(0)'
             }}
           >
             0
@@ -120,7 +147,9 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect }) => 
               color: 'rgba(255, 255, 255, 0.5)',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              fontWeight: 700
+              fontWeight: 700,
+              transition: 'transform 0.5s ease',
+              transform: 'translateZ(20px)'
             }}>
               {card.label}
             </div>
@@ -133,7 +162,8 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect }) => 
           fontWeight: 300,
           lineHeight: 1.6,
           margin: 0,
-          paddingTop: '20px'
+          paddingTop: '20px',
+          transform: 'translateZ(10px)'
         }}>
           {card.desc}
         </p>
