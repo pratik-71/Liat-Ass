@@ -4,17 +4,17 @@ import gsap from 'gsap'
 export const INTRO_TIMING = {
   // Video overlay text timings (in seconds)
   counterCountUp: 0.8,
-  counterHold: 1.0,
-  counterFadeOut: 0.5,
+  counterHold: 0.8,
+  counterFadeOut: 0.6,
   
   phaseTwoDelay: 1.5,
   phaseTwoFadeIn: 0.5,
-  phaseTwoHold: 3.2,
+  phaseTwoHold: 3.8,     // Increased by 2s to prevent early appearance
   phaseTwoFadeOut: 0.5,
 
-  phaseThreeDelay: 0.3, 
+  phaseThreeDelay: 0.5,  // Slightly more breathing room
   phaseThreeFadeIn: 0.2,
-  phaseThreeHold: 1.8,
+  phaseThreeHold: 1.2,   // Reduced by 1s for faster exit
   phaseThreeFadeOut: 0.5,
 }
 
@@ -307,7 +307,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
         />
         <div ref={shadowRef} className="logo-shadow" />
         <p ref={subtitleRef} className="intro-subtitle">
-          <span>Experience the Unimagined In Worlds Larget Mall</span>
+          <span>Experience the Unimagined In Worlds Largest Mall</span>
         </p>
       </div>
 

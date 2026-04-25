@@ -43,8 +43,8 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect }) => 
       onMouseEnter={(e) => {
         const target = e.currentTarget;
         target.style.transform = 'translateY(-20px) scale(1.05)';
-        target.style.border = '1px solid rgba(255, 255, 255, 0.5)';
-        target.style.boxShadow = '0 80px 180px rgba(0,0,0,0.9)';
+        target.style.border = '1px solid rgba(200, 169, 106, 0.8)';
+        target.style.boxShadow = '0 80px 180px rgba(0,0,0,0.9), inset 0 0 20px rgba(200, 169, 106, 0.1)';
         
         const shine = target.querySelector('.shine-sweep') as HTMLElement;
         const title = target.querySelector('.card-title') as HTMLElement;
@@ -53,7 +53,9 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect }) => 
         if (shine) {
           shine.style.animation = 'none';
           void shine.offsetWidth;
-          shine.style.animation = 'shine 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+          // Spectral Shimmer (Rainbow Refraction)
+          shine.style.background = 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), rgba(200,169,106,0.2), rgba(100,150,255,0.1), transparent)';
+          shine.style.animation = 'shine 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards';
         }
 
         if (title) title.style.transform = 'translateZ(40px) translateY(-8px) scale(1.05)';

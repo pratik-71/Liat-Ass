@@ -1,63 +1,50 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
+import { DESIGN_SYSTEM, MODULE_REGISTRY } from './constants'
+import { useAssetPreloader } from './hooks/useAssetPreloader'
+import type { AppScreen } from './types'
+
+// Lazy loaded modules for performance
 const CinematicIntro = lazy(() => import('./components/splash/CinematicIntro'))
 const InvestorDashboard = lazy(() => import('./components/dashboard/InvestorDashboard'))
 const RetailLeasingModule = lazy(() => import('./components/retail/RetailLeasingModule'))
 import './App.css'
 
 /**
- * GLOBAL CONFIG HOOK
- * Set ENABLE_SPLASH to true to show the cinematic intro video on load.
+ * THE DUBAI MALL | INVESTOR EXPERIENCE
+ * Scalable architecture built for modular expansion.
  */
-const ENABLE_SPLASH = true;
-
-const ASSETS = {
-  splashLogo: "https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/dubai_mall_start.png",
-  homeBg: "https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/home.png",
-  homeIntro: "https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/home%20ann.png"
-};
-
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [showSplash, setShowSplash] = useState(ENABLE_SPLASH);
-  const [currentScreen, setCurrentScreen] = useState('choice');
+  const [currentScreen, setCurrentScreen] = useState<AppScreen>('intro')
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Asynchronous Asset Orchestration
+  const { isReady } = useAssetPreloader([
+    DESIGN_SYSTEM.assets.logoSplash,
+    DESIGN_SYSTEM.assets.videoIntro,
+    DESIGN_SYSTEM.assets.bgHome,
+    DESIGN_SYSTEM.assets.bgIntro
+  ]);
 
   useEffect(() => {
-    // 1. Preload Splash Logo FIRST (to start splash screen)
-    const splashImg = new Image();
-    splashImg.src = ASSETS.splashLogo;
-    
-    splashImg.onload = () => {
-      // Reduced artificial delay for better Speed Index
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 300);
-    };
-
-    // 2. Preload other high-res assets in background
-    const bgImg = new Image();
-    bgImg.src = ASSETS.homeBg;
-    
-    const introImg = new Image();
-    introImg.src = ASSETS.homeIntro;
-
-  }, []);
+    if (isReady) {
+      const timer = setTimeout(() => setIsLoading(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isReady]);
 
   if (isLoading) {
     return (
       <div style={{
-        height: '100vh',
-        width: '100vw',
-        backgroundColor: '#000',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '20px'
+        height: '100vh', width: '100vw',
+        backgroundColor: DESIGN_SYSTEM.colors.midnight,
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+        gap: '24px'
       }}>
         <div style={{
           fontSize: '20px',
-          color: '#C8A96A',
-          letterSpacing: '1.2em', // More elegant spacing
+          color: DESIGN_SYSTEM.colors.gold,
+          letterSpacing: '1.2em',
           textTransform: 'uppercase',
           fontFamily: "'Oswald', sans-serif",
           animation: 'pulse 2s infinite',
@@ -67,48 +54,51 @@ function App() {
         </div>
         <div style={{
           width: '240px',
-          height: '2px', // Thicker line
-          backgroundColor: 'rgba(200, 169, 106, 0.2)',
+          height: '2px',
+          backgroundColor: 'rgba(200, 169, 106, 0.1)',
           position: 'relative',
           overflow: 'hidden'
         }}>
           <div style={{
             position: 'absolute',
             inset: 0,
-            backgroundColor: '#C8A96A',
+            backgroundColor: DESIGN_SYSTEM.colors.gold,
             animation: 'loadLine 2s infinite ease-in-out'
           }} />
         </div>
         <style>{`
-          @keyframes loadLine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-          }
-          @keyframes pulse {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
-          }
+          @keyframes loadLine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+          @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
         `}</style>
       </div>
     );
   }
 
+  // Unified Navigation Logic
+  const navigateTo = (screen: AppScreen) => setCurrentScreen(screen);
+  const backToHome = () => setCurrentScreen('dashboard');
+
   return (
     <Suspense fallback={
-      <div style={{ height: '100vh', width: '100vw', backgroundColor: '#000' }} />
+      <div style={{ height: '100vh', width: '100vw', backgroundColor: DESIGN_SYSTEM.colors.midnight }} />
     }>
-      {showSplash ? (
-        <CinematicIntro onComplete={() => setShowSplash(false)} />
-      ) : (
-        <>
-          {currentScreen === 'choice' && (
-            <InvestorDashboard onSelect={(id) => id === 1 && setCurrentScreen('retail')} />
-          )}
-          {currentScreen === 'retail' && (
-            <RetailLeasingModule onBack={() => setCurrentScreen('choice')} />
-          )}
-        </>
+      {currentScreen === 'intro' && (
+        <CinematicIntro onComplete={() => navigateTo('dashboard')} />
       )}
+
+      {currentScreen === 'dashboard' && (
+        <InvestorDashboard onSelect={(id) => {
+          if (id === 1) navigateTo('retail');
+          // Easily extensible for other card IDs
+        }} />
+      )}
+
+      {currentScreen === 'retail' && (
+        <RetailLeasingModule onBack={backToHome} />
+      )}
+      
+      {/* FUTURE MODULES: Simply add the component here */}
+      {/* {currentScreen === 'attractions' && <AttractionsModule onBack={backToHome} />} */}
     </Suspense>
   )
 }

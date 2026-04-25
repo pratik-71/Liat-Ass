@@ -253,6 +253,48 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
 
       <div className="noise-texture" />
 
+      {/* LUXURY FLOATING NAV */}
+      <nav style={{
+        position: 'absolute',
+        top: '30px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 100,
+        display: 'flex',
+        gap: '40px',
+        opacity: 0,
+        animation: 'fadeIn 1s forwards 3.5s'
+      }}>
+        {['The Destination', 'Opportunities', 'Experience', 'Connect'].map((item) => (
+          <a key={item} href="#" style={{
+            color: 'rgba(255,255,255,0.5)',
+            textDecoration: 'none',
+            fontSize: '11px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.3em',
+            fontWeight: 600,
+            transition: 'color 0.3s ease'
+          }} onMouseEnter={(e) => e.currentTarget.style.color = '#C8A96A'}
+             onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}>
+            {item}
+          </a>
+        ))}
+      </nav>
+
+      {/* AMBIENT LENS FLARE */}
+      <div style={{
+        position: 'absolute',
+        top: '10%',
+        right: '15%',
+        width: '400px',
+        height: '400px',
+        background: 'radial-gradient(circle, rgba(200, 169, 106, 0.15) 0%, transparent 70%)',
+        filter: 'blur(60px)',
+        zIndex: 1,
+        pointerEvents: 'none',
+        animation: 'ambient-pulse 12s infinite alternate ease-in-out'
+      }} />
+
       {[...Array(8)].map((_, i) => (
         <div 
           key={i}
