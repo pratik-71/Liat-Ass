@@ -1,24 +1,34 @@
 import { useState } from 'react'
 import SplashScreen from './components/SplashScreen'
+import ChoiceScreen from './components/ChoiceScreen'
+import RetailLeasing from './components/RetailLeasing.tsx'
 import './App.css'
 
+/**
+ * GLOBAL CONFIG HOOK
+ * Set ENABLE_SPLASH to true to show the cinematic intro video on load.
+ * Set to false to jump directly to the Choice Screen.
+ */
+const ENABLE_SPLASH = true;
+
 function App() {
-  const [splashDone, setSplashDone] = useState(false)
+  const [showSplash, setShowSplash] = useState(ENABLE_SPLASH)
+  const [currentScreen, setCurrentScreen] = useState('choice')
 
   return (
     <>
-      {!splashDone && (
-        <SplashScreen onComplete={() => setSplashDone(true)} />
+      {showSplash ? (
+        <SplashScreen onComplete={() => setShowSplash(false)} />
+      ) : (
+        <>
+          {currentScreen === 'choice' && (
+            <ChoiceScreen onSelect={(id) => id === 1 && setCurrentScreen('retail')} />
+          )}
+          {currentScreen === 'retail' && (
+            <RetailLeasing onBack={() => setCurrentScreen('choice')} />
+          )}
+        </>
       )}
-
-      {/* Main app content — visible after splash */}
-      <header style={{ opacity: splashDone ? 1 : 0, transition: 'opacity 0.5s ease' }}>
-        <div className="left">
-          <h3>logo</h3>
-        </div>
-        <div className="right">
-        </div>
-      </header>
     </>
   )
 }

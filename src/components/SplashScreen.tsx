@@ -44,7 +44,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
             ease: 'power2.out',
             onUpdate: () => {
               if (statsRef.current) {
-                statsRef.current.innerText = `- ${Math.floor(counter.val).toLocaleString('en-IN')} visits a day -`
+                statsRef.current.innerText = `- ${Math.floor(counter.val).toLocaleString('en-IN')}+ visits a day -`
               }
             },
             onComplete: () => {
@@ -111,12 +111,56 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
     return () => { tl.kill() }
   }, [onComplete])
 
+  const isZooming = useRef(false)
+
+  const startZoom = () => {
+    if (isZooming.current) return
+    isZooming.current = true
+
+    const tl = gsap.timeline({
+      onComplete: onComplete
+    })
+
+    // Fade out all text overlays quickly
+    tl.to([statsRef.current, topTextRef.current, bottomTextRef.current, thirdTextRef.current], {
+      opacity: 0,
+      duration: 0.4,
+      ease: 'power2.in'
+    })
+    
+    // Zoom in the video (Netflix style punch-through) while it's still playing
+    tl.to(videoRef.current, {
+      scale: 4,
+      opacity: 0,
+      duration: 1.5,
+      ease: 'expo.inOut'
+    }, '-=0.2')
+
+    // Fade out the entire container to reveal the home section
+    tl.to(containerRef.current, {
+      opacity: 0,
+      duration: 1.0,
+      ease: 'power2.inOut'
+    }, '-=0.8')
+  }
+
+  const handleTimeUpdate = () => {
+    const video = videoRef.current
+    if (video && video.duration) {
+      // Trigger zoom 1.5 seconds before the video ends
+      if (video.duration - video.currentTime <= 1.5) {
+        startZoom()
+      }
+    }
+  }
+
   return (
     <div
       ref={containerRef}
       style={{
         position: 'fixed', inset: 0, zIndex: 9999,
         backgroundColor: '#000',
+        overflow: 'hidden'
       }}
     >
       {/* Video Element */}
@@ -126,9 +170,12 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         style={{
           width: '100%', height: '100%',
           objectFit: 'contain', position: 'absolute', inset: 0,
-          filter: 'saturate(1.25) contrast(1.15) brightness(1.05)' // Cinematic enhancement
+          filter: 'saturate(1.25) contrast(1.15) brightness(1.05)', // Cinematic enhancement
+          willChange: 'transform, opacity',
+          transformOrigin: 'center center'
         }}
-        onEnded={onComplete}
+        onTimeUpdate={handleTimeUpdate}
+        onEnded={startZoom} // Fallback to ensure animation plays
         muted
         playsInline
       />
@@ -190,7 +237,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           lineHeight: 1.4,
           padding: '0.1em 0',
         }}>
-          - WoWhere everything exists -
+          - Where everything exists -
         </span>
       </div>
 
@@ -266,7 +313,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         {/* Logo */}
         <img
           ref={logoRef}
-          src="/dubai_mall_start.png"
+          src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/dubai_mall_start.png"
           alt="Logo"
           style={{
             position: 'relative', zIndex: 2,
