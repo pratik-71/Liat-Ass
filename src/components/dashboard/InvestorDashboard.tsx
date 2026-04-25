@@ -52,15 +52,45 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
   const bgRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const hasAnimated = sessionStorage.getItem('dashboardAnimated')
+
+    if (hasAnimated) {
+      // ── RETURNING NAVIGATION: skip intro, show everything instantly ──
+      gsap.set(introImageRef.current, { opacity: 0, y: '0%' })
+      gsap.set(bgRef.current, { opacity: 1 })
+      gsap.set('.luxury-backdrop-overlay', { opacity: 1 })
+
+      gsap.fromTo(
+        ['.luxury-title', '.luxury-subtitle', '.luxury-stat-line', '.luxury-cards-container', '.luxury-card', '.luxury-footer'],
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.04, ease: 'power2.out',
+          onStart: () => {
+            // Immediately set stat labels to their final values
+            CARDS.forEach((card) => {
+              const el = document.getElementById(`stat-count-${card.id}`)
+              if (el) el.innerText = `${card.target}${card.suffix || ''}`
+            })
+          }
+        }
+      )
+
+      // Fix letterSpacing on title (GSAP fromTo below handles it)
+      gsap.set('.luxury-title', { letterSpacing: '0.2em' })
+      return
+    }
+
+    // ── FIRST LOAD: full cinematic intro ──
+    sessionStorage.setItem('dashboardAnimated', 'true')
+
     const mainTl = gsap.timeline({ delay: 0.2 })
 
     mainTl
-      // Phase 1: Building comes up (FASTER)
+      // Phase 1: Building comes up
       .fromTo(introImageRef.current, 
         { y: '100%', opacity: 1 },
         { y: '0%', duration: 0.8, ease: 'power3.out' }
       )
-      // Phase 2: Show home.png (Direct Fade In)
+      // Phase 2: Show home.png
       .fromTo(bgRef.current,
         { opacity: 0 },
         { opacity: 1, duration: 1, ease: 'power2.inOut' }
@@ -70,8 +100,7 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
         duration: 0.5, 
         ease: 'power2.inOut' 
       }, '+=0.1')
-      
-      // Phase 3: Show backdrop (darkness/vignette) and cards (FASTER)
+      // Phase 3: Backdrop + UI
       .fromTo('.luxury-backdrop-overlay',
         { opacity: 0 },
         { opacity: 1, duration: 0.8, ease: 'power2.inOut' },
@@ -111,7 +140,6 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
     // Sync numeric counting with card reveals
     CARDS.forEach((card, index) => {
       const obj = { val: 0 }
-      // Start counting after cards are visible (sync with faster timeline)
       const startOffset = 3.0 + (index * 0.1) 
       
       gsap.to(obj, {

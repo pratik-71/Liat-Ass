@@ -1,5 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
-import { DESIGN_SYSTEM, MODULE_REGISTRY } from './constants'
+import { DESIGN_SYSTEM} from './constants'
 import { useAssetPreloader } from './hooks/useAssetPreloader'
 import type { AppScreen } from './types'
 
@@ -14,7 +14,8 @@ import './App.css'
  * Scalable architecture built for modular expansion.
  */
 function App() {
-  const [currentScreen, setCurrentScreen] = useState<AppScreen>('intro')
+  // 🚧 DEV: set to 'intro' to re-enable splash screen
+  const [currentScreen, setCurrentScreen] = useState<AppScreen>('dashboard')
   const [isLoading, setIsLoading] = useState(true)
 
   // Asynchronous Asset Orchestration
@@ -26,6 +27,8 @@ function App() {
   ]);
 
   useEffect(() => {
+    // 🚧 DEV: skip dashboard intro animation too
+    sessionStorage.setItem('dashboardAnimated', 'true');
     if (isReady) {
       const timer = setTimeout(() => setIsLoading(false), 300);
       return () => clearTimeout(timer);
