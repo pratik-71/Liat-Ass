@@ -16,10 +16,10 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect }) => 
       onClick={() => onSelect(card.id)}
       style={{
         position: 'relative',
-        flex: isHero ? '1 1 340px' : '1 1 280px',
-        maxWidth: isHero ? '360px' : '300px',
-        height: isHero ? '48vh' : '46vh',
-        minHeight: isHero ? '380px' : '360px',
+        flex: window.innerWidth < 768 ? '1 1 100%' : (isHero ? '1 1 340px' : '1 1 280px'),
+        maxWidth: window.innerWidth < 768 ? '100%' : (isHero ? '360px' : '300px'),
+        height: window.innerWidth < 768 ? 'auto' : (isHero ? '55vh' : '53vh'),
+        minHeight: window.innerWidth < 768 ? '300px' : (isHero ? '420px' : '400px'),
         background: 'linear-gradient(160deg, #0f0f0f, #1a1a1a)',
         backdropFilter: 'blur(30px)',
         WebkitBackdropFilter: 'blur(30px)',
@@ -37,7 +37,8 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect }) => 
         transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
         transform: 'translateY(0) rotateX(0) rotateY(0)',
         transformStyle: 'preserve-3d',
-        zIndex: isHero ? 2 : 1
+        zIndex: isHero ? 2 : 1,
+        willChange: 'transform, opacity, box-shadow'
       }}
       onMouseEnter={(e) => {
         const target = e.currentTarget;

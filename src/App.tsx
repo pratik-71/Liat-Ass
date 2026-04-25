@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react'
-import CinematicIntro from './components/splash/CinematicIntro'
-import InvestorDashboard from './components/dashboard/InvestorDashboard'
-import RetailLeasingModule from './components/retail/RetailLeasingModule'
+import { useState, useEffect, lazy, Suspense } from 'react'
+const CinematicIntro = lazy(() => import('./components/splash/CinematicIntro'))
+const InvestorDashboard = lazy(() => import('./components/dashboard/InvestorDashboard'))
+const RetailLeasingModule = lazy(() => import('./components/retail/RetailLeasingModule'))
 import './App.css'
 
 /**
  * GLOBAL CONFIG HOOK
  * Set ENABLE_SPLASH to true to show the cinematic intro video on load.
  */
-const ENABLE_SPLASH = !true;
+const ENABLE_SPLASH = true;
 
 const ASSETS = {
   splashLogo: "https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/dubai_mall_start.png",
@@ -27,10 +27,10 @@ function App() {
     splashImg.src = ASSETS.splashLogo;
     
     splashImg.onload = () => {
-      // Small artificial delay for the beautiful loader
+      // Reduced artificial delay for better Speed Index
       setTimeout(() => {
         setIsLoading(false);
-      }, 1500);
+      }, 300);
     };
 
     // 2. Preload other high-res assets in background
@@ -94,7 +94,9 @@ function App() {
   }
 
   return (
-    <>
+    <Suspense fallback={
+      <div style={{ height: '100vh', width: '100vw', backgroundColor: '#000' }} />
+    }>
       {showSplash ? (
         <CinematicIntro onComplete={() => setShowSplash(false)} />
       ) : (
@@ -107,7 +109,7 @@ function App() {
           )}
         </>
       )}
-    </>
+    </Suspense>
   )
 }
 

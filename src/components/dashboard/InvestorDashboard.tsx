@@ -142,11 +142,11 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '2vh 2vw',
+        padding: window.innerWidth < 768 ? '40px 20px' : '0 2vw',
         boxSizing: 'border-box',
         fontFamily: "'Inter', sans-serif",
         perspective: '1200px',
-        overflow: 'hidden',
+        overflow: window.innerWidth < 768 ? 'auto' : 'hidden', // Lock desktop, scroll mobile
         position: 'relative',
         filter: 'saturate(1.2)'
       }}
@@ -279,7 +279,7 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
         animation: 'ambient-pulse 8s infinite alternate ease-in-out'
       }} />
 
-      <div style={{ textAlign: 'center', marginBottom: '8vh', marginTop: '4vh', zIndex: 10 }}>
+      <div style={{ textAlign: 'center', marginBottom: '3vh', marginTop: '1vh', zIndex: 10 }}>
         <h2 
           className="luxury-subtitle" 
           style={{
@@ -334,7 +334,7 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
 
       <div className="luxury-cards-container" style={{
         display: 'flex',
-        gap: '16px',
+        gap: window.innerWidth < 768 ? '10px' : '16px',
         width: '100%',
         maxWidth: '1380px',
         justifyContent: 'center',
@@ -356,11 +356,11 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
       <div 
         className="luxury-footer"
         style={{
-          marginTop: '4vh',
+          marginTop: '2vh',
           zIndex: 10,
           color: '#C8A96A', 
-          fontSize: '12px',
-          letterSpacing: '0.5em',
+          fontSize: '11px',
+          letterSpacing: '0.4em',
           textTransform: 'uppercase',
           textAlign: 'center',
           fontFamily: "'Inter', sans-serif",

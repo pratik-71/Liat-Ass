@@ -168,7 +168,8 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
         src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/start_video.mp4"
         style={{
           width: '100%', height: '100%',
-          objectFit: 'contain', position: 'absolute', inset: 0,
+          objectFit: window.innerWidth < 768 ? 'cover' : 'contain', 
+          position: 'absolute', inset: 0,
           filter: 'saturate(1.25) contrast(1.15) brightness(1.05)'
         }}
         muted
@@ -194,7 +195,8 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
           animation: 'text-shimmer 2s infinite linear',
           opacity: 0, zIndex: 10, pointerEvents: 'none',
           whiteSpace: 'nowrap',
-          width: 'max-content'
+          width: 'max-content',
+          willChange: 'transform, opacity'
         }}
       />
 
@@ -259,11 +261,13 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
         <h1
           ref={brandsHeadlineRef}
           style={{
-            fontSize: 'clamp(28px, 4.5vw, 64px)',
+            fontSize: 'clamp(24px, 6vw, 64px)', // Fluid scaling
             fontFamily: "'Oswald', sans-serif",
             fontWeight: 800,
             textAlign: 'center',
             margin: '0 0 16px 0',
+            padding: '0 20px',
+            lineHeight: 1.1,
             filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.8))',
             background: 'linear-gradient(110deg, #E5C27A 40%, #FFF5D6 50%, #C8A96A 60%)',
             backgroundSize: '200% auto',
@@ -275,11 +279,11 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
           A GLOBAL PLATFORM <br /> FOR BRANDS
         </h1>
         
-        <p ref={brandsSubtextRef} className="brand-subtext">
+        <p ref={brandsSubtextRef} className="brand-subtext" style={{ padding: '0 30px' }}>
           Host activations, launches, and large-scale events that connect with millions.
         </p>
 
-        <div ref={brandsTagRef} className="brand-tag">
+        <div ref={brandsTagRef} className="brand-tag" style={{ bottom: '5%' }}>
           GLOBAL EVENTS • BRAND ACTIVATIONS • LIVE EXPERIENCES
         </div>
       </div>
@@ -294,7 +298,13 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
           gap: '22px', overflow: 'hidden', pointerEvents: 'none',
         }}
       >
-        <img ref={logoRef} src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/dubai_mall_start.png" style={{ maxWidth: '780px', width: '85vw' }} />
+        <img 
+          ref={logoRef} 
+          src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/dubai_mall_start.png" 
+          style={{ maxWidth: '780px', width: '85vw' }} 
+          // @ts-ignore
+          fetchPriority="high"
+        />
         <div ref={shadowRef} className="logo-shadow" />
         <p ref={subtitleRef} className="intro-subtitle">
           <span>Experience the Unimagined In Worlds Larget Mall</span>
