@@ -3,6 +3,8 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.config({ force3D: true });
+gsap.defaults({ overwrite: 'auto' });
 
 interface RetailLeasingModuleProps {
   onBack: () => void;
@@ -28,7 +30,7 @@ const BRANDS = [
   { name: 'VERSACE',        label: 'VERSACE',         image: '/Retails/image%209.png' },
 ];
 
-const WhyChooseSection: React.FC = () => {
+const WhyChooseSection: React.FC = React.memo(() => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const blocksRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -288,9 +290,9 @@ const WhyChooseSection: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
-const DailySpendHighlight: React.FC = () => {
+const DailySpendHighlight: React.FC = React.memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -416,9 +418,9 @@ const DailySpendHighlight: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
-const StatStrip: React.FC = () => {
+const StatStrip: React.FC = React.memo(() => {
   const stripRef = useRef<HTMLDivElement>(null);
   const wordsRef = useRef<(HTMLSpanElement | null)[]>([]);
 
@@ -485,7 +487,7 @@ const StatStrip: React.FC = () => {
       ))}
     </div>
   );
-};
+});
 
 const RetailLeasingModule: React.FC<RetailLeasingModuleProps> = ({ onBack }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -697,6 +699,7 @@ const RetailLeasingModule: React.FC<RetailLeasingModuleProps> = ({ onBack }) => 
             backgroundPosition: 'center',
             opacity: 0.75,
             filter: 'blur(1px) brightness(0.6)',
+            willChange: 'transform'
           }} />
 
           {/* ── dark scrim — makes stats legible over the image ── */}
@@ -773,6 +776,7 @@ const RetailLeasingModule: React.FC<RetailLeasingModuleProps> = ({ onBack }) => 
         }
         .marquee-track {
           animation: marquee-scroll 28s linear infinite;
+          will-change: transform;
         }
         .marquee-track:hover {
           animation-play-state: paused;

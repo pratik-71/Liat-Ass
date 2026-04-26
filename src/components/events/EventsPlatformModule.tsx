@@ -1,8 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.config({ force3D: true });
+gsap.defaults({ overwrite: 'auto' });
 
 interface EventsPlatformModuleProps {
   onBack: () => void;
@@ -11,7 +13,7 @@ interface EventsPlatformModuleProps {
 /* ==========================================================================
    1. HERO SECTION
    ========================================================================== */
-const EventsHeroSection: React.FC = () => {
+const EventsHeroSection: React.FC = React.memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
@@ -19,6 +21,39 @@ const EventsHeroSection: React.FC = () => {
   const panelCenterRef = useRef<HTMLDivElement>(null);
   const panelRightRef = useRef<HTMLDivElement>(null);
   const giantTextRef = useRef<HTMLDivElement>(null);
+
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const [wordIndex, setWordIndex] = useState(0);
+  
+  const HERO_IMAGES = [
+    '/events/image 1.png',
+    '/events/image 2.png',
+    '/events/image 3.png',
+    '/events/image 4.png',
+    '/events/image 5.png'
+  ];
+
+  const words = ['Brands', 'Businesses', 'Events', 'Launches'];
+
+  useEffect(() => {
+    const imgTimer = setInterval(() => {
+      setCurrentImgIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 4000);
+
+    const wordTimer = setInterval(() => {
+      setWordIndex((prev) => (prev + 1) % words.length);
+    }, 2500);
+
+    // Preload next image to prevent flicker
+    const nextIndex = (currentImgIndex + 1) % HERO_IMAGES.length;
+    const img = new Image();
+    img.src = HERO_IMAGES[nextIndex];
+
+    return () => {
+      clearInterval(imgTimer);
+      clearInterval(wordTimer);
+    };
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -28,15 +63,15 @@ const EventsHeroSection: React.FC = () => {
         { 
           scale: 1.05, 
           opacity: 1, 
-          duration: 2, 
+          duration: 1.5, 
           ease: 'power2.out',
         }
       );
 
       // Continuous slow zoom
       gsap.to(bgRef.current, {
-        scale: 1.15,
-        duration: 30,
+        scale: 1.12,
+        duration: 20,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut'
@@ -84,17 +119,18 @@ const EventsHeroSection: React.FC = () => {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative w-full min-h-screen bg-black flex flex-col items-center justify-center pt-24 pb-32 overflow-hidden">
-      {/* Background */}
+    <section ref={containerRef} className="relative w-full min-h-screen bg-black flex flex-col items-center justify-center pt-24 pb-32 overflow-hidden transform-gpu">
+      {/* Background with Carousel Transition */}
       <div 
         ref={bgRef}
-        className="absolute inset-0 z-0 bg-cover bg-center origin-center"
+        className="absolute inset-0 z-0 bg-cover bg-center origin-center transition-all duration-[2000ms] ease-in-out will-change-transform"
         style={{ 
-          backgroundImage: "url('https://images.unsplash.com/photo-1540039155733-d7696c66436e?q=80&w=3000&auto=format&fit=crop')",
-          filter: 'blur(15px)', transform: 'scale(1.1)' 
+          backgroundImage: `url('${HERO_IMAGES[currentImgIndex]}')`,
+          filter: 'blur(10px) brightness(0.6)', 
+          transform: 'scale(1.05)' 
         }} 
       >
-        <div className="absolute inset-0 bg-black/85"></div>
+        <div className="absolute inset-0 bg-black/40"></div>
       </div>
 
       <div className="relative z-10 w-full max-w-[1400px] mx-auto px-8 flex flex-col items-center justify-center text-center">
@@ -105,11 +141,18 @@ const EventsHeroSection: React.FC = () => {
 
         {/* Headline */}
         <div ref={headingRef} className="mb-20 mt-2 relative z-20">
-          <h2 className="text-5xl md:text-7xl lg:text-[5.5rem] font-bold text-white mb-6 tracking-tight uppercase leading-[1.1] text-shadow-xl">
-            A Global Platform <br className="hidden md:block" /> 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E5C27A] to-[#C8A96A]">For Brands</span>
+          <h2 className="text-5xl md:text-7xl lg:text-[5.5rem] font-bold text-white mb-6 tracking-tight uppercase leading-[1.1] drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex flex-col items-center">
+            <span className="block mb-2">A Global Platform</span>
+            <div className="relative h-[1.2em] overflow-hidden w-full max-w-[1000px]">
+              <span 
+                key={wordIndex}
+                className="absolute inset-0 flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-r from-[#E5C27A] to-[#C8A96A] filter drop-shadow-[0_0_20px_rgba(200,169,106,0.3)] animate-slide-down-custom"
+              >
+                FOR {words[wordIndex]}
+              </span>
+            </div>
           </h2>
-          <p className="text-xl md:text-2xl text-neutral-300 max-w-3xl mx-auto font-light tracking-wide drop-shadow-md">
+          <p className="text-xl md:text-2xl text-neutral-300 max-w-3xl mx-auto font-light tracking-wide drop-shadow-2xl">
             Host world-class events, launches, and activations at unmatched scale.
           </p>
         </div>
@@ -121,10 +164,10 @@ const EventsHeroSection: React.FC = () => {
             { ref: panelCenterRef, title: 'BRAND ACTIVATIONS', desc: 'Interactive Installations • Immersive Campaigns' },
             { ref: panelRightRef, title: 'GLOBAL LAUNCHES', desc: 'Product Unveilings • Massive Global Visibility' }
           ].map((panel, idx) => (
-            <div key={idx} ref={panel.ref} className="group relative p-12 rounded-3xl bg-black/40 backdrop-blur-[15px] border border-[#C8A96A]/20 shadow-[0_0_40px_rgba(200,169,106,0.05)] hover:border-[#C8A96A]/60 hover:shadow-[0_0_50px_rgba(200,169,106,0.15)] transition-all duration-500 ease-out hover:bg-black/50 flex flex-col justify-center min-h-[260px] flex-1 max-w-[420px]">
+            <div key={idx} ref={panel.ref} className="group relative p-12 rounded-3xl bg-black/60 backdrop-blur-[20px] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:border-[#C8A96A]/60 hover:shadow-[0_0_60px_rgba(200,169,106,0.2)] transition-all duration-500 ease-out hover:bg-black/80 flex flex-col justify-center min-h-[260px] flex-1 max-w-[420px] hover:-translate-y-2">
               <div className="absolute inset-0 bg-gradient-to-br from-[#C8A96A]/0 via-[#C8A96A]/0 to-[#C8A96A]/0 group-hover:from-[#C8A96A]/10 group-hover:to-transparent transition-all duration-500 rounded-3xl"></div>
-              <h3 className="relative z-10 text-2xl font-bold text-white mb-5 tracking-widest">{panel.title}</h3>
-              <p className="relative z-10 text-[#C8A96A] text-base font-medium tracking-wider uppercase leading-relaxed opacity-90 group-hover:opacity-100 transition-opacity">
+              <h3 className="relative z-10 text-2xl font-bold text-[#E5C27A] mb-5 tracking-widest drop-shadow-md transition-colors">{panel.title}</h3>
+              <p className="relative z-10 text-neutral-300 group-hover:text-[#C8A96A] text-base font-medium tracking-wider uppercase leading-relaxed opacity-90 group-hover:opacity-100 transition-all">
                 {panel.desc}
               </p>
             </div>
@@ -133,13 +176,13 @@ const EventsHeroSection: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
 
 /* ==========================================================================
    2. EVENT CAPABILITIES (Split Layout)
    ========================================================================== */
-const CapabilitiesSection: React.FC = () => {
+const CapabilitiesSection: React.FC = React.memo(() => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const visualRef = useRef<HTMLDivElement>(null);
@@ -184,10 +227,10 @@ const CapabilitiesSection: React.FC = () => {
         {/* Left: Text 40% */}
         <div ref={textRef} className="flex-1 lg:max-w-[40%] flex flex-col gap-8">
           <div>
-            <h2 className="text-4xl lg:text-[3.5rem] font-bold text-[#E5C27A] mb-6 leading-[1.1] uppercase tracking-wide font-['Oswald']">
+            <h2 className="text-4xl lg:text-[3.5rem] font-bold text-[#E5C27A] mb-6 leading-[1.1] uppercase tracking-wide font-['Oswald'] drop-shadow-[0_5px_15px_rgba(0,0,0,0.4)]">
               World-Class Event Infrastructure
             </h2>
-            <p className="text-xl text-neutral-400 font-light leading-relaxed">
+            <p className="text-xl text-neutral-300 font-light leading-relaxed drop-shadow-md">
               From large-scale productions to high-impact brand moments, the platform is built to host events at global standards.
             </p>
           </div>
@@ -208,27 +251,28 @@ const CapabilitiesSection: React.FC = () => {
 
         {/* Right: Visual 60% */}
         <div ref={visualRef} className="flex-[1.5] w-full relative aspect-[16/9] lg:aspect-auto lg:h-[600px] rounded-2xl overflow-hidden border border-[#C8A96A]/20 shadow-2xl">
-          <div className="absolute inset-0 bg-black/40 z-10 mix-blend-multiply"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent z-20 opacity-80"></div>
-          <div 
-            ref={bgImageRef}
-            className="absolute inset-0 bg-cover bg-center origin-center"
-            style={{ 
-              backgroundImage: "url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=3000&auto=format&fit=crop')", // crowd/event image
-              filter: 'blur(3px) brightness(0.8)'
-            }} 
-          ></div>
+          <div className="absolute inset-0 bg-black/30 z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent z-20 opacity-60"></div>
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover origin-center brightness-90 contrast-110"
+          >
+            <source src="/events/event_video.mp4" type="video/mp4" />
+          </video>
         </div>
       </div>
     </section>
   );
-};
+});
 
 
 /* ==========================================================================
    3. REAL ACTIVATION EXPERIENCE
    ========================================================================== */
-const ActivationSection: React.FC = () => {
+const ActivationSection: React.FC = React.memo(() => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const blocksRef = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -276,7 +320,7 @@ const ActivationSection: React.FC = () => {
             <div 
               key={i}
               ref={el => { blocksRef.current[i] = el; }}
-              className="group relative w-full p-8 md:p-12 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-[#C8A96A]/40 transition-all duration-500 hover:bg-white/[0.04] flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-12 hover:-translate-y-1 shadow-lg overflow-hidden"
+              className="group relative w-full p-8 md:p-12 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/5 hover:border-[#C8A96A]/60 transition-all duration-500 hover:bg-black/80 flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-12 hover:-translate-y-2 shadow-2xl overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-[#C8A96A]/0 via-[#C8A96A]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               
@@ -296,13 +340,13 @@ const ActivationSection: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
 
 /* ==========================================================================
    4. SCALE & REACH (Numbers Count Up)
    ========================================================================== */
-const ScaleSection: React.FC = () => {
+const ScaleSection: React.FC = React.memo(() => {
   const sectionRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
@@ -373,15 +417,42 @@ const ScaleSection: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
 
 /* ==========================================================================
-   5. CTA SECTION
+   5. CINEMATIC SHOWCASE (VIDEO)
    ========================================================================== */
-const CTASection: React.FC = () => {
+const CinematicVideoSection: React.FC = React.memo(() => {
   return (
-    <section className="w-full bg-[#0A0A0A] py-32 px-8 flex flex-col items-center justify-center text-center relative border-t border-[#C8A96A]/20">
+    <section className="w-full h-[60vh] md:h-[80vh] relative overflow-hidden flex items-center justify-center bg-black border-y border-[#C8A96A]/20">
+      <video 
+        autoPlay 
+        loop 
+        muted 
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover brightness-50 contrast-125 will-change-transform"
+      >
+        <source src="/events/event_video.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#0A0A0A]"></div>
+      
+      <div className="relative z-10 text-center px-8">
+        <h2 className="text-4xl md:text-7xl font-black text-white uppercase tracking-tighter opacity-20 pointer-events-none select-none mb-4">
+          Experience Excellence
+        </h2>
+        <div className="w-20 h-[1px] bg-[#C8A96A] mx-auto opacity-40"></div>
+      </div>
+    </section>
+  );
+});
+
+/* ==========================================================================
+   6. CTA SECTION
+   ========================================================================== */
+const CTASection: React.FC = React.memo(() => {
+  return (
+    <section className="w-full bg-[#0A0A0A] py-32 px-8 flex flex-col items-center justify-center text-center relative">
       <h2 className="text-3xl md:text-5xl font-bold text-white mb-10 tracking-wide font-['Oswald'] uppercase">
         Host Your Next Global Event Here
       </h2>
@@ -393,7 +464,7 @@ const CTASection: React.FC = () => {
       </button>
     </section>
   );
-};
+});
 
 
 /* ==========================================================================
@@ -401,7 +472,7 @@ const CTASection: React.FC = () => {
    ========================================================================== */
 const EventsPlatformModule: React.FC<EventsPlatformModuleProps> = ({ onBack }) => {
   return (
-    <div className="w-full min-h-screen bg-[#0A0A0A] text-white font-['Inter'] overflow-x-hidden">
+    <div className="w-full min-h-screen bg-[#0A0A0A] text-white font-['Inter'] overflow-x-hidden selection:bg-[#C8A96A] selection:text-black">
       {/* GLOBAL NAV BAR */}
       <nav style={{
         position: 'fixed',
@@ -409,10 +480,8 @@ const EventsPlatformModule: React.FC<EventsPlatformModuleProps> = ({ onBack }) =
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '18px 48px',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
-        backgroundColor: 'rgba(10,10,10,0.8)',
-        backdropFilter: 'blur(10px)',
+        padding: '24px 48px',
+        background: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 100%)',
         zIndex: 100,
       }}>
         <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', color: '#E5C27A' }}>
@@ -442,7 +511,23 @@ const EventsPlatformModule: React.FC<EventsPlatformModuleProps> = ({ onBack }) =
       <CapabilitiesSection />
       <ActivationSection />
       <ScaleSection />
+      <CinematicVideoSection />
       <CTASection />
+      <style>{`
+        @keyframes slow-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes slide-down-custom {
+          0% { transform: translateY(-100%); opacity: 0; filter: blur(15px); }
+          12% { transform: translateY(0); opacity: 1; filter: blur(0); }
+          88% { transform: translateY(0); opacity: 1; filter: blur(0); }
+          100% { transform: translateY(100%); opacity: 0; filter: blur(15px); }
+        }
+        .animate-slide-down-custom {
+          animation: slide-down-custom 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+        }
+      `}</style>
     </div>
   );
 };
