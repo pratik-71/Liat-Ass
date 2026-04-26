@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import ModuleNavigation from '../common/ModuleNavigation';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -473,38 +474,7 @@ const CTASection: React.FC = React.memo(() => {
 const EventsPlatformModule: React.FC<EventsPlatformModuleProps> = ({ onBack }) => {
   return (
     <div className="w-full min-h-screen bg-[#0A0A0A] text-white font-['Inter'] overflow-x-hidden selection:bg-[#C8A96A] selection:text-black">
-      {/* GLOBAL NAV BAR */}
-      <nav style={{
-        position: 'fixed',
-        top: 0, left: 0, right: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '24px 48px',
-        background: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 100%)',
-        zIndex: 100,
-      }}>
-        <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', color: '#E5C27A' }}>
-          The Dubai Mall &nbsp;·&nbsp; Events &amp; Platform
-        </span>
-        <button
-          onClick={onBack}
-          style={{
-            background: 'rgba(255,255,255,0.05)', border: `1px solid rgba(255,255,255,0.1)`, color: '#fff',
-            padding: '8px 20px', borderRadius: '50px', cursor: 'pointer', textTransform: 'uppercase',
-            letterSpacing: '0.18em', fontSize: '11px', fontFamily: "'Oswald', sans-serif", fontWeight: 500,
-            transition: 'all 0.25s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.border = '1px solid #E5C27A'; e.currentTarget.style.color = '#E5C27A';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.border = '1px solid rgba(255,255,255,0.1)'; e.currentTarget.style.color = '#fff';
-          }}
-        >
-          ← Dashboard
-        </button>
-      </nav>
+      <ModuleNavigation moduleName="Events & Platform" onBack={onBack} />
 
       {/* SECTIONS */}
       <EventsHeroSection />

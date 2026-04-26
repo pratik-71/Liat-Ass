@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import ModuleNavigation from '../common/ModuleNavigation';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -346,29 +347,7 @@ const HighValueAudience: React.FC = React.memo(() => {
 const LuxuryDiningModule: React.FC<LuxuryDiningModuleProps> = ({ onBack }) => {
   return (
     <div className="w-full min-h-screen bg-[#050505] text-white font-['Inter'] overflow-x-hidden selection:bg-[#C8A96A] selection:text-black">
-      {/* GLOBAL NAV BAR */}
-      <nav style={{
-        position: 'fixed',
-        top: 0, left: 0, right: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '24px 48px',
-        background: 'linear-gradient(to bottom, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0) 100%)',
-        zIndex: 100,
-        backdropFilter: 'blur(15px)'
-      }}>
-        <span className="text-[10px] font-bold tracking-[0.6em] uppercase text-[#C8A96A]">
-          The Dubai Mall &nbsp;·&nbsp; Luxury &amp; Dining
-        </span>
-        <button
-          onClick={onBack}
-          className="group relative px-8 py-3 overflow-hidden text-[10px] font-bold tracking-[0.4em] uppercase border border-white/10 hover:border-[#C8A96A] transition-all duration-500"
-        >
-          <span className="relative z-10 transition-colors duration-500 group-hover:text-black">← Return</span>
-          <div className="absolute inset-0 bg-[#C8A96A] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
-        </button>
-      </nav>
+      <ModuleNavigation moduleName="Luxury & Dining" onBack={onBack} />
 
       <LuxuryHero />
       <CuratedExperiences />

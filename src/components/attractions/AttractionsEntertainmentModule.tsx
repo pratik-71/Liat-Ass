@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import ModuleNavigation from '../common/ModuleNavigation';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -278,28 +279,7 @@ const InvestorStatsSection: React.FC = React.memo(() => {
 const AttractionsEntertainmentModule: React.FC<AttractionsModuleProps> = ({ onBack }) => {
   return (
     <div className="w-full min-h-screen bg-[#070707] text-white font-['Inter'] overflow-x-hidden selection:bg-[#C8A96A] selection:text-black transform-gpu">
-      {/* GLOBAL NAV BAR */}
-      <nav style={{
-        position: 'fixed',
-        top: 0, left: 0, right: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '24px 48px',
-        background: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 100%)',
-        zIndex: 100,
-      }}>
-        <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', color: '#E5C27A' }}>
-          The Dubai Mall &nbsp;·&nbsp; Attractions &amp; Entertainment
-        </span>
-        <button
-          onClick={onBack}
-          className="group relative px-6 py-2 rounded-full bg-transparent border border-[#C8A96A]/30 text-white font-medium tracking-widest uppercase text-[10px] overflow-hidden transition-all duration-300 hover:border-[#C8A96A]"
-        >
-          <div className="absolute inset-0 bg-[#C8A96A] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
-          <span className="relative z-10 group-hover:text-black">← Dashboard</span>
-        </button>
-      </nav>
+      <ModuleNavigation moduleName="Attractions" onBack={onBack} />
 
       <MoreThanRetailSection />
       <GridHeroSection />
