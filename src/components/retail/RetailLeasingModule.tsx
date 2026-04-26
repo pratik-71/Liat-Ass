@@ -190,7 +190,7 @@ const RetailPathSection: React.FC = React.memo(() => {
             <div 
               key={i}
               onClick={() => setActivePath(activePath === i ? null : i)}
-              className={`path-card group relative p-10 border transition-all duration-500 cursor-pointer overflow-hidden transform-gpu
+              className={`path-card group relative p-10 border transition-all duration-500 cursor-pointer overflow-hidden transform-gpu flex flex-col h-full
                 ${activePath === i ? 'bg-[#C8A96A] border-[#C8A96A] translate-y-[-8px] scale-[1.02] shadow-[0_20px_50px_rgba(200,169,106,0.3)]' : 'bg-black/40 border-white/10 hover:border-[#C8A96A]/60 hover:translate-y-[-8px] hover:scale-[1.02] hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]'}
               `}
             >
@@ -203,8 +203,10 @@ const RetailPathSection: React.FC = React.memo(() => {
               <p className={`text-sm font-light leading-relaxed mb-10 transition-colors duration-500 ${activePath === i ? 'text-black/80' : 'text-neutral-400 group-hover:text-neutral-200'}`}>
                 {path.text}
               </p>
-              <div className={`text-[9px] font-bold tracking-widest uppercase py-2 px-4 border rounded-full inline-block transition-colors duration-500 ${activePath === i ? 'border-black/20 text-black/60 bg-black/5' : 'border-white/10 text-[#C8A96A]'}`}>
-                {path.tag}
+              <div className="mt-auto">
+                <div className={`text-[9px] font-bold tracking-widest uppercase py-2 px-4 border rounded-full inline-block transition-colors duration-500 ${activePath === i ? 'border-black/20 text-black/60 bg-black/5' : 'border-white/10 text-[#C8A96A]'}`}>
+                  {path.tag}
+                </div>
               </div>
             </div>
           ))}
@@ -580,13 +582,13 @@ const RetailCTASection: React.FC = React.memo(() => {
         
         <div className="flex flex-col md:flex-row gap-6">
           <button className="group relative px-10 py-5 bg-[#C8A96A] text-black font-bold uppercase tracking-widest text-xs transition-all duration-300 hover:bg-[#E5C27A] hover:scale-105">
-            Book Consultation
+            Start Your Leasing Journey
           </button>
           <button className="group relative px-10 py-5 bg-transparent border border-white/20 text-white font-bold uppercase tracking-widest text-xs transition-all duration-300 hover:border-[#C8A96A] hover:text-[#C8A96A] hover:scale-105">
-            Request Leasing Deck
+            Download Investment Deck
           </button>
           <button className="group relative px-10 py-5 bg-transparent border border-white/20 text-white font-bold uppercase tracking-widest text-xs transition-all duration-300 hover:border-[#C8A96A] hover:text-[#C8A96A] hover:scale-105">
-            Explore Opportunities
+            Schedule Strategy Call
           </button>
         </div>
       </div>
@@ -605,13 +607,12 @@ const RetailLeasingModule: React.FC<RetailLeasingModuleProps> = ({ onBack }) => 
       <ModuleNavigation moduleName="Retail & Leasing" onBack={onBack} />
 
       <RetailHero />
-      <RetailPathSection />
-      {/* Brand Marquee is part of the premium feel */}
       <BrandMarquee />
       <StrategicInsights />
-      <RevenueFlowSection />
       <MarketDominance />
       <LocationExplorerSection />
+      <RetailPathSection />
+      <RevenueFlowSection />
       <RetailCTASection />
       
       <style>{`
