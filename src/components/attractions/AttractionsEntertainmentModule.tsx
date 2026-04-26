@@ -301,8 +301,8 @@ const AttractionsEntertainmentModule: React.FC<AttractionsModuleProps> = ({ onBa
         </button>
       </nav>
 
-      <GridHeroSection />
       <MoreThanRetailSection />
+      <GridHeroSection />
       <InvestorStatsSection />
       
       {/* Footer Tagline */}
