@@ -144,7 +144,7 @@ const CuratedExperiences: React.FC = React.memo(() => {
   ];
 
   return (
-    <section className="w-full bg-[#050505] py-40 px-8 md:px-16 lg:px-24 relative overflow-hidden">
+    <section className="w-full bg-[#050505] py-20 px-8 md:px-16 lg:px-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col items-center text-center mb-32">
         <h2 className="text-[10px] tracking-[0.8em] text-[#C8A96A] uppercase font-bold mb-8">Specialized Districts</h2>
         <h3 className="text-5xl md:text-8xl font-['Oswald'] text-white uppercase tracking-tighter leading-none mb-12">
@@ -170,7 +170,7 @@ const CuratedExperiences: React.FC = React.memo(() => {
             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-700"></div>
 
             {/* Glass Card Content */}
-            <div className="absolute bottom-10 left-10 right-10 p-10 border border-white/5 backdrop-blur-md bg-white/[0.02] transform transition-all duration-700 group-hover:border-[#C8A96A]/40 group-hover:bg-black/80">
+            <div className="absolute bottom-10 left-10 right-10 p-10 border border-white/5 backdrop-blur-md bg-white/[0.02] transform transition-all duration-500 group-hover:border-[#C8A96A]/40 group-hover:bg-black/80">
               <div className="flex items-center gap-4 mb-6">
                 <span className="text-[10px] text-[#C8A96A] font-bold tracking-[0.5em] uppercase">0{i + 1}</span>
                 <div className="w-12 h-[1px] bg-[#C8A96A]/40"></div>
@@ -250,10 +250,14 @@ const StrategicAdvantage: React.FC = React.memo(() => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo('.advantage-card',
-        { opacity: 0, y: 30 },
+        { opacity: 0, y: 20 },
         { 
-          opacity: 1, y: 0, duration: 1.2, stagger: 0.2, ease: 'expo.out',
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' }
+          opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out',
+          scrollTrigger: { 
+            trigger: sectionRef.current, 
+            start: 'top 90%',
+            once: true
+          }
         }
       );
     }, sectionRef);
@@ -261,20 +265,20 @@ const StrategicAdvantage: React.FC = React.memo(() => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#050505] py-40 px-8 md:px-16 lg:px-24 border-b border-white/5 overflow-hidden">
+    <section ref={sectionRef} className="w-full bg-[#050505] py-20 px-8 md:px-16 lg:px-24 border-b border-white/5 overflow-hidden">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         {reasons.map((item, i) => (
-          <div key={i} className="advantage-card group relative p-12 bg-black border border-white/5 transition-all duration-1000 hover:border-[#C8A96A]/40 overflow-hidden transform-gpu">
-             <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#C8A96A]/5 rounded-full blur-3xl transition-all duration-1000 group-hover:scale-[4] opacity-0 group-hover:opacity-100"></div>
+          <div key={i} className="advantage-card group relative p-12 bg-black border border-white/5 transition-all duration-500 hover:border-[#C8A96A]/40 overflow-hidden transform-gpu">
+             <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#C8A96A]/5 rounded-full blur-3xl transition-all duration-500 group-hover:scale-[4] opacity-0 group-hover:opacity-100"></div>
              
              <div className="relative z-10 mb-10 transition-transform duration-700 group-hover:-translate-y-3 group-hover:scale-110">
                {item.icon}
              </div>
              
-             <h4 className="relative z-10 text-2xl font-['Oswald'] text-white uppercase tracking-widest mb-6 group-hover:text-[#E5C27A] transition-colors duration-500">
+             <h4 className="relative z-10 text-2xl font-['Oswald'] text-white uppercase tracking-widest mb-6 group-hover:text-[#E5C27A] transition-colors duration-300">
                {item.title}
              </h4>
-             <p className="relative z-10 text-neutral-500 text-sm font-light leading-relaxed group-hover:text-neutral-300 transition-colors duration-500">
+             <p className="relative z-10 text-neutral-500 text-sm font-light leading-relaxed group-hover:text-neutral-300 transition-colors duration-300">
                {item.desc}
              </p>
           </div>
