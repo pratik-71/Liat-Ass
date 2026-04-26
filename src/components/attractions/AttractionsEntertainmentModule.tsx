@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ModuleNavigation from '../common/ModuleNavigation';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -11,7 +11,6 @@ interface AttractionsModuleProps {
   onBack: () => void;
 }
 
-const GOLD = '#C8A96A';
 const GOLD_LIGHT = '#E5C27A';
 
 /* ==========================================================================
@@ -26,37 +25,37 @@ const GridHeroSection: React.FC = React.memo(() => {
     { 
       title: 'DUBAI AQUARIUM', 
       desc: 'One of the world’s largest suspended aquariums', 
-      video: '/attractions/aquarium.mp4', 
+      video: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/attractions/aquarium.mp4', 
       stats: { visitors: '1.5M+', rev: '$45M+', roi: '18% IRR' } 
     },
     { 
       title: 'CHINATOWN', 
       desc: 'A fully immersive cultural retail and dining district', 
-      video: '/attractions/china_town.mp4', 
+      video: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/attractions/china_town.mp4', 
       stats: { visitors: '3M+', rev: '$120M+', roi: '22% IRR' } 
     },
     { 
       title: 'VIRTUAL ARCADE', 
       desc: 'Next-generation immersive entertainment', 
-      video: '/attractions/arcade.mp4', 
+      video: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/attractions/arcade.mp4', 
       stats: { visitors: '800K+', rev: '$25M+', roi: '25% IRR' } 
     },
     { 
       title: 'KIDS PARK', 
       desc: 'A unique leisure and sports experience', 
-      video: '/attractions/kids park.mp4', 
+      video: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/attractions/kids park.mp4', 
       stats: { visitors: '1.2M+', rev: '$35M+', roi: '20% IRR' } 
     },
     { 
       title: 'SWEET WORLD', 
       desc: 'The ultimate candy and dessert experience', 
-      video: '/attractions/candy.mp4', 
+      video: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/attractions/candy.mp4', 
       stats: { visitors: '900K+', rev: '$20M+', roi: '21% IRR' } 
     },
     { 
       title: 'REEL CINEMAS', 
       desc: 'Luxury viewing and entertainment experiences', 
-      video: '/attractions/cinemas.mp4', 
+      video: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/attractions/cinemas.mp4', 
       stats: { visitors: '2M+', rev: '$60M+', roi: '16% IRR' } 
     },
   ];
@@ -178,7 +177,7 @@ const MoreThanRetailSection: React.FC = React.memo(() => {
         playsInline
         className="absolute inset-0 w-full h-full object-cover opacity-50 will-change-transform scale-105"
       >
-        <source src="/attractions/enjoyment.mp4" type="video/mp4" />
+        <source src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/attractions/enjoyment.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 bg-gradient-to-b from-[#070707] via-transparent to-[#070707]"></div>
       <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>

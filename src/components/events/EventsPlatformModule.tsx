@@ -27,11 +27,11 @@ const EventsHeroSection: React.FC = React.memo(() => {
   const [wordIndex, setWordIndex] = useState(0);
   
   const HERO_IMAGES = [
-    '/events/image 1.png',
-    '/events/image 2.png',
-    '/events/image 3.png',
-    '/events/image 4.png',
-    '/events/image 5.png'
+    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image 1.png',
+    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image 2.png',
+    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image 3.png',
+    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image 4.png',
+    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image 5.png'
   ];
 
   const words = ['Brands', 'Businesses', 'Events', 'Launches'];
@@ -259,9 +259,9 @@ const CapabilitiesSection: React.FC = React.memo(() => {
             loop 
             muted 
             playsInline
-            className="absolute inset-0 w-full h-full object-cover origin-center brightness-90 contrast-110"
+            className="absolute inset-0 w-full h-full object-cover origin-center brightness-90 contrast-110 saturate-[1.4]"
           >
-            <source src="/events/event_video.mp4" type="video/mp4" />
+        <source src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/event_video.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -432,9 +432,9 @@ const CinematicVideoSection: React.FC = React.memo(() => {
         loop 
         muted 
         playsInline
-        className="absolute inset-0 w-full h-full object-cover brightness-50 contrast-125 will-change-transform"
+        className="absolute inset-0 w-full h-full object-cover brightness-50 contrast-125 saturate-[1.4] will-change-transform"
       >
-        <source src="/events/event_video.mp4" type="video/mp4" />
+        <source src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/event_video.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#0A0A0A]"></div>
       

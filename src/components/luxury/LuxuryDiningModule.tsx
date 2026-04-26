@@ -11,7 +11,6 @@ interface LuxuryDiningModuleProps {
   onBack: () => void;
 }
 
-const GOLD = '#C8A96A';
 const GOLD_LIGHT = '#E5C27A';
 
 /* ==========================================================================
@@ -56,7 +55,7 @@ const LuxuryHero: React.FC = React.memo(() => {
             key={idx}
             className="absolute inset-0 bg-cover bg-center will-change-transform transition-all duration-[3s] ease-in-out"
             style={{ 
-              backgroundImage: `url('/luxuary/image ${num}.jpg')`,
+              backgroundImage: `url('https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/luxuary/image ${num}.jpg')`,
               opacity: currentImageIdx === idx ? 0.4 : 0,
               filter: `grayscale(20%) brightness(0.7) blur(${currentImageIdx === idx ? '0px' : '20px'})`,
               transform: `scale(${currentImageIdx === idx ? 1.05 : 1.2}) rotate(${currentImageIdx === idx ? '0deg' : '1deg'})`
@@ -127,7 +126,7 @@ const CuratedExperiences: React.FC = React.memo(() => {
     { 
       title: 'LUXURY BOUTIQUES', 
       desc: 'Position your brand alongside Chanel, Dior, and Hermès in high-conversion, architectural masterpieces.', 
-      image: '/luxuary/image 4.jpg',
+      image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/luxuary/image 4.jpg',
       stats: '85% CONVERSION RATE' 
     },
     { 

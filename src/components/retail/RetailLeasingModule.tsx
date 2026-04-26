@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import ModuleNavigation from '../common/ModuleNavigation'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -13,15 +13,15 @@ interface RetailLeasingModuleProps {
 
 
 const BRANDS = [
-  { name: 'LOUIS VUITTON',  label: 'LOUIS VUITTON',  image: '/Retails/image%201.png' },
-  { name: 'GUCCI',          label: 'GUCCI',           image: '/Retails/image%202.png' },
-  { name: 'FASHION AVENUE', label: 'FASHION AVENUE',  image: '/Retails/image%203.png' },
-  { name: 'CHANEL',         label: 'CHANEL',          image: '/Retails/image%204.png' },
-  { name: 'HERMÈS',         label: 'HERMÈS',          image: '/Retails/image%205.png' },
-  { name: 'THE DUBAI MALL', label: 'THE DUBAI MALL',  image: '/Retails/image%206.png' },
-  { name: 'DIOR',           label: 'DIOR',            image: '/Retails/image%207.png' },
-  { name: 'BURBERRY',       label: 'BURBERRY',        image: '/Retails/image%208.png' },
-  { name: 'VERSACE',        label: 'VERSACE',         image: '/Retails/image%209.png' },
+  { name: 'LOUIS VUITTON',  label: 'LOUIS VUITTON',  image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/Retails/image%201.png' },
+  { name: 'GUCCI',          label: 'GUCCI',           image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/Retails/image%202.png' },
+  { name: 'FASHION AVENUE', label: 'FASHION AVENUE',  image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/Retails/image%203.png' },
+  { name: 'CHANEL',         label: 'CHANEL',          image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/Retails/image%204.png' },
+  { name: 'HERMÈS',         label: 'HERMÈS',          image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/Retails/image%205.png' },
+  { name: 'THE DUBAI MALL', label: 'THE DUBAI MALL',  image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/Retails/image%206.png' },
+  { name: 'DIOR',           label: 'DIOR',            image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/Retails/image%207.png' },
+  { name: 'BURBERRY',       label: 'BURBERRY',        image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/Retails/image%208.png' },
+  { name: 'VERSACE',        label: 'VERSACE',         image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/Retails/image%209.png' },
 ];
 
 /* ==========================================================================
@@ -69,7 +69,7 @@ const RetailHero: React.FC = React.memo(() => {
   return (
     <section ref={sectionRef} className="relative w-full h-screen bg-black overflow-hidden flex flex-col justify-center transform-gpu">
       {/* Immersive Background */}
-      <div className="hero-bg absolute inset-0 z-0 bg-cover bg-center will-change-transform" style={{ backgroundImage: "url('/Retails/big%20one.png')" }}></div>
+      <div className="hero-bg absolute inset-0 z-0 bg-cover bg-center will-change-transform" style={{ backgroundImage: "url('https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/Retails/big%20one.png')" }}></div>
       <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent z-10"></div>
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40 z-10"></div>
       
