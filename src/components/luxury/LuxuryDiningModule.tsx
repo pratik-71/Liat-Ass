@@ -53,7 +53,7 @@ const LuxuryHero: React.FC = React.memo(() => {
             key={idx}
             className="absolute inset-0 bg-cover bg-center transition-all duration-[3s] ease-in-out"
             style={{ 
-              backgroundImage: `url('https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/luxuary/image ${num}.jpg')`,
+              backgroundImage: `url('https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/luxuary/image%20${num}.jpg')`,
               opacity: currentImageIdx === idx ? 0.45 : 0,
               filter: `brightness(0.8) blur(${currentImageIdx === idx ? '0px' : '15px'})`,
               transform: `scale(${currentImageIdx === idx ? 1.05 : 1.15})`
@@ -109,7 +109,7 @@ const CuratedExperiences: React.FC = React.memo(() => {
     { 
       title: 'LUXURY BOUTIQUES', 
       desc: 'High-conversion architectural masterpieces for leading global houses.', 
-      image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/luxuary/image 4.jpg',
+      image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/luxuary/image%204.jpg',
       stats: '85% CONVERSION RATE' 
     },
     { 

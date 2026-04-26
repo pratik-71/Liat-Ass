@@ -22,8 +22,8 @@ export const DESIGN_SYSTEM = {
   assets: {
     videoIntro: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/start_video.mp4',
     logoSplash: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/dubai_mall_start.png',
-    bgHome: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/home.png',
-    bgIntro: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/home%20ann.png',
+    bgHome: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/home.jpg',
+    bgIntro: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/home%20ann.jpg',
   }
 };
 

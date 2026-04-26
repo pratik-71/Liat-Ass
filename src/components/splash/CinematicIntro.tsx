@@ -165,7 +165,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
     >
       <video
         ref={videoRef}
-        src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/start_video.mp4"
+        src="/start_video.mp4"
         style={{
           width: '100%', height: '100%',
           objectFit: window.innerWidth < 768 ? 'cover' : 'contain', 
@@ -300,7 +300,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
       >
         <img 
           ref={logoRef} 
-          src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/dubai_mall_start.png" 
+          src="/dubai_mall_start.png" 
           style={{ maxWidth: '780px', width: '85vw' }} 
           // @ts-ignore
           fetchPriority="high"

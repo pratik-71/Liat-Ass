@@ -16,12 +16,11 @@ const LuxuryDiningModule = lazy(() => import('./components/luxury/LuxuryDiningMo
  * THE DUBAI MALL | INVESTOR EXPERIENCE
  * Scalable architecture built for modular expansion.
  */
+
+
 function AppContent() {
   const navigate = useNavigate();
-  const [showIntro, setShowIntro] = useState(() => {
-    // Check if intro was already seen in this session
-    return !sessionStorage.getItem('introSeen');
-  });
+  const [showIntro, setShowIntro] = useState(false);
   const [isLoading, setIsLoading] = useState(true)
 
   const { isReady } = useAssetPreloader([
@@ -32,7 +31,6 @@ function AppContent() {
   ]);
 
   useEffect(() => {
-    sessionStorage.setItem('dashboardAnimated', 'true');
     if (isReady) {
       const timer = setTimeout(() => setIsLoading(false), 300);
       return () => clearTimeout(timer);
@@ -85,7 +83,6 @@ function AppContent() {
     return (
       <Suspense fallback={<div style={{ height: '100vh', width: '100vw', backgroundColor: DESIGN_SYSTEM.colors.midnight }} />}>
         <CinematicIntro onComplete={() => {
-          sessionStorage.setItem('introSeen', 'true');
           setShowIntro(false);
           navigate('/dashboard');
         }} />

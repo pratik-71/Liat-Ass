@@ -27,11 +27,11 @@ const EventsHeroSection: React.FC = React.memo(() => {
   const [wordIndex, setWordIndex] = useState(0);
   
   const HERO_IMAGES = [
-    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image 1.png',
-    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image 2.png',
-    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image 3.png',
-    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image 4.png',
-    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image 5.png'
+    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%201.png',
+    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%202.png',
+    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%203.png',
+    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%204.png',
+    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%205.png'
   ];
 
   const words = ['TOP-TIER BRANDS', 'GLOBAL ACTIVATIONS', 'ICONIC EVENTS', 'PREMIUM LAUNCHES'];
@@ -196,7 +196,7 @@ const CapabilitiesSection: React.FC = React.memo(() => {
             playsInline 
             className="absolute inset-0 w-full h-full object-cover brightness-90 saturate-[1.4] transition-transform duration-1000 group-hover:scale-105"
           >
-            <source src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/event_video.mp4" type="video/mp4" />
+            <source src="/events/event_video.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
           <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 p-6 md:p-8 bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl">
@@ -239,10 +239,10 @@ const CapabilitiesSection: React.FC = React.memo(() => {
    ========================================================================== */
 const EventHighlightsSection: React.FC = React.memo(() => {
   const highlights = [
-    { title: 'Luxury Brand Showcase', zone: 'Fashion Avenue Atrium', impact: '85% Luxury Intent Audience', image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image 1.png' },
-    { title: 'Global Tech Launch', zone: 'Central Atrium Zone', impact: '2.5M+ On-site Impressions', image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image 2.png' },
-    { title: 'International Fashion Week', zone: 'Main Promenade', impact: '10M+ Global Social Reach', image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image 3.png' },
-    { title: 'Cultural Mega-Event', zone: 'Waterfront Terrace', impact: '100K+ Peak Dwellers', image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image 4.png' }
+    { title: 'Luxury Brand Showcase', zone: 'Fashion Avenue Atrium', impact: '85% Luxury Intent Audience', image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%201.png' },
+    { title: 'Global Tech Launch', zone: 'Central Atrium Zone', impact: '2.5M+ On-site Impressions', image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%202.png' },
+    { title: 'International Fashion Week', zone: 'Main Promenade', impact: '10M+ Global Social Reach', image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%203.png' },
+    { title: 'Cultural Mega-Event', zone: 'Waterfront Terrace', impact: '100K+ Peak Dwellers', image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%204.png' }
   ];
 
   return (
@@ -278,7 +278,7 @@ const CinematicVideoSection: React.FC = React.memo(() => {
   return (
     <section className="w-full h-[70vh] relative overflow-hidden flex items-center justify-center bg-black">
       <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover brightness-50 contrast-125 saturate-[1.4]">
-        <source src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/event_video.mp4" type="video/mp4" />
+        <source src="/events/event_video.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black"></div>
       <div className="relative z-10 text-center max-w-4xl px-8">

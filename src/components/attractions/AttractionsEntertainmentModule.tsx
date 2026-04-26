@@ -41,7 +41,7 @@ const MoreThanRetailSection: React.FC = React.memo(() => {
         playsInline
         className="absolute inset-0 w-full h-full object-cover opacity-50 will-change-transform scale-105"
       >
-        <source src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/attractions/enjoyment.mp4" type="video/mp4" />
+        <source src="/attractions/enjoyment.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 bg-gradient-to-b from-[#070707] via-transparent to-[#070707]"></div>
       <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
@@ -101,7 +101,7 @@ const GridHeroSection: React.FC = React.memo(() => {
         { 
           title: 'KIDS PARK', 
           desc: 'Family-focused attraction driving longer visit durations and group spending behavior', 
-          video: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/attractions/kids park.mp4', 
+          video: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/attractions/kids%20park.mp4', 
           impact: 'Group Spend Driver' 
         },
       ]
@@ -127,7 +127,7 @@ const GridHeroSection: React.FC = React.memo(() => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      tilesRef.current.forEach((tile, i) => {
+      tilesRef.current.forEach((tile) => {
         if (!tile) return;
         gsap.fromTo(tile,
           { opacity: 0, y: 40 },
