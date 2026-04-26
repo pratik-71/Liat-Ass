@@ -8,7 +8,7 @@ export interface OpportunityCardData {
   color?: string;
 }
 
-export type AppScreen = 'intro' | 'dashboard' | 'retail' | 'attractions' | 'luxury';
+export type AppScreen = 'intro' | 'dashboard' | 'retail' | 'attractions' | 'luxury' | 'events';
 
 export interface ModuleProps {
   onBack: () => void;

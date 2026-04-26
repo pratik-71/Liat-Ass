@@ -7,6 +7,9 @@ import type { AppScreen } from './types'
 const CinematicIntro = lazy(() => import('./components/splash/CinematicIntro'))
 const InvestorDashboard = lazy(() => import('./components/dashboard/InvestorDashboard'))
 const RetailLeasingModule = lazy(() => import('./components/retail/RetailLeasingModule'))
+const EventsPlatformModule = lazy(() => import('./components/events/EventsPlatformModule'))
+const AttractionsEntertainmentModule = lazy(() => import('./components/attractions/AttractionsEntertainmentModule'))
+const LuxuryDiningModule = lazy(() => import('./components/luxury/LuxuryDiningModule'))
 import './App.css'
 
 /**
@@ -92,6 +95,9 @@ function App() {
       {currentScreen === 'dashboard' && (
         <InvestorDashboard onSelect={(id) => {
           if (id === 1) navigateTo('retail');
+          if (id === 2) navigateTo('events');
+          if (id === 3) navigateTo('attractions');
+          if (id === 4) navigateTo('luxury');
           // Easily extensible for other card IDs
         }} />
       )}
@@ -100,6 +106,18 @@ function App() {
         <RetailLeasingModule onBack={backToHome} />
       )}
       
+      {currentScreen === 'events' && (
+        <EventsPlatformModule onBack={backToHome} />
+      )}
+
+      {currentScreen === 'attractions' && (
+        <AttractionsEntertainmentModule onBack={backToHome} />
+      )}
+
+      {currentScreen === 'luxury' && (
+        <LuxuryDiningModule onBack={backToHome} />
+      )}
+
       {/* FUTURE MODULES: Simply add the component here */}
       {/* {currentScreen === 'attractions' && <AttractionsModule onBack={backToHome} />} */}
     </Suspense>
