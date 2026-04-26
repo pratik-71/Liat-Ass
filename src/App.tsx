@@ -1,7 +1,8 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
-import { DESIGN_SYSTEM} from './constants'
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { DESIGN_SYSTEM } from './constants'
 import { useAssetPreloader } from './hooks/useAssetPreloader'
-import type { AppScreen } from './types'
+import './App.css'
 
 // Lazy loaded modules for performance
 const CinematicIntro = lazy(() => import('./components/splash/CinematicIntro'))
@@ -10,18 +11,19 @@ const RetailLeasingModule = lazy(() => import('./components/retail/RetailLeasing
 const EventsPlatformModule = lazy(() => import('./components/events/EventsPlatformModule'))
 const AttractionsEntertainmentModule = lazy(() => import('./components/attractions/AttractionsEntertainmentModule'))
 const LuxuryDiningModule = lazy(() => import('./components/luxury/LuxuryDiningModule'))
-import './App.css'
 
 /**
  * THE DUBAI MALL | INVESTOR EXPERIENCE
  * Scalable architecture built for modular expansion.
  */
-function App() {
-  // 🚧 DEV: set to 'intro' to re-enable splash screen
-  const [currentScreen, setCurrentScreen] = useState<AppScreen>('dashboard')
+function AppContent() {
+  const navigate = useNavigate();
+  const [showIntro, setShowIntro] = useState(() => {
+    // Check if intro was already seen in this session
+    return !sessionStorage.getItem('introSeen');
+  });
   const [isLoading, setIsLoading] = useState(true)
 
-  // Asynchronous Asset Orchestration
   const { isReady } = useAssetPreloader([
     DESIGN_SYSTEM.assets.logoSplash,
     DESIGN_SYSTEM.assets.videoIntro,
@@ -30,7 +32,6 @@ function App() {
   ]);
 
   useEffect(() => {
-    // 🚧 DEV: skip dashboard intro animation too
     sessionStorage.setItem('dashboardAnimated', 'true');
     if (isReady) {
       const timer = setTimeout(() => setIsLoading(false), 300);
@@ -80,48 +81,46 @@ function App() {
     );
   }
 
-  // Unified Navigation Logic
-  const navigateTo = (screen: AppScreen) => setCurrentScreen(screen);
-  const backToHome = () => setCurrentScreen('dashboard');
+  if (showIntro) {
+    return (
+      <Suspense fallback={<div style={{ height: '100vh', width: '100vw', backgroundColor: DESIGN_SYSTEM.colors.midnight }} />}>
+        <CinematicIntro onComplete={() => {
+          sessionStorage.setItem('introSeen', 'true');
+          setShowIntro(false);
+          navigate('/dashboard');
+        }} />
+      </Suspense>
+    );
+  }
 
   return (
-    <Suspense fallback={
-      <div style={{ height: '100vh', width: '100vw', backgroundColor: DESIGN_SYSTEM.colors.midnight }} />
-    }>
-      {currentScreen === 'intro' && (
-        <CinematicIntro onComplete={() => navigateTo('dashboard')} />
-      )}
-
-      {currentScreen === 'dashboard' && (
-        <InvestorDashboard onSelect={(id) => {
-          if (id === 1) navigateTo('retail');
-          if (id === 2) navigateTo('events');
-          if (id === 3) navigateTo('attractions');
-          if (id === 4) navigateTo('luxury');
-          // Easily extensible for other card IDs
-        }} />
-      )}
-
-      {currentScreen === 'retail' && (
-        <RetailLeasingModule onBack={backToHome} />
-      )}
-      
-      {currentScreen === 'events' && (
-        <EventsPlatformModule onBack={backToHome} />
-      )}
-
-      {currentScreen === 'attractions' && (
-        <AttractionsEntertainmentModule onBack={backToHome} />
-      )}
-
-      {currentScreen === 'luxury' && (
-        <LuxuryDiningModule onBack={backToHome} />
-      )}
-
-      {/* FUTURE MODULES: Simply add the component here */}
-      {/* {currentScreen === 'attractions' && <AttractionsModule onBack={backToHome} />} */}
+    <Suspense fallback={<div style={{ height: '100vh', width: '100vw', backgroundColor: DESIGN_SYSTEM.colors.midnight }} />}>
+      <Routes>
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/dashboard" element={
+          <InvestorDashboard onSelect={(id) => {
+            if (id === 1) navigate('/retail');
+            if (id === 2) navigate('/events');
+            if (id === 3) navigate('/attractions');
+            if (id === 4) navigate('/luxury');
+          }} />
+        } />
+        <Route path="/retail" element={<RetailLeasingModule onBack={() => navigate('/dashboard')} />} />
+        <Route path="/events" element={<EventsPlatformModule onBack={() => navigate('/dashboard')} />} />
+        <Route path="/attractions" element={<AttractionsEntertainmentModule onBack={() => navigate('/dashboard')} />} />
+        <Route path="/luxury" element={<LuxuryDiningModule onBack={() => navigate('/dashboard')} />} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
     </Suspense>
-  )
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
 }
 
 export default App

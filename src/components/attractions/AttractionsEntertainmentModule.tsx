@@ -11,7 +11,6 @@ interface AttractionsModuleProps {
   onBack: () => void;
 }
 
-const GOLD_LIGHT = '#E5C27A';
 
 /* ==========================================================================
    1. HERO SECTION (REPOSITIONED)

@@ -170,49 +170,65 @@ const CapabilitiesSection: React.FC = React.memo(() => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' } });
-      tl.fromTo(textRef.current, { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: 'power3.out' }, 0);
-      tl.fromTo(visualRef.current, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 1.2, ease: 'power2.out' }, 0.2);
+      const isMobile = window.innerWidth < 1024;
+      
+      if (!isMobile) {
+        const tl = gsap.timeline({ scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } });
+        tl.fromTo(textRef.current, { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: 'power3.out' }, 0);
+        tl.fromTo(visualRef.current, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 1.2, ease: 'power2.out' }, 0.2);
+      } else {
+        gsap.set([textRef.current, visualRef.current], { opacity: 1, x: 0, scale: 1 });
+      }
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#050505] py-40 px-8 overflow-hidden relative">
-      <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-24 items-center">
-        <div ref={textRef} className="flex-1 lg:max-w-[40%] flex flex-col gap-8">
+    <section className="w-full bg-[#050505] py-20 md:py-40 px-6 md:px-8 overflow-hidden relative">
+      <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row-reverse gap-12 lg:gap-24 items-center">
+        
+        {/* Video First on Mobile (Moved in DOM) */}
+        <div className="w-full lg:flex-1 relative h-[280px] md:h-[400px] lg:h-[550px] rounded-3xl overflow-hidden border border-[#C8A96A]/20 shadow-2xl group bg-neutral-900">
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            className="absolute inset-0 w-full h-full object-cover brightness-90 saturate-[1.4] transition-transform duration-1000 group-hover:scale-105"
+          >
+            <source src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/event_video.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+          <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 p-6 md:p-8 bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl">
+             <div className="text-xl md:text-2xl font-['Oswald'] text-white uppercase mb-1 md:mb-2">Maximum Attention</div>
+             <div className="text-xs md:text-sm text-neutral-300">Capture attention at scale in high-density zones.</div>
+          </div>
+        </div>
+
+        {/* Text Second on Mobile */}
+        <div className="w-full lg:flex-1 flex flex-col gap-6 md:gap-8">
           <div>
-            <h2 className="text-4xl lg:text-[4rem] font-bold text-[#E5C27A] mb-8 leading-[1.1] uppercase tracking-wide font-['Oswald']">
+            <h2 className="text-3xl md:text-4xl lg:text-[4rem] font-bold text-[#E5C27A] mb-6 md:mb-8 leading-[1.1] uppercase tracking-wide font-['Oswald']">
               Brand Activation Infrastructure
             </h2>
-            <p className="text-xl text-neutral-300 font-light leading-relaxed">
+            <p className="text-lg md:text-xl text-neutral-300 font-light leading-relaxed">
               Host high-impact central atrium takeovers and global product unveils within a framework built for measurable engagement.
             </p>
           </div>
-          <ul className="flex flex-col gap-6 mt-4">
+          <ul className="flex flex-col gap-4 md:gap-6 mt-2 md:mt-4">
             {[
               'End-to-end brand activation infrastructure',
               'High-impact central atrium takeovers',
               'Omnichannel visibility (Physical + Digital)',
               'Turn footfall into measurable brand engagement'
             ].map((item, i) => (
-              <li key={i} className="flex items-center gap-5 text-lg text-white font-medium tracking-wide">
-                <div className="w-2 h-2 bg-[#C8A96A] rotate-45"></div> {item}
+              <li key={i} className="flex items-center gap-4 md:gap-5 text-base md:text-lg text-white font-medium tracking-wide">
+                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-[#C8A96A] rotate-45"></div> {item}
               </li>
             ))}
           </ul>
         </div>
 
-        <div ref={visualRef} className="flex-[1.5] w-full relative h-[500px] lg:h-[700px] rounded-3xl overflow-hidden border border-[#C8A96A]/20 shadow-2xl group">
-          <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover brightness-90 saturate-[1.4] transition-transform duration-1000 group-hover:scale-105">
-            <source src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/event_video.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-          <div className="absolute bottom-10 left-10 p-8 bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl">
-             <div className="text-2xl font-['Oswald'] text-white uppercase mb-2">Maximum Attention</div>
-             <div className="text-sm text-neutral-300">Capture attention at scale in high-density zones.</div>
-          </div>
-        </div>
       </div>
     </section>
   );

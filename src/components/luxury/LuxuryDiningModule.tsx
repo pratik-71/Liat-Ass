@@ -67,16 +67,16 @@ const LuxuryHero: React.FC = React.memo(() => {
       
       <div className="relative z-30 flex flex-col items-center text-center max-w-4xl px-8">
         <div className="premium-reveal mb-8">
-          <span className="text-[10px] font-bold tracking-[0.8em] uppercase text-[#C8A96A] bg-black/60 backdrop-blur-xl px-8 py-3 border border-[#C8A96A]/30">
+          <span className="text-[8px] md:text-[10px] font-bold tracking-[0.4em] md:tracking-[0.8em] uppercase text-[#C8A96A] bg-black/60 backdrop-blur-xl px-6 md:px-8 py-2 md:py-3 border border-[#C8A96A]/30 whitespace-nowrap">
             The Signature Experience
           </span>
         </div>
 
-        <h1 className="premium-reveal hero-float text-6xl md:text-[110px] font-black uppercase tracking-tighter font-['Oswald'] text-white leading-[0.9] mb-10">
+        <h1 className="premium-reveal hero-float text-5xl md:text-8xl lg:text-[110px] font-black uppercase tracking-tighter font-['Oswald'] text-white leading-[0.9] mb-10">
           Luxury <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#E5C27A] to-[#8A6E3F]">Perfected.</span>
         </h1>
 
-        <p className="premium-reveal text-neutral-200 text-lg md:text-2xl font-light font-['Inter'] tracking-wide max-w-xl opacity-90 mb-14">
+        <p className="premium-reveal text-neutral-200 text-base md:text-2xl font-light font-['Inter'] tracking-wide max-w-xl opacity-90 mb-14">
           Where global flagships meet exceptional dining.
         </p>
 
@@ -298,12 +298,14 @@ const LuxuryDiningModule: React.FC<LuxuryDiningModuleProps> = ({ onBack }) => {
       <StrategicAdvantage />
       <HighValueAudience />
       
-      <div className="py-72 bg-[#050505] flex flex-col items-center gap-12 relative overflow-hidden text-center">
-         <div className="w-[1px] h-48 bg-gradient-to-b from-transparent via-[#C8A96A] to-transparent opacity-60"></div>
-         <h2 className="text-4xl md:text-7xl font-['Oswald'] text-white uppercase tracking-[0.4em] leading-tight px-8 mb-4">
+      <div className="py-40 md:py-72 bg-[#050505] flex flex-col items-center gap-10 md:gap-12 relative overflow-hidden text-center">
+         <div className="w-[1px] h-32 md:h-48 bg-gradient-to-b from-transparent via-[#C8A96A] to-transparent opacity-60"></div>
+         <h2 className="text-3xl md:text-7xl font-['Oswald'] text-white uppercase tracking-[0.2em] md:tracking-[0.4em] leading-tight px-8 mb-4">
            LUXURY WITHOUT <br /><span className="text-[#C8A96A]">COMPROMISE.</span>
          </h2>
-         <p className="text-neutral-500 uppercase tracking-[0.2em] text-xs font-bold">Experience the pinnacle of commercial excellence.</p>
+         <p className="text-neutral-500 uppercase tracking-[0.1em] md:tracking-[0.2em] text-[10px] md:text-xs font-bold px-8">
+           Experience the pinnacle of commercial excellence.
+         </p>
          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#C8A96A]/5 rounded-full blur-[150px] pointer-events-none"></div>
       </div>
     </div>

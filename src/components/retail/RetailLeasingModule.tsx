@@ -11,8 +11,6 @@ interface RetailLeasingModuleProps {
   onBack: () => void;
 }
 
-const GOLD_LIGHT = '#E5C27A';
-const GOLD = '#C8A96A';
 
 const BRANDS = [
   { name: 'LOUIS VUITTON',  label: 'LOUIS VUITTON',  image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/Retails/image%201.png' },
