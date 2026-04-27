@@ -23,7 +23,7 @@ function AppContent() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [_, startTransition] = useTransition();
-  const [showIntro, setShowIntro] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
   const [isLoading, setIsLoading] = useState(true)
 
   // Global scroll-to-top on route change
@@ -120,14 +120,16 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={
-          <InvestorDashboard onSelect={(id) => {
-            startTransition(() => {
-              if (id === 1) navigate('/retail');
-              if (id === 2) navigate('/events');
-              if (id === 3) navigate('/attractions');
-              if (id === 4) navigate('/luxury');
-            });
-          }} />
+          <InvestorDashboard 
+            onSelect={(id) => {
+              startTransition(() => {
+                if (id === 1) navigate('/retail');
+                if (id === 2) navigate('/events');
+                if (id === 3) navigate('/attractions');
+                if (id === 4) navigate('/luxury');
+              });
+            }} 
+          />
         } />
         <Route path="/retail" element={<RetailLeasingModule onBack={() => navigate('/dashboard')} />} />
         <Route path="/events" element={<EventsPlatformModule onBack={() => navigate('/dashboard')} />} />

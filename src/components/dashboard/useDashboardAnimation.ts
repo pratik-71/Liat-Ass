@@ -64,7 +64,7 @@ export const useDashboardAnimation = (
         const cardY = isMobile ? 20 : 40;
 
         tl.to('.content-header', { opacity: 1, duration: 0.5 }, 2.0);
-        tl.fromTo(['.luxury-subtitle', '.luxury-title', '.luxury-stat-line', '.hero-cta'], 
+        tl.fromTo(['.luxury-subtitle', '.luxury-title', '.luxury-stat-line', '.hero-cta', '.replay-button'], 
           { opacity: 0, y: textY },
           {
             opacity: 1,
@@ -109,7 +109,7 @@ export const useDashboardAnimation = (
         gsap.set(introImageRef.current, { display: 'none', opacity: 0 });
         gsap.set(bgRef.current, { opacity: 1, visibility: 'visible' });
         gsap.set(['.luxury-backdrop-overlay', '.dashboard-nav', '.content-header', '.hero-cta', '.luxury-cards-container', '.luxury-footer'], { opacity: 1, visibility: 'visible' });
-        gsap.set(['.luxury-subtitle', '.luxury-title', '.luxury-stat-line', '.hero-cta'], { opacity: 1, y: 0 });
+        gsap.set(['.luxury-subtitle', '.luxury-title', '.luxury-stat-line', '.hero-cta', '.replay-button'], { opacity: 1, y: 0 });
         gsap.set('.luxury-card', { opacity: 1, y: 0, rotateX: 0 });
         
     
