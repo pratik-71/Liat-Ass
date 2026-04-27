@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ModuleNavigation from '../common/ModuleNavigation';
+import LazyImage from '../common/LazyImage';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -49,16 +50,17 @@ const LuxuryHero: React.FC = React.memo(() => {
     <section ref={sectionRef} className="relative w-full h-screen bg-[#050505] overflow-hidden flex items-center justify-center transform-gpu">
       <div className="absolute inset-0 z-0">
         {[1, 2, 3, 4, 5, 6].map((num, idx) => (
-          <div 
+          <LazyImage 
             key={idx}
+            src={`https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/luxuary/image%20${num}.jpg`}
             className="absolute inset-0 bg-cover bg-center transition-all duration-[3s] ease-in-out"
             style={{ 
-              backgroundImage: `url('https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/luxuary/image%20${num}.jpg')`,
               opacity: currentImageIdx === idx ? 0.45 : 0,
               filter: `brightness(0.8) blur(${currentImageIdx === idx ? '0px' : '15px'})`,
               transform: `scale(${currentImageIdx === idx ? 1.05 : 1.15})`
             }}
-          ></div>
+            isBackground={true}
+          />
         ))}
       </div>
 
@@ -139,8 +141,11 @@ const CuratedExperiences: React.FC = React.memo(() => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24">
         {cards.map((card, i) => (
           <div key={i} className="group relative aspect-[4/5] overflow-hidden transition-all duration-1000 transform-gpu shadow-2xl">
-            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-[2s] ease-out group-hover:scale-110"
-              style={{ backgroundImage: `url('${card.image}')` }}></div>
+            <LazyImage 
+              src={card.image}
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-[2s] ease-out group-hover:scale-110"
+              isBackground={true}
+            />
             
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 transition-opacity"></div>
 

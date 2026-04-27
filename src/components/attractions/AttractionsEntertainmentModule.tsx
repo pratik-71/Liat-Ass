@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import ModuleNavigation from '../common/ModuleNavigation';
+import LazyVideo from '../common/LazyVideo';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -34,15 +35,14 @@ const MoreThanRetailSection: React.FC = React.memo(() => {
 
   return (
     <section ref={sectionRef} className="relative w-full h-[80vh] md:h-screen overflow-hidden flex items-center justify-center text-center transform-gpu">
-      <video 
+      <LazyVideo 
         autoPlay 
         loop 
         muted 
         playsInline
         className="absolute inset-0 w-full h-full object-cover opacity-50 will-change-transform scale-105"
-      >
-        <source src="/attractions/enjoyment.mp4" type="video/mp4" />
-      </video>
+        src="/attractions/enjoyment.mp4"
+      />
       <div className="absolute inset-0 bg-gradient-to-b from-[#070707] via-transparent to-[#070707]"></div>
       <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
 
@@ -165,9 +165,7 @@ const GridHeroSection: React.FC = React.memo(() => {
                     ref={el => { tilesRef.current[catIdx * 10 + expIdx] = el; }}
                     className="group relative aspect-video rounded-3xl overflow-hidden cursor-pointer border border-white/5 hover:border-[#C8A96A]/40 transition-all duration-1000 hover:-translate-y-4 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.7)]"
                   >
-                    <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110">
-                      <source src={exp.video} type="video/mp4" />
-                    </video>
+                    <LazyVideo autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110" src={exp.video} />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
                     <div className="absolute bottom-0 left-0 right-0 p-10 z-10">
                       <div className="text-[9px] text-[#C8A96A] font-bold uppercase tracking-widest mb-3">{exp.impact}</div>

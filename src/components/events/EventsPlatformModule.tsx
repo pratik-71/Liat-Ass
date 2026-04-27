@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ModuleNavigation from '../common/ModuleNavigation';
+import LazyImage from '../common/LazyImage';
+import LazyVideo from '../common/LazyVideo';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -74,9 +76,14 @@ const EventsHeroSection: React.FC = React.memo(() => {
 
   return (
     <section ref={containerRef} className="relative w-full min-h-screen bg-black flex flex-col items-center justify-center pt-24 pb-32 overflow-hidden transform-gpu">
-      <div ref={bgRef} className="absolute inset-0 z-0 bg-cover bg-center origin-center transition-all duration-[2000ms] ease-in-out will-change-transform" style={{ backgroundImage: `url('${HERO_IMAGES[currentImgIndex]}')`, filter: 'blur(10px) brightness(0.6)', transform: 'scale(1.05)' }}>
+      <LazyImage 
+        src={HERO_IMAGES[currentImgIndex]}
+        className="absolute inset-0 z-0 bg-cover bg-center origin-center transition-all duration-[2000ms] ease-in-out will-change-transform"
+        style={{ filter: 'blur(10px) brightness(0.6)', transform: 'scale(1.05)' }}
+        isBackground={true}
+      >
         <div className="absolute inset-0 bg-black/40"></div>
-      </div>
+      </LazyImage>
 
       <div className="relative z-10 w-full max-w-[1400px] mx-auto px-8 flex flex-col items-center justify-center text-center">
         <div ref={giantTextRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[8rem] md:text-[22rem] font-black text-white whitespace-nowrap pointer-events-none select-none tracking-tighter mix-blend-overlay" style={{ filter: 'blur(8px)' }}>
@@ -189,15 +196,14 @@ const CapabilitiesSection: React.FC = React.memo(() => {
         
         {/* Video First on Mobile (Moved in DOM) */}
         <div className="w-full lg:flex-1 relative h-[280px] md:h-[400px] lg:h-[550px] rounded-3xl overflow-hidden border border-[#C8A96A]/20 shadow-2xl group bg-neutral-900">
-          <video 
+          <LazyVideo 
             autoPlay 
             loop 
             muted 
             playsInline 
             className="absolute inset-0 w-full h-full object-cover brightness-90 saturate-[1.4] transition-transform duration-1000 group-hover:scale-105"
-          >
-            <source src="/events/event_video.mp4" type="video/mp4" />
-          </video>
+            src="/events/event_video.mp4"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
           <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 p-6 md:p-8 bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl">
              <div className="text-xl md:text-2xl font-['Oswald'] text-white uppercase mb-1 md:mb-2">Maximum Attention</div>
@@ -255,7 +261,7 @@ const EventHighlightsSection: React.FC = React.memo(() => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {highlights.map((item, i) => (
             <div key={i} className="group relative aspect-[3/4] overflow-hidden border border-white/5 hover:border-[#C8A96A]/60 transition-all duration-700">
-              <img src={item.image} alt={item.title} className="absolute inset-0 w-full h-full object-cover grayscale-[40%] transition-transform duration-1000 group-hover:scale-110 group-hover:grayscale-0" />
+              <LazyImage src={item.image} alt={item.title} className="absolute inset-0 w-full h-full object-cover grayscale-[40%] transition-transform duration-1000 group-hover:scale-110 group-hover:grayscale-0" />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
               <div className="absolute bottom-0 left-0 right-0 p-8">
                 <div className="text-[10px] text-[#C8A96A] font-bold uppercase tracking-widest mb-3">{item.zone}</div>
@@ -277,9 +283,14 @@ const EventHighlightsSection: React.FC = React.memo(() => {
 const CinematicVideoSection: React.FC = React.memo(() => {
   return (
     <section className="w-full h-[70vh] relative overflow-hidden flex items-center justify-center bg-black">
-      <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover brightness-50 contrast-125 saturate-[1.4]">
-        <source src="/events/event_video.mp4" type="video/mp4" />
-      </video>
+      <LazyVideo 
+        autoPlay 
+        loop 
+        muted 
+        playsInline 
+        className="absolute inset-0 w-full h-full object-cover brightness-50 contrast-125 saturate-[1.4]"
+        src="/events/event_video.mp4"
+      />
       <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black"></div>
       <div className="relative z-10 text-center max-w-4xl px-8">
         <h2 className="text-3xl md:text-5xl font-['Oswald'] text-white uppercase tracking-widest leading-tight mb-8">

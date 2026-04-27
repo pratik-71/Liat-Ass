@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { gsap } from 'gsap'
+import LazyImage from '../common/LazyImage'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type { OpportunityCardData } from '../../types'
 import OpportunityCard from './OpportunityCard'
@@ -234,7 +235,7 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
           overflow: 'hidden'
         }}
       >
-        <img 
+        <LazyImage 
           src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/footer.png" 
           alt="Accent" 
           style={{ 

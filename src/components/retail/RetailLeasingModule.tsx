@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import ModuleNavigation from '../common/ModuleNavigation'
+import LazyImage from '../common/LazyImage'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -67,7 +68,11 @@ const RetailHero: React.FC = React.memo(() => {
 
   return (
     <section ref={sectionRef} className="relative w-full h-screen bg-black overflow-hidden flex flex-col justify-center transform-gpu">
-      <div className="hero-bg absolute inset-0 z-0 bg-cover bg-center will-change-transform" style={{ backgroundImage: "url('https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/Retails/big%20one.png')" }}></div>
+      <LazyImage 
+        src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/Retails/big%20one.png"
+        className="hero-bg absolute inset-0 z-0 bg-cover bg-center will-change-transform"
+        isBackground={true}
+      />
       <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent z-10"></div>
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40 z-10"></div>
       <div className="absolute left-12 top-1/2 -translate-y-1/2 w-[1px] h-48 bg-gradient-to-b from-transparent via-[#C8A96A] to-transparent z-20"></div>
@@ -226,7 +231,7 @@ const RetailPathSection: React.FC = React.memo(() => {
                 </ul>
               </div>
               <div className="flex-1 relative aspect-video w-full rounded-sm overflow-hidden border border-white/10">
-                <img src={paths[activePath].details.image} alt={paths[activePath].title} className="w-full h-full object-cover grayscale-[40%] hover:grayscale-0 transition-all duration-1000" />
+                <LazyImage src={paths[activePath].details.image} alt={paths[activePath].title} className="w-full h-full object-cover grayscale-[40%] hover:grayscale-0 transition-all duration-1000" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                 <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end">
                    <div>
@@ -270,10 +275,11 @@ const BrandMarquee: React.FC = React.memo(() => {
       <div className="marquee-track flex gap-12 w-max px-12 items-center">
          {LOOP_BRANDS.map((brand, i) => (
            <div key={i} className="group relative w-64 md:w-80 h-40 md:h-56 flex-shrink-0 transition-all duration-700 cursor-pointer hover:z-20 hover:scale-110">
-              <div 
-                className="absolute inset-0 bg-cover bg-center rounded-sm border border-white/5 group-hover:border-[#C8A96A]/80 transition-all duration-1000 group-hover:scale-110" 
-                style={{ backgroundImage: `url('${brand.image}')` }} 
-              />
+               <LazyImage 
+                 src={brand.image}
+                 className="absolute inset-0 bg-cover bg-center rounded-sm border border-white/5 group-hover:border-[#C8A96A]/80 transition-all duration-1000 group-hover:scale-110"
+                 isBackground={true}
+               />
               <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
            </div>
          ))}
@@ -498,7 +504,7 @@ const LocationExplorerSection: React.FC = React.memo(() => {
                 className="group relative aspect-[16/8] overflow-hidden cursor-pointer border border-white/5 transform-gpu"
               >
                 {/* Background Image */}
-                <img src={loc.image} alt={loc.title} className="absolute inset-0 w-full h-full object-cover grayscale-[60%] transition-all duration-1000 group-hover:scale-110 group-hover:grayscale-0" />
+                <LazyImage src={loc.image} alt={loc.title} className="absolute inset-0 w-full h-full object-cover grayscale-[60%] transition-all duration-1000 group-hover:scale-110 group-hover:grayscale-0" />
                 
                 {/* Gradient Overlays */}
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-700"></div>
