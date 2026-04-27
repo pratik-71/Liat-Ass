@@ -1,8 +1,8 @@
 import React from 'react';
 
 interface DashboardBackgroundProps {
-  bgRef: React.RefObject<HTMLDivElement>;
-  introImageRef: React.RefObject<HTMLImageElement>;
+  bgRef: React.RefObject<HTMLDivElement | null>;
+  introImageRef: React.RefObject<HTMLImageElement | null>;
 }
 
 export const DashboardBackground: React.FC<DashboardBackgroundProps> = ({ bgRef, introImageRef }) => {

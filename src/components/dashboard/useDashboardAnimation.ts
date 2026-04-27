@@ -3,9 +3,9 @@ import gsap from 'gsap';
 import type { OpportunityCardData } from '../../types';
 
 export const useDashboardAnimation = (
-  containerRef: React.RefObject<HTMLDivElement>,
-  introImageRef: React.RefObject<HTMLImageElement>,
-  bgRef: React.RefObject<HTMLDivElement>,
+  containerRef: React.RefObject<HTMLDivElement | null>,
+  introImageRef: React.RefObject<HTMLImageElement | null>,
+  bgRef: React.RefObject<HTMLDivElement | null>,
   cards: OpportunityCardData[]
 ) => {
   useEffect(() => {
