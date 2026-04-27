@@ -54,6 +54,14 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
   const introImageRef = useRef<HTMLImageElement>(null)
   const bgRef = useRef<HTMLDivElement>(null)
 
+  const handleHover = (id: number) => {
+    // Preload modules on hover to eliminate redirect delay
+    if (id === 1) import('../retail/RetailLeasingModule');
+    if (id === 2) import('../events/EventsPlatformModule');
+    if (id === 3) import('../attractions/AttractionsEntertainmentModule');
+    if (id === 4) import('../luxury/LuxuryDiningModule');
+  };
+
   useDashboardAnimation(containerRef, introImageRef, bgRef, CARDS);
 
   return (
@@ -62,7 +70,7 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
       className="dashboard-container"
       style={{
         minHeight: '100vh',
-        width: '100vw',
+        width: '100%',
         backgroundColor: '#050505',
         color: '#FFFFFF',
         display: 'flex',
@@ -74,7 +82,6 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
         fontFamily: "'Inter', sans-serif",
         perspective: '2000px',
         overflowX: 'hidden',
-        overflowY: 'auto',
         position: 'relative',
         filter: 'saturate(1.1)'
       }}
@@ -154,6 +161,7 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
             key={card.id} 
             card={card} 
             onSelect={onSelect} 
+            onHover={handleHover}
           />
         ))}
       </div>

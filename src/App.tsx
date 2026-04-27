@@ -1,5 +1,6 @@
-import { useState, useEffect, lazy, Suspense } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { useState, useEffect, lazy, Suspense, useTransition } from 'react'
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
+import { lenis } from './main'
 import { DESIGN_SYSTEM } from './constants'
 import { useAssetPreloader } from './hooks/useAssetPreloader'
 import './App.css'
@@ -20,8 +21,32 @@ const LuxuryDiningModule = lazy(() => import('./components/luxury/LuxuryDiningMo
 
 function AppContent() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const [_, startTransition] = useTransition();
   const [showIntro, setShowIntro] = useState(false);
   const [isLoading, setIsLoading] = useState(true)
+
+  // Global scroll-to-top on route change
+  useEffect(() => {
+    // Immediate native scroll reset
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTo({ top: 0, behavior: 'instant' as any });
+    
+    // Reset Lenis scroll position (CRITICAL for smooth scroll consistency)
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    }
+
+    // Delayed scroll to handle late-rendering content or smooth-scroll conflicts
+    const timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      if (lenis) lenis.scrollTo(0, { immediate: true });
+    }, 50);
+
+    return () => clearTimeout(timer);
+  }, [pathname]);
 
   const { isReady } = useAssetPreloader([
     DESIGN_SYSTEM.assets.logoSplash,
@@ -96,10 +121,12 @@ function AppContent() {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={
           <InvestorDashboard onSelect={(id) => {
-            if (id === 1) navigate('/retail');
-            if (id === 2) navigate('/events');
-            if (id === 3) navigate('/attractions');
-            if (id === 4) navigate('/luxury');
+            startTransition(() => {
+              if (id === 1) navigate('/retail');
+              if (id === 2) navigate('/events');
+              if (id === 3) navigate('/attractions');
+              if (id === 4) navigate('/luxury');
+            });
           }} />
         } />
         <Route path="/retail" element={<RetailLeasingModule onBack={() => navigate('/dashboard')} />} />

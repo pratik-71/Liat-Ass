@@ -4,9 +4,10 @@ import type { OpportunityCardData } from '../../types';
 interface OpportunityCardProps {
   card: OpportunityCardData;
   onSelect: (id: number) => void;
+  onHover?: (id: number) => void;
 }
 
-const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect }) => {
+const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHover }) => {
   const isHero = card.id === 2 || card.id === 3;
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
@@ -16,7 +17,12 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect }) => 
     <div
       key={card.id}
       className="luxury-card"
-      onClick={() => onSelect(card.id)}
+      onClick={(e) => {
+        const target = e.currentTarget;
+        target.style.transition = 'transform 0.1s ease';
+        target.style.transform = 'scale(0.95) translateY(-10px)';
+        onSelect(card.id);
+      }}
       style={{
         position: 'relative',
         flex: isMobile ? '1 1 100%' : (isTablet ? '1 1 45%' : (isHero ? '1 1 320px' : '1 1 280px')),
@@ -60,6 +66,7 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect }) => 
         });
       }}
       onMouseEnter={(e) => {
+        if (onHover) onHover(card.id);
         const target = e.currentTarget;
         target.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1), border 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
         target.style.transform = 'translateY(-20px) scale(1.05) rotateX(0) rotateY(0)';

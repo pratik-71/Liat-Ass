@@ -49,7 +49,7 @@ const MoreThanRetailSection: React.FC = React.memo(() => {
       <div ref={textRef} className="relative z-10 max-w-7xl px-8 flex flex-col gap-8">
         <h2 className="text-4xl md:text-7xl lg:text-[6.5rem] font-bold text-white leading-[1] tracking-tighter font-['Oswald'] uppercase drop-shadow-[0_10px_40px_rgba(0,0,0,0.8)]">
           Beyond Retail<br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E5C27A] to-[#C8A96A] filter drop-shadow-[0_0_20px_rgba(200,169,106,0.4)]">A World of Experiences</span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E5C27A] to-[#C8A96A]">A World of Experiences</span>
         </h2>
         <p className="text-lg md:text-2xl text-neutral-300 font-light max-w-4xl mx-auto tracking-wide drop-shadow-2xl">
           Converting global traffic into measurable commercial value.

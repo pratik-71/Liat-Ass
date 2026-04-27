@@ -87,7 +87,7 @@ const EventsHeroSection: React.FC = React.memo(() => {
           <h2 className="text-4xl md:text-7xl lg:text-[5.5rem] font-bold text-white mb-6 tracking-tight uppercase leading-[1.1] flex flex-col items-center">
             <span className="block mb-2">Global Activation</span>
             <div className="relative h-[1.3em] overflow-hidden w-full max-w-[95vw] lg:max-w-[1400px]">
-              <span key={wordIndex} className="absolute inset-0 flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-r from-[#E5C27A] to-[#C8A96A] filter drop-shadow-[0_0_20px_rgba(200,169,106,0.3)] animate-slide-down-custom whitespace-nowrap text-3xl md:text-5xl lg:text-[4.5rem]">
+              <span key={wordIndex} className="absolute inset-0 flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-r from-[#E5C27A] to-[#C8A96A] animate-slide-down-custom whitespace-nowrap text-3xl md:text-5xl lg:text-[4.5rem]">
                 FOR {words[wordIndex]}
               </span>
             </div>
