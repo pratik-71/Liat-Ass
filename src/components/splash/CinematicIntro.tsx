@@ -44,6 +44,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
   const particlesRef = useRef<HTMLDivElement>(null)
   const lightLeakRef = useRef<HTMLDivElement>(null)
   const flashRef = useRef<HTMLDivElement>(null)
+  const introLogoRef = useRef<HTMLImageElement>(null)
 
   const [isBuffering, setIsBuffering] = useState(false)
 
@@ -196,6 +197,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
     gsap.set(shadowRef.current, { opacity: 0 })
     gsap.set(overlayRef.current, { opacity: 1 })
     gsap.set(videoRef.current, { opacity: 0 })
+    gsap.set(introLogoRef.current, { opacity: 0, x: -20 })
     gsap.set([cornerTextsRef.current, dreamRef.current, brandsPhaseRef.current], { opacity: 0, scale: 0.95 })
 
     tl
@@ -209,8 +211,9 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
         // Cinematic Zoom Start
         gsap.to(videoRef.current, { scale: 1.15, duration: 25, ease: 'none' })
         
-        // Lens Flare / Light Flash
-        gsap.fromTo(flashRef.current, { opacity: 0 }, { opacity: 1, duration: 0.15, yoyo: true, repeat: 1, ease: 'power2.inOut' })
+        // Fade in Intro Logo
+        gsap.to(introLogoRef.current, { opacity: 1, x: 0, duration: 1.2, ease: 'power2.out', delay: 0.5 })
+        
         
         // Ambient Light Leak Animation
         gsap.to(lightLeakRef.current, { 
@@ -229,9 +232,9 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
         // Subliminal Text Entry
         gsap.fromTo(subliminalTextRef.current, { opacity: 0, scale: 0.8 }, { opacity: 0.15, scale: 1, duration: 4, ease: 'power1.out' })
       })
-      .to(logoRef.current, { scale: 4.5, opacity: 0, duration: 0.95, ease: 'power3.in' })
-      .to(overlayRef.current, { opacity: 0, duration: 0.4, ease: 'power2.inOut' }, '-=0.35')
-      .to(videoRef.current, { opacity: 1, duration: 0.5 }, '-=0.4')
+      .to(logoRef.current, { scale: 8, opacity: 0, duration: 1.2, ease: 'power4.in' })
+      .to(overlayRef.current, { opacity: 0, duration: 0.6, ease: 'power2.inOut' }, '-=0.8')
+      .to(videoRef.current, { opacity: 1, duration: 0.6 }, '-=0.6')
 
     return () => { tl.kill() }
   }, [onComplete])
@@ -251,6 +254,13 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
       opacity: 0,
       duration: 1.0,
       ease: 'power3.in'
+    }, 0)
+
+    // Fade out Intro Logo instead of zooming it
+    tl.to(introLogoRef.current, {
+      opacity: 0,
+      duration: 0.6,
+      ease: 'power2.in'
     }, 0)
 
     // Video fades out with the final zoom
@@ -288,6 +298,22 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
         }}
         muted
         playsInline
+      />
+
+      {/* Intro Logo (Top Left) */}
+      <img 
+        ref={introLogoRef}
+        src="/intro_logo.png"
+        style={{
+          position: 'absolute',
+          top: '40px',
+          left: '40px',
+          height: 'clamp(50px, 8vw, 100px)',
+          zIndex: 110,
+          pointerEvents: 'none',
+          opacity: 0,
+          filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.5))'
+        }}
       />
 
       {/* Cinematic Overlays */}

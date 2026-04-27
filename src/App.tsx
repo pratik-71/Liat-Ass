@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense, useTransition } from 'react'
+import { useState, useEffect, lazy, Suspense, useTransition, useCallback } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import { lenis } from './main'
 import { DESIGN_SYSTEM } from './constants'
@@ -62,6 +62,11 @@ function AppContent() {
     }
   }, [isReady]);
 
+  const handleIntroComplete = useCallback(() => {
+    setShowIntro(false);
+    navigate('/dashboard');
+  }, [navigate]);
+
   if (isLoading) {
     return (
       <div style={{
@@ -71,17 +76,16 @@ function AppContent() {
         alignItems: 'center', justifyContent: 'center',
         gap: '24px'
       }}>
-        <div style={{
-          fontSize: '20px',
-          color: DESIGN_SYSTEM.colors.gold,
-          letterSpacing: '1.2em',
-          textTransform: 'uppercase',
-          fontFamily: "'Oswald', sans-serif",
-          animation: 'pulse 2s infinite',
-          fontWeight: 700
-        }}>
-          The Dubai Mall
-        </div>
+        <img 
+          src="/logo.png" 
+          alt="The Dubai Mall"
+          style={{
+            height: '100px',
+            width: 'auto',
+            animation: 'pulse 2s infinite',
+            filter: 'drop-shadow(0 0 10px rgba(200, 169, 106, 0.2))'
+          }}
+        />
         <div style={{
           width: '240px',
           height: '2px',
@@ -107,10 +111,7 @@ function AppContent() {
   if (showIntro) {
     return (
       <Suspense fallback={<div style={{ height: '100vh', width: '100vw', backgroundColor: DESIGN_SYSTEM.colors.midnight }} />}>
-        <CinematicIntro onComplete={() => {
-          setShowIntro(false);
-          navigate('/dashboard');
-        }} />
+        <CinematicIntro onComplete={handleIntroComplete} />
       </Suspense>
     );
   }
