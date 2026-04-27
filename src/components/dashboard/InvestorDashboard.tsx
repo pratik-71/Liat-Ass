@@ -1,8 +1,12 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type { OpportunityCardData } from '../../types'
 import OpportunityCard from './OpportunityCard'
 import { useDashboardAnimation } from './useDashboardAnimation'
 import { DashboardBackground } from './DashboardBackground'
+
+gsap.registerPlugin(ScrollTrigger);
 
 const CARDS: OpportunityCardData[] = [
   { 
@@ -54,6 +58,8 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
   const introImageRef = useRef<HTMLImageElement>(null)
   const bgRef = useRef<HTMLDivElement>(null)
 
+  const footerAccentRef = useRef<HTMLDivElement>(null)
+
   const handleHover = (id: number) => {
     // Preload modules on hover to eliminate redirect delay
     if (id === 1) import('../retail/RetailLeasingModule');
@@ -61,6 +67,30 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
     if (id === 3) import('../attractions/AttractionsEntertainmentModule');
     if (id === 4) import('../luxury/LuxuryDiningModule');
   };
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Scroll-triggered floating image in footer
+      gsap.fromTo(footerAccentRef.current,
+        { 
+          y: 300, 
+          opacity: 0 
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 2,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: '.luxury-footer',
+            start: 'bottom bottom',
+            toggleActions: 'play none none reverse'
+          }
+        }
+      );
+    }, containerRef);
+    return () => ctx.revert();
+  }, [containerRef]);
 
   useDashboardAnimation(containerRef, introImageRef, bgRef, CARDS);
 
@@ -115,13 +145,13 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
             margin: '0 0 16px 0',
             fontFamily: "'Oswald', sans-serif",
             letterSpacing: '0.02em',
-            color: '#E5C27A',
+            color: '#ffffffff',
             opacity: 0,
             lineHeight: 1.1,
             textShadow: '0 10px 40px rgba(0,0,0,0.6)'
           }}
         >
-          WHERE BRANDS SCALE GLOBALLY
+          WHERE BRANDS SCALE <span style={{color: '#E5C27A'}}>GLOBALLY</span>
         </h1>
         <div 
           className="luxury-stat-line" 
@@ -172,18 +202,50 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
           marginTop: '100px',
           paddingBottom: '80px',
           zIndex: 20,
-          color: 'rgba(200, 169, 106, 0.6)', 
-          fontSize: '11px',
+          color: 'rgba(255, 255, 255, 1)', 
+          fontSize: '16px',
           letterSpacing: '0.4em',
+          lineHeight: '1.5',
           textTransform: 'uppercase',
           textAlign: 'center',
           fontFamily: "'Inter', sans-serif",
           opacity: 0,
           fontWeight: 600,
-          position: 'relative'
+          position: 'relative',
+          textShadow: '0 4px 15px rgba(0,0,0,0.9), 0 0 30px rgba(0,0,0,0.7)'
         }}
       >
         A complete ecosystem of retail, luxury, entertainment, and global experiences.
+      </div>
+
+      {/* Floating Footer Accent */}
+      <div 
+        ref={footerAccentRef}
+        className="footer-floating-accent"
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          width: '100%',
+          zIndex: 15,
+          opacity: 0,
+          pointerEvents: 'none',
+          overflow: 'hidden'
+        }}
+      >
+        <img 
+          src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/footer.png" 
+          alt="Accent" 
+          style={{ 
+            width: '100%', 
+            height: window.innerWidth < 768 ? '300px' : '500px',
+            objectFit: 'cover',
+            display: 'block',
+            maskImage: 'linear-gradient(to top, black 80%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to top, black 80%, transparent 100%)'
+          }}
+        />
       </div>
 
       <style>{`
@@ -208,13 +270,35 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
           z-index: 150;
         }
 
-        /* Responsive Overrides */
+        /* Tablet Overrides */
+        @media (min-width: 769px) and (max-width: 1200px) {
+          .luxury-cards-container {
+            display: flex !important;
+            grid-template-columns: none !important;
+            justify-content: center !important;
+            gap: 25px !important;
+            padding: 0 40px !important;
+          }
+          .luxury-title {
+            font-size: 48px !important;
+          }
+          .luxury-stat-line {
+            font-size: 16px !important;
+            max-width: 600px !important;
+          }
+          .dashboard-container {
+            padding: 60px 30px !important;
+          }
+        }
+
+        /* Mobile Overrides */
         @media (max-width: 768px) {
           .desktop-only {
             display: none !important;
           }
           .dashboard-container {
             padding: 40px 15px 40px !important;
+            overflow-x: hidden !important;
           }
           .luxury-title {
             font-size: 32px !important;
@@ -233,9 +317,15 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
           }
           .luxury-footer {
             margin-top: 60px !important;
-            padding-bottom: 40px !important;
-            font-size: 9px !important;
-            padding: 0 20px;
+            padding-bottom: 60px !important;
+            font-size: 12px !important;
+            line-height: 1.4 !important;
+            letter-spacing: 0.2em !important;
+            padding: 0 30px !important;
+            max-width: 100% !important;
+          }
+          .footer-floating-accent img {
+            height: 350px !important;
           }
         }
       `}</style>

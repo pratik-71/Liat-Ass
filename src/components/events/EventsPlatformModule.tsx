@@ -79,15 +79,15 @@ const EventsHeroSection: React.FC = React.memo(() => {
       </div>
 
       <div className="relative z-10 w-full max-w-[1400px] mx-auto px-8 flex flex-col items-center justify-center text-center">
-        <div ref={giantTextRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[14rem] md:text-[22rem] font-black text-white whitespace-nowrap pointer-events-none select-none tracking-tighter mix-blend-overlay" style={{ filter: 'blur(8px)' }}>
+        <div ref={giantTextRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[8rem] md:text-[22rem] font-black text-white whitespace-nowrap pointer-events-none select-none tracking-tighter mix-blend-overlay" style={{ filter: 'blur(8px)' }}>
           100M+
         </div>
 
         <div ref={headingRef} className="mb-20 mt-2 relative z-20 w-full">
-          <h2 className="text-4xl md:text-7xl lg:text-[5.5rem] font-bold text-white mb-6 tracking-tight uppercase leading-[1.1] flex flex-col items-center">
-            <span className="block mb-2">Global Activation</span>
-            <div className="relative h-[1.3em] overflow-hidden w-full max-w-[95vw] lg:max-w-[1400px]">
-              <span key={wordIndex} className="absolute inset-0 flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-r from-[#E5C27A] to-[#C8A96A] animate-slide-down-custom whitespace-nowrap text-3xl md:text-5xl lg:text-[4.5rem]">
+          <h2 className="text-3xl md:text-7xl lg:text-[5.5rem] font-bold text-white mb-4 md:mb-6 tracking-tight uppercase leading-[1.1] flex flex-col items-center">
+            <span className="block mb-1">Global Activation</span>
+            <div className="relative h-[1.5em] overflow-hidden w-full max-w-[95vw] lg:max-w-[1400px]">
+              <span key={wordIndex} className="absolute inset-0 flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-r from-[#E5C27A] to-[#C8A96A] animate-slide-down-custom whitespace-nowrap text-xl md:text-5xl lg:text-[4.5rem]">
                 FOR {words[wordIndex]}
               </span>
             </div>
@@ -107,7 +107,7 @@ const EventsHeroSection: React.FC = React.memo(() => {
             ].map((panel, idx) => (
               <div 
                 key={idx}
-                className="group relative flex-1 flex flex-col justify-center px-10 py-7 rounded-xl md:rounded-full transition-all duration-500 cursor-pointer hover:bg-white/[0.07] border border-transparent hover:border-white/20 overflow-hidden"
+                className="group relative flex-1 flex flex-col justify-center px-4 py-5 md:px-10 md:py-7 rounded-xl md:rounded-full transition-all duration-500 cursor-pointer hover:bg-white/[0.07] border border-transparent hover:border-white/20 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-[#C8A96A]/10 via-[#C8A96A]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 
@@ -137,8 +137,8 @@ const BrandValueStrip: React.FC = React.memo(() => {
     <section className="w-full bg-[#050505] py-16 px-12 border-y border-white/5">
       <div className="max-w-[1400px] mx-auto flex flex-wrap justify-between items-center gap-12">
         <div className="flex flex-col gap-2">
-          <span className="text-4xl font-['Oswald'] text-white">100M+</span>
-          <span className="text-[10px] text-[#C8A96A] font-bold uppercase tracking-widest">Annual Brand Exposure</span>
+          <span className="text-3xl md:text-4xl font-['Oswald'] text-white">100M+</span>
+          <span className="text-[9px] md:text-[10px] text-[#C8A96A] font-bold uppercase tracking-widest">Exposure</span>
         </div>
         <div className="w-[1px] h-12 bg-white/10 hidden md:block"></div>
         <div className="flex flex-col gap-2">
@@ -147,8 +147,8 @@ const BrandValueStrip: React.FC = React.memo(() => {
         </div>
         <div className="w-[1px] h-12 bg-white/10 hidden md:block"></div>
         <div className="flex flex-col gap-2">
-          <span className="text-4xl font-['Oswald'] text-white">3.5 HRS</span>
-          <span className="text-[10px] text-[#C8A96A] font-bold uppercase tracking-widest">High Dwell Time Engagement</span>
+          <span className="text-3xl md:text-4xl font-['Oswald'] text-white">3.5 HRS</span>
+          <span className="text-[9px] md:text-[10px] text-[#C8A96A] font-bold uppercase tracking-widest">Dwell Time</span>
         </div>
         <div className="w-[1px] h-12 bg-white/10 hidden md:block"></div>
         <div className="flex flex-col gap-2">

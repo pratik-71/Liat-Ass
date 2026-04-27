@@ -112,7 +112,7 @@ export const useDashboardAnimation = (
         gsap.set(['.luxury-subtitle', '.luxury-title', '.luxury-stat-line', '.hero-cta'], { opacity: 1, y: 0 });
         gsap.set('.luxury-card', { opacity: 1, y: 0, rotateX: 0 });
         
-        // Immediate Numeric display
+    
         cards.forEach((card) => {
           const el = document.getElementById(`stat-count-${card.id}`);
           if (el) el.innerText = `${Math.floor(card.target || 0)}${card.suffix || ''}`;

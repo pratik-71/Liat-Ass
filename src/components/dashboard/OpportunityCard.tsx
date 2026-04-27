@@ -25,10 +25,10 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
       }}
       style={{
         position: 'relative',
-        flex: isMobile ? '1 1 100%' : (isTablet ? '1 1 45%' : (isHero ? '1 1 320px' : '1 1 280px')),
-        maxWidth: isMobile ? '100%' : (isTablet ? '45%' : (isHero ? '360px' : '300px')),
-        height: isMobile ? 'auto' : (isTablet ? '320px' : (isHero ? '380px' : '360px')),
-        minHeight: isMobile ? '260px' : '300px',
+        flex: isMobile ? '1 1 100%' : (isTablet ? '1 1 calc(50% - 20px)' : (isHero ? '1 1 320px' : '1 1 280px')),
+        maxWidth: isMobile ? '100%' : (isTablet ? 'calc(50% - 20px)' : (isHero ? '360px' : '300px')),
+        height: isMobile ? 'auto' : (isTablet ? 'auto' : (isHero ? '380px' : '360px')),
+        minHeight: isMobile ? '260px' : (isTablet ? '340px' : '300px'),
         background: 'linear-gradient(160deg, #0f0f0f, #1a1a1a)',
         backdropFilter: 'blur(30px)',
         WebkitBackdropFilter: 'blur(30px)',
@@ -50,26 +50,11 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
         willChange: 'transform, opacity, box-shadow',
         animationDelay: `${card.id * 0.5}s`
       }}
-      onMouseMove={(e) => {
-        const target = e.currentTarget;
-        const rect = target.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -10;
-        const rotateY = ((x - centerX) / centerX) * 10;
-        
-        requestAnimationFrame(() => {
-          target.style.transition = 'transform 0.1s ease-out, box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1), border 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-          target.style.transform = `translateY(-20px) scale(1.05) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-      }}
       onMouseEnter={(e) => {
         if (onHover) onHover(card.id);
         const target = e.currentTarget;
         target.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1), border 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-        target.style.transform = 'translateY(-20px) scale(1.05) rotateX(0) rotateY(0)';
+        target.style.transform = 'translateY(-20px) scale(1.05)';
         target.style.border = '1px solid rgba(200, 169, 106, 0.8)';
         target.style.boxShadow = '0 80px 180px rgba(0,0,0,0.9), inset 0 0 20px rgba(200, 169, 106, 0.1)';
         
@@ -87,17 +72,17 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
 
         if (title) {
           title.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-          title.style.transform = 'translateZ(40px) translateY(-8px) scale(1.05)';
+          title.style.transform = 'translateY(-8px) scale(1.05)';
         }
         if (counter) {
           counter.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-          counter.style.transform = 'translateZ(80px) translateY(-15px) scale(1.1)';
+          counter.style.transform = 'translateY(-15px) scale(1.1)';
         }
       }}
       onMouseLeave={(e) => {
         const target = e.currentTarget;
         target.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1), border 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-        target.style.transform = 'translateY(0) scale(1) rotateX(0) rotateY(0)';
+        target.style.transform = 'translateY(0) scale(1)';
         target.style.border = '1px solid rgba(200, 169, 106, 0.3)';
         target.style.boxShadow = isHero
           ? '0 35px 100px rgba(0,0,0,0.6)' 
@@ -110,11 +95,11 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
         if (shine) shine.style.animation = 'none';
         if (title) {
           title.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-          title.style.transform = 'translateZ(0) translateY(0) scale(1)';
+          title.style.transform = 'translateY(0) scale(1)';
         }
         if (counter) {
           counter.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-          counter.style.transform = 'translateZ(0) translateY(0) scale(1)';
+          counter.style.transform = 'translateY(0) scale(1)';
         }
       }}
     >
