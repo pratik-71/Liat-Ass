@@ -129,7 +129,7 @@ const CuratedExperiences: React.FC = React.memo(() => {
   ];
 
   return (
-    <section className="w-full bg-[#050505] py-40 px-8 md:px-24">
+    <section className="w-full bg-[#050505] py-20 px-8 md:px-24">
       <div className="max-w-7xl mx-auto flex flex-col items-center text-center mb-32">
         <h2 className="text-[10px] tracking-[0.8em] text-[#C8A96A] uppercase font-bold mb-8 opacity-60">Specialized Districts</h2>
         <h3 className="text-5xl md:text-8xl font-['Oswald'] text-white uppercase tracking-tighter leading-none mb-12">
@@ -218,7 +218,7 @@ const StrategicAdvantage: React.FC = React.memo(() => {
   ];
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#050505] py-32 px-8 md:px-24 border-b border-white/5">
+    <section ref={sectionRef} className="w-full bg-[#050505] py-16 px-8 md:px-24 border-b border-white/5">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         {reasons.map((item, i) => (
           <div key={i} className="advantage-card group p-12 bg-black border border-white/5 transition-all duration-500 hover:border-[#C8A96A]/40 overflow-hidden">

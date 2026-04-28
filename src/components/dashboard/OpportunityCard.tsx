@@ -109,7 +109,7 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
           color: #E5C27A !important;
         }
         .group:hover .card-counter {
-          filter: drop-shadow(0 0 10px rgba(229, 194, 122, 0.4)) !important;
+          filter: none !important;
         }
       `}</style>
 
@@ -220,7 +220,7 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
               backgroundSize: '200% auto',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.3))',
+              filter: 'none',
               animation: 'text-shimmer 4s infinite linear'
             }}
           >
