@@ -4,10 +4,31 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="The Dubai Mall – World's largest mall. Discover 1,200+ retail outlets, luxury dining, world-class entertainment and investment opportunities in the heart of Dubai."
+    />
     <title>The Dubai Mall | Investor Deck</title>
+
+    <!-- Preconnect to font origins so the browser opens the TCP connection early -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Preconnect to GitHub raw CDN (video source) -->
+    <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin />
+
+    <!--
+      Load Oswald + Inter with display=swap.
+      Oswald is used in virtually every component; without this link
+      the browser falls back to a system font causing layout shift (CLS).
+    -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Preload ONLY the true LCP asset (first thing the user sees) -->
     <link rel="preload" as="image" href="/dubai_mall_start.webp" fetchpriority="high" />
-    <link rel="preload" as="image" href="/home%20ann.webp" fetchpriority="high" />
-    <link rel="preload" as="image" href="/home.webp" fetchpriority="high" />
   </head>
   <body>
     <div id="root"></div>
