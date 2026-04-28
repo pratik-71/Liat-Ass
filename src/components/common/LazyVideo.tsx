@@ -13,11 +13,7 @@ const LazyVideo: React.FC<LazyVideoProps> = ({ src, className, ...props }) => {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
-        } else {
-          // Optional: Pause video when not in view to save resources
-          if (videoRef.current) {
-            videoRef.current.pause();
-          }
+          observer.disconnect(); // only trigger once
         }
       },
       { threshold: 0.1 }
@@ -30,11 +26,25 @@ const LazyVideo: React.FC<LazyVideoProps> = ({ src, className, ...props }) => {
     return () => observer.disconnect();
   }, []);
 
+  // Once in view, set src → load → play
   useEffect(() => {
-    if (isInView && videoRef.current && props.autoPlay) {
-      videoRef.current.play().catch(err => console.log("Auto-play blocked:", err));
+    const video = videoRef.current;
+    if (!isInView || !video) return;
+
+    // Attach source element if not already present
+    if (!video.querySelector('source')) {
+      const sourceEl = document.createElement('source');
+      sourceEl.src = src;
+      sourceEl.type = 'video/mp4';
+      video.appendChild(sourceEl);
     }
-  }, [isInView, props.autoPlay]);
+
+    video.load();
+
+    if (props.autoPlay) {
+      video.play().catch((err) => console.log('Auto-play blocked:', err));
+    }
+  }, [isInView, src, props.autoPlay]);
 
   return (
     <video
@@ -42,9 +52,7 @@ const LazyVideo: React.FC<LazyVideoProps> = ({ src, className, ...props }) => {
       className={className}
       {...props}
       preload="none"
-    >
-      {isInView && <source src={src} type="video/mp4" />}
-    </video>
+    />
   );
 };
 

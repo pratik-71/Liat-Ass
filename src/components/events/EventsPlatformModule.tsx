@@ -18,35 +18,31 @@ interface EventsPlatformModuleProps {
    ========================================================================== */
 const EventsHeroSection: React.FC = React.memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const panelLeftRef = useRef<HTMLDivElement>(null);
   const panelCenterRef = useRef<HTMLDivElement>(null);
   const panelRightRef = useRef<HTMLDivElement>(null);
-  const giantTextRef = useRef<HTMLDivElement>(null);
 
-  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [wordIndex, setWordIndex] = useState(0);
-  
+
   const HERO_IMAGES = [
-    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%201.png',
-    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%202.png',
-    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%203.png',
-    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%204.png',
-    'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%205.png'
+    '/events/image 1.png',
+    '/events/image 2.png',
+    '/events/image 3.png',
+    '/events/image 4.png',
+    '/events/image 5.png'
   ];
 
   const words = ['TOP-TIER BRANDS', 'GLOBAL ACTIVATIONS', 'ICONIC EVENTS', 'PREMIUM LAUNCHES'];
 
   useEffect(() => {
     const imgTimer = setInterval(() => {
-      setCurrentImgIndex((prev) => (prev + 1) % HERO_IMAGES.length);
-    }, 4000);
-
+      setActiveIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 4500);
     const wordTimer = setInterval(() => {
       setWordIndex((prev) => (prev + 1) % words.length);
     }, 2500);
-
     return () => {
       clearInterval(imgTimer);
       clearInterval(wordTimer);
@@ -55,46 +51,68 @@ const EventsHeroSection: React.FC = React.memo(() => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(bgRef.current, { scale: 1, opacity: 0 }, { scale: 1.05, opacity: 1, duration: 1.5, ease: 'power2.out' });
-      gsap.to(bgRef.current, { scale: 1.12, duration: 20, repeat: -1, yoyo: true, ease: 'sine.inOut' });
-      gsap.fromTo(giantTextRef.current, { opacity: 0, scale: 0.9 }, { opacity: 0.08, scale: 1, duration: 2, ease: 'power2.out' });
-      gsap.fromTo(headingRef.current, { scale: 0.9, opacity: 0, y: 30 }, { scale: 1, opacity: 1, y: 0, duration: 1.2, ease: 'expo.out' });
-
-      const tl = gsap.timeline({ delay: 0.5 });
-      tl.fromTo(panelLeftRef.current, { x: -100, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: 'power3.out' }, 0);
-      tl.fromTo(panelCenterRef.current, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 1, ease: 'back.out(1.2)' }, 0.2);
-      tl.fromTo(panelRightRef.current, { x: 100, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: 'power3.out' }, 0.4);
-
-      tl.add(() => {
-        [panelLeftRef.current, panelCenterRef.current, panelRightRef.current].forEach((panel, i) => {
-          gsap.to(panel, { y: -10, duration: 3 + i * 0.5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: i * 0.2 });
-        });
-      });
+      gsap.fromTo(headingRef.current,
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 1.4, ease: 'expo.out', delay: 0.3 }
+      );
+      const tl = gsap.timeline({ delay: 0.6 });
+      tl.fromTo(panelLeftRef.current,   { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, 0);
+      tl.fromTo(panelCenterRef.current, { y: 40,  opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, 0.15);
+      tl.fromTo(panelRightRef.current,  { x: 80,  opacity: 0 }, { x: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, 0.3);
     }, containerRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={containerRef} className="relative w-full min-h-screen bg-black flex flex-col items-center justify-center pt-24 pb-32 overflow-hidden transform-gpu">
-      <LazyImage 
-        src={HERO_IMAGES[currentImgIndex]}
-        className="absolute inset-0 z-0 bg-cover bg-center origin-center transition-all duration-[2000ms] ease-in-out will-change-transform"
-        style={{ filter: 'blur(10px) brightness(0.6)', transform: 'scale(1.05)' }}
-        isBackground={true}
-      >
-        <div className="absolute inset-0 bg-black/40"></div>
-      </LazyImage>
+    <section
+      ref={containerRef}
+      className="relative w-full min-h-screen bg-black flex flex-col items-center justify-center pt-24 pb-32 overflow-hidden"
+    >
+      {/* All slides pre-rendered; only active gets opacity:1 + Ken Burns */}
+      {HERO_IMAGES.map((img, i) => (
+        <div
+          key={i}
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url('${img}')`,
+            filter: 'blur(8px) brightness(0.55)',
+            opacity: i === activeIndex ? 1 : 0,
+            transition: 'opacity 2s cubic-bezier(0.4, 0, 0.2, 1)',
+            animation: 'heroKenBurns 12s ease-in-out infinite alternate',
+            zIndex: i === activeIndex ? 1 : 0,
+          }}
+        />
+      ))}
+
+      {/* Dark vignette overlay */}
+      <div className="absolute inset-0 z-[2] bg-gradient-to-b from-black/50 via-black/20 to-black/60" />
+
+      {/* Slide indicator dots */}
+      <div className="absolute bottom-36 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        {HERO_IMAGES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActiveIndex(i)}
+            className="transition-all duration-500"
+            style={{
+              width: i === activeIndex ? '28px' : '8px',
+              height: '4px',
+              borderRadius: '2px',
+              background: i === activeIndex ? '#C8A96A' : 'rgba(255,255,255,0.3)',
+            }}
+          />
+        ))}
+      </div>
 
       <div className="relative z-10 w-full max-w-[1400px] mx-auto px-8 flex flex-col items-center justify-center text-center">
-        <div ref={giantTextRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[8rem] md:text-[22rem] font-black text-white whitespace-nowrap pointer-events-none select-none tracking-tighter mix-blend-overlay" style={{ filter: 'blur(8px)' }}>
-          100M+
-        </div>
-
-        <div ref={headingRef} className="mb-20 mt-2 relative z-20 w-full">
+        <div ref={headingRef} className="mb-20 mt-2 w-full">
           <h2 className="text-3xl md:text-7xl lg:text-[5.5rem] font-bold text-white mb-4 md:mb-6 tracking-tight uppercase leading-[1.1] flex flex-col items-center">
             <span className="block mb-1">Global Activation</span>
             <div className="relative h-[1.5em] overflow-hidden w-full max-w-[95vw] lg:max-w-[1400px]">
-              <span key={wordIndex} className="absolute inset-0 flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-r from-[#E5C27A] to-[#C8A96A] animate-slide-down-custom whitespace-nowrap text-xl md:text-5xl lg:text-[4.5rem]">
+              <span
+                key={wordIndex}
+                className="absolute inset-0 flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-r from-[#E5C27A] to-[#C8A96A] animate-slide-down-custom whitespace-nowrap text-xl md:text-5xl lg:text-[4.5rem]"
+              >
                 FOR {words[wordIndex]}
               </span>
             </div>
@@ -104,28 +122,24 @@ const EventsHeroSection: React.FC = React.memo(() => {
           </p>
         </div>
 
-        {/* Integrated Platform Dock */}
+        {/* Platform Dock */}
         <div className="w-full max-w-6xl px-8 z-30 mt-8">
           <div className="bg-black/20 backdrop-blur-3xl border border-white/10 rounded-2xl md:rounded-full p-3 flex flex-col md:flex-row items-stretch gap-2 shadow-2xl">
-            {[ 
-              { title: 'GLOBAL SHOWCASES', meta: 'Scale: 50K+', desc: 'Concerts • Fashion Weeks • Festivals' },
-              { title: 'BRAND ACTIVATIONS', meta: 'Dwell: +45%', desc: 'Interactive Takeovers • Campaigns' },
-              { title: 'GLOBAL LAUNCHES', meta: 'Reach: 10M+', desc: 'Product Unveils • Digital Reach' }
+            {[
+              { ref: panelLeftRef,   title: 'GLOBAL SHOWCASES', meta: 'Scale: 50K+',  desc: 'Concerts • Fashion Weeks • Festivals' },
+              { ref: panelCenterRef, title: 'BRAND ACTIVATIONS', meta: 'Dwell: +45%', desc: 'Interactive Takeovers • Campaigns' },
+              { ref: panelRightRef,  title: 'GLOBAL LAUNCHES',   meta: 'Reach: 10M+', desc: 'Product Unveils • Digital Reach' }
             ].map((panel, idx) => (
-              <div 
+              <div
                 key={idx}
+                ref={panel.ref}
                 className="group relative flex-1 flex flex-col justify-center px-4 py-5 md:px-10 md:py-7 rounded-xl md:rounded-full transition-all duration-500 cursor-pointer hover:bg-white/[0.07] border border-transparent hover:border-white/20 overflow-hidden"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#C8A96A]/10 via-[#C8A96A]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                
+                <div className="absolute inset-0 bg-gradient-to-r from-[#C8A96A]/10 via-[#C8A96A]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative z-10 flex flex-col items-center text-center">
                   <h3 className="text-xs md:text-sm font-bold text-[#E5C27A] tracking-[0.2em] uppercase mb-1.5">{panel.title}</h3>
-                  <div className="text-[10px] md:text-xs text-neutral-300 font-medium opacity-80 group-hover:opacity-100 transition-opacity">
-                    {panel.desc}
-                  </div>
-                  <div className="mt-2 text-[10px] md:text-[11px] font-black text-[#C8A96A] tracking-widest group-hover:text-white transition-colors">
-                    {panel.meta}
-                  </div>
+                  <div className="text-[10px] md:text-xs text-neutral-300 font-medium opacity-80 group-hover:opacity-100 transition-opacity">{panel.desc}</div>
+                  <div className="mt-2 text-[10px] md:text-[11px] font-black text-[#C8A96A] tracking-widest group-hover:text-white transition-colors">{panel.meta}</div>
                 </div>
               </div>
             ))}
@@ -245,10 +259,10 @@ const CapabilitiesSection: React.FC = React.memo(() => {
    ========================================================================== */
 const EventHighlightsSection: React.FC = React.memo(() => {
   const highlights = [
-    { title: 'Luxury Brand Showcase', zone: 'Fashion Avenue Atrium', impact: '85% Luxury Intent Audience', image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%201.png' },
-    { title: 'Global Tech Launch', zone: 'Central Atrium Zone', impact: '2.5M+ On-site Impressions', image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%202.png' },
-    { title: 'International Fashion Week', zone: 'Main Promenade', impact: '10M+ Global Social Reach', image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%203.png' },
-    { title: 'Cultural Mega-Event', zone: 'Waterfront Terrace', impact: '100K+ Peak Dwellers', image: 'https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/events/image%204.png' }
+    { title: 'Luxury Brand Showcase', zone: 'Fashion Avenue Atrium', impact: '85% Luxury Intent Audience', image: '/events/image 1.png' },
+    { title: 'Global Tech Launch', zone: 'Central Atrium Zone', impact: '2.5M+ On-site Impressions', image: '/events/image 2.png' },
+    { title: 'International Fashion Week', zone: 'Main Promenade', impact: '10M+ Global Social Reach', image: '/events/image 3.png' },
+    { title: 'Cultural Mega-Event', zone: 'Waterfront Terrace', impact: '100K+ Peak Dwellers', image: '/events/image 4.png' }
   ];
 
   return (
@@ -344,6 +358,11 @@ const EventsPlatformModule: React.FC<EventsPlatformModuleProps> = ({ onBack }) =
           100% { transform: translateY(100%); opacity: 0; filter: blur(15px); }
         }
         .animate-slide-down-custom { animation: slide-down-custom 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) infinite; }
+        @keyframes heroKenBurns {
+          0%   { transform: scale(1.0) translate(0%, 0%); }
+          50%  { transform: scale(1.08) translate(-1%, -0.5%); }
+          100% { transform: scale(1.04) translate(1%, 0.5%); }
+        }
       `}</style>
     </div>
   );
