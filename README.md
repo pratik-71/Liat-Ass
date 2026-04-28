@@ -71,6 +71,18 @@ The application follows a structured, high-impact narrative:
 *   **GSAP & ScrollTrigger**: Powering the "Black & Gold" cinematic motion identity.
 *   **Optimized Lazy Loading**: Custom-built `LazyImage` and `LazyVideo` components for instant rendering and high-performance asset delivery.
 *   **Modular Architecture**: Built for expansion with specialized types and common UI components.
+*   **WebP Image Optimization**: All images converted to `.webp` for ~60% smaller file sizes vs PNG/JPG.
+*   **Vercel Edge Caching**: Static assets cached for 1 year globally via `Cache-Control: immutable`.
+*   **Resource Preloading**: Critical above-the-fold images preloaded via `<link rel="preload">` for instant LCP.
+
+---
+
+## 📊 Lighthouse Performance Score
+
+> Tested on [liat-ass.vercel.app/dashboard](https://liat-ass.vercel.app/dashboard) via Chrome DevTools (Incognito Mode).
+
+![Lighthouse Score](https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/score.png)
+
 
 ---
 *Created for the Investor Pitch Experience.*
