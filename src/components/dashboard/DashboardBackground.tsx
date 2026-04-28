@@ -14,7 +14,7 @@ export const DashboardBackground: React.FC<DashboardBackgroundProps> = ({ bgRef,
         style={{
           position: 'fixed',
           inset: 0,
-          backgroundImage: 'url("https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/home.jpg")',
+          backgroundImage: 'url("https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/home.webp")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           zIndex: 0,
@@ -49,7 +49,7 @@ export const DashboardBackground: React.FC<DashboardBackgroundProps> = ({ bgRef,
       {/* LAYER 200: Intro Splash (Topmost during animation) */}
       <img 
         ref={introImageRef}
-        src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/home%20ann.jpg"
+        src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/home%20ann.webp"
         alt="Intro"
         fetchPriority="high"
         style={{
