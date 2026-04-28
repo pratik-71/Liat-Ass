@@ -236,7 +236,7 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
         }}
       >
         <LazyImage 
-          src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/footer.png" 
+          src="https://raw.githubusercontent.com/pratik-71/Liat-Ass/main/public/footer.webp" 
           alt="Accent" 
           style={{ 
             width: '100%', 

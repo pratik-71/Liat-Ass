@@ -502,7 +502,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
       >
         <img 
           ref={logoRef} 
-          src="/dubai_mall_start.png" 
+          src="/dubai_mall_start.webp" 
           style={{ maxWidth: '780px', width: '85vw' }} 
           // @ts-ignore
           fetchPriority="high"
