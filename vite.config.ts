@@ -12,8 +12,6 @@ export default defineConfig({
   ],
   build: {
     target: 'esnext',
-    minify: 'esbuild',
-    cssMinify: true,
     cssCodeSplit: true,
     // Raise warning only above 600kb (our chunks will be smaller)
     chunkSizeWarningLimit: 600,
