@@ -16,105 +16,83 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
   return (
     <div
       key={card.id}
-      className="luxury-card"
+      className="luxury-card group"
       onClick={(e) => {
         const target = e.currentTarget;
         target.style.transition = 'transform 0.1s ease';
-        target.style.transform = 'scale(0.95) translateY(-10px)';
+        target.style.transform = 'scale(0.98) translateY(-5px)';
         onSelect(card.id);
+      }}
+      onMouseEnter={(e) => {
+        if (onHover) onHover(card.id);
+        const target = e.currentTarget;
+        target.style.transform = 'translateY(-15px) scale(1.05)';
+        target.style.border = '1px solid rgba(229, 194, 122, 0.6)';
+        target.style.boxShadow = '0 50px 100px rgba(0,0,0,0.6), inset 0 0 30px rgba(229, 194, 122, 0.05)';
+        
+        const shine = target.querySelector('.shine-sweep') as HTMLElement;
+        if (shine) {
+          shine.style.animation = 'none';
+          void shine.offsetWidth;
+          shine.style.animation = 'shine-sweep 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+        }
+      }}
+      onMouseLeave={(e) => {
+        const target = e.currentTarget;
+        target.style.transform = 'translateY(0) scale(1)';
+        target.style.border = '1px solid rgba(200, 169, 106, 0.2)';
+        target.style.boxShadow = '0 20px 60px rgba(0,0,0,0.4)';
+        
+        const shine = target.querySelector('.shine-sweep') as HTMLElement;
+        if (shine) shine.style.animation = 'none';
       }}
       style={{
         position: 'relative',
         flex: isMobile ? '1 1 100%' : (isTablet ? '1 1 calc(50% - 20px)' : (isHero ? '1 1 320px' : '1 1 280px')),
         maxWidth: isMobile ? '100%' : (isTablet ? 'calc(50% - 20px)' : (isHero ? '360px' : '300px')),
-        height: isMobile ? 'auto' : (isTablet ? 'auto' : (isHero ? '380px' : '360px')),
-        minHeight: isMobile ? '260px' : (isTablet ? '340px' : '300px'),
-        background: 'linear-gradient(160deg, #0f0f0f, #1a1a1a)',
-        backdropFilter: 'blur(30px)',
-        WebkitBackdropFilter: 'blur(30px)',
-        border: '1px solid rgba(200, 169, 106, 0.3)',
-        borderRadius: '16px',
-        boxShadow: isHero 
-          ? '0 35px 100px rgba(0,0,0,0.6)' 
-          : '0 25px 80px rgba(0,0,0,0.5)',
-        overflow: 'visible',
+        height: isMobile ? 'auto' : (isTablet ? 'auto' : (isHero ? '420px' : '400px')),
+        minHeight: isMobile ? '300px' : (isTablet ? '380px' : '340px'),
+        background: 'linear-gradient(165deg, rgba(8, 8, 8, 0.92) 0%, rgba(2, 2, 2, 0.98) 100%)',
+        backdropFilter: 'blur(50px)',
+        WebkitBackdropFilter: 'blur(50px)',
+        border: '1px solid rgba(200, 169, 106, 0.12)',
+        borderRadius: '20px',
+        boxShadow: '0 25px 80px rgba(0,0,0,0.6)',
+        overflow: 'hidden',
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-start',
-        padding: isMobile ? '30px 24px' : (isTablet ? '40px 30px' : '52px 38px'),
-        transition: 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1), border 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-        transform: 'translateY(0) rotateX(0) rotateY(0)',
-        transformStyle: 'preserve-3d',
+        justifyContent: 'space-between',
+        padding: isMobile ? '32px 24px' : '44px 36px',
+        transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+        transform: 'translateY(0) scale(1)',
         zIndex: isHero ? 2 : 1,
-        willChange: 'transform, opacity, box-shadow',
-        animationDelay: `${card.id * 0.5}s`
-      }}
-      onMouseEnter={(e) => {
-        if (onHover) onHover(card.id);
-        const target = e.currentTarget;
-        target.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1), border 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-        target.style.transform = 'translateY(-20px) scale(1.05)';
-        target.style.border = '1px solid rgba(200, 169, 106, 0.8)';
-        target.style.boxShadow = '0 80px 180px rgba(0,0,0,0.9), inset 0 0 20px rgba(200, 169, 106, 0.1)';
-        
-        const shine = target.querySelector('.shine-sweep') as HTMLElement;
-        const title = target.querySelector('.card-title') as HTMLElement;
-        const counter = target.querySelector('.card-counter') as HTMLElement;
-
-        if (shine) {
-          shine.style.animation = 'none';
-          void shine.offsetWidth;
-          // Spectral Shimmer (Rainbow Refraction)
-          shine.style.background = 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), rgba(200,169,106,0.2), rgba(100,150,255,0.1), transparent)';
-          shine.style.animation = 'shine 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards';
-        }
-
-        if (title) {
-          title.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-          title.style.transform = 'translateY(-8px) scale(1.05)';
-        }
-        if (counter) {
-          counter.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-          counter.style.transform = 'translateY(-15px) scale(1.1)';
-        }
-      }}
-      onMouseLeave={(e) => {
-        const target = e.currentTarget;
-        target.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1), border 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-        target.style.transform = 'translateY(0) scale(1)';
-        target.style.border = '1px solid rgba(200, 169, 106, 0.3)';
-        target.style.boxShadow = isHero
-          ? '0 35px 100px rgba(0,0,0,0.6)' 
-          : '0 25px 80px rgba(0,0,0,0.5)';
-        
-        const shine = target.querySelector('.shine-sweep') as HTMLElement;
-        const title = target.querySelector('.card-title') as HTMLElement;
-        const counter = target.querySelector('.card-counter') as HTMLElement;
-
-        if (shine) shine.style.animation = 'none';
-        if (title) {
-          title.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-          title.style.transform = 'translateY(0) scale(1)';
-        }
-        if (counter) {
-          counter.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-          counter.style.transform = 'translateY(0) scale(1)';
-        }
+        willChange: 'transform'
       }}
     >
       <style>{`
         @keyframes liquid-flow {
-          0% { transform: translate(-5%, -5%) scale(1); }
-          100% { transform: translate(5%, 5%) scale(1.05); }
+          0% { transform: translate(-10%, -10%) scale(1) rotate(0deg); }
+          50% { transform: translate(10%, 10%) scale(1.1) rotate(5deg); }
+          100% { transform: translate(-10%, -10%) scale(1) rotate(0deg); }
+        }
+        @keyframes shine-sweep {
+          0% { left: -100%; opacity: 0; }
+          30% { opacity: 0.3; }
+          100% { left: 100%; opacity: 0; }
+        }
+        @keyframes text-shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
         }
         .liquid-gold-bg {
           position: absolute;
-          inset: -20%;
-          background: radial-gradient(circle at 50% 50%, rgba(229, 194, 122, 0.05) 0%, transparent 70%),
-                      radial-gradient(circle at 20% 80%, rgba(200, 169, 106, 0.03) 0%, transparent 50%);
-          filter: blur(60px);
-          animation: liquid-flow 20s infinite alternate ease-in-out;
+          inset: -30%;
+          background: radial-gradient(circle at 50% 50%, rgba(229, 194, 122, 0.08) 0%, transparent 60%),
+                      radial-gradient(circle at 20% 80%, rgba(200, 169, 106, 0.05) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, rgba(229, 194, 122, 0.05) 0%, transparent 50%);
+          filter: blur(50px);
+          animation: liquid-flow 15s infinite ease-in-out;
           pointer-events: none;
           z-index: 0;
           will-change: transform;
@@ -135,11 +113,17 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
         <div className="liquid-gold-bg" />
       </div>
 
-      {/* SHIMMER CONTAINER (Refined for Glass Edge) */}
+      {/* CORNER BRACKETS */}
+      <div style={{ position: 'absolute', top: '15px', left: '15px', width: '20px', height: '20px', borderLeft: '1px solid rgba(229, 194, 122, 0.4)', borderTop: '1px solid rgba(229, 194, 122, 0.4)', zIndex: 5 }} />
+      <div style={{ position: 'absolute', top: '15px', right: '15px', width: '20px', height: '20px', borderRight: '1px solid rgba(229, 194, 122, 0.4)', borderTop: '1px solid rgba(229, 194, 122, 0.4)', zIndex: 5 }} />
+      <div style={{ position: 'absolute', bottom: '15px', left: '15px', width: '20px', height: '20px', borderLeft: '1px solid rgba(229, 194, 122, 0.4)', borderBottom: '1px solid rgba(229, 194, 122, 0.4)', zIndex: 5 }} />
+      <div style={{ position: 'absolute', bottom: '15px', right: '15px', width: '20px', height: '20px', borderRight: '1px solid rgba(229, 194, 122, 0.4)', borderBottom: '1px solid rgba(229, 194, 122, 0.4)', zIndex: 5 }} />
+
+      {/* SHIMMER CONTAINER (Reactive Glint) */}
       <div style={{
         position: 'absolute',
         inset: 0,
-        borderRadius: '16px',
+        borderRadius: '20px',
         overflow: 'hidden',
         pointerEvents: 'none',
         zIndex: 2
@@ -159,75 +143,132 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
         />
       </div>
 
-      <div style={{ position: 'relative', zIndex: 10, flex: 1, display: 'flex', flexDirection: 'column', transformStyle: 'preserve-3d' }}>
-        <h3 
-          className="card-title"
-          style={{
-            fontSize: isHero ? '16px' : '12px',
-            fontWeight: 700,
-            marginBottom: '20px',
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            color: '#FFFFFF',
-            opacity: 0.9,
-            fontFamily: "'Oswald', sans-serif",
-            transition: 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-            transform: 'translateZ(0)'
-          }}
-        >
-          {card.title}
-        </h3>
+      <div style={{ position: 'relative', zIndex: 10, flex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '32px' }}>
+          <h3 
+            className="card-title"
+            style={{
+              fontSize: '15px',
+              fontWeight: 700,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#FFFFFF',
+              fontFamily: "'Oswald', sans-serif",
+              margin: 0,
+              textShadow: '0 2px 15px rgba(0,0,0,0.8)',
+              opacity: 1,
+              transition: 'all 0.5s ease'
+            }}
+          >
+            {card.title}
+          </h3>
+          <div style={{ 
+            width: '40px', 
+            height: '40px', 
+            borderRadius: '12px', 
+            background: 'rgba(229, 194, 122, 0.05)', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            border: '1px solid rgba(229, 194, 122, 0.2)',
+            boxShadow: '0 0 20px rgba(229, 194, 122, 0.05)',
+            transition: 'all 0.5s ease'
+          }} className="group-hover:scale-110 group-hover:bg-[#C8A96A]/10 group-hover:border-[#E5C27A]">
+            {card.id === 1 && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E5C27A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            )}
+            {card.id === 2 && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E5C27A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+            )}
+            {card.id === 3 && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E5C27A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M2 12h20"/></svg>
+            )}
+            {card.id === 4 && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E5C27A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+            )}
+          </div>
+        </div>
 
-        <div style={{ marginBottom: '60px', display: 'flex', flexDirection: 'column', transformStyle: 'preserve-3d' }}>
+        <div style={{ marginBottom: 'auto' }}>
           <div
             id={`stat-count-${card.id}`}
             className="card-counter"
             style={{
-              fontSize: '68px',
+              fontSize: isMobile ? '64px' : '82px',
               fontFamily: "'Oswald', sans-serif",
               fontWeight: 800,
               textTransform: 'uppercase',
-              lineHeight: 1,
-              marginBottom: '8px',
-              letterSpacing: '-0.02em',
-              background: 'linear-gradient(110deg, #E5C27A 40%, #FFF5D6 50%, #C8A96A 60%)',
+              lineHeight: 0.9,
+              marginBottom: '12px',
+              letterSpacing: '-0.04em',
+              background: 'linear-gradient(110deg, #FFFFFF 0%, #E5C27A 45%, #FFFFFF 50%, #C8A96A 55%, #FFFFFF 100%)',
               backgroundSize: '200% auto',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              animation: 'text-shimmer 3s infinite linear',
-              transition: 'transform 0.7s cubic-bezier(0.23, 1, 0.32, 1)',
-              transform: 'translateZ(0)'
+              filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.3))',
+              animation: 'text-shimmer 4s infinite linear'
             }}
           >
             0
           </div>
           {card.label && (
             <div style={{
-              fontSize: '12px',
-              color: 'rgba(255, 255, 255, 0.5)',
-              letterSpacing: '0.2em',
+              fontSize: '11px',
+              color: 'rgba(255, 255, 255, 0.6)',
+              letterSpacing: '0.3em',
               textTransform: 'uppercase',
               fontWeight: 700,
-              transition: 'transform 0.5s ease',
-              transform: 'translateZ(20px)'
+              marginBottom: '32px'
             }}>
               {card.label}
             </div>
           )}
         </div>
 
-        <p style={{
-          fontSize: '13px',
-          color: 'rgba(255, 255, 255, 0.65)',
-          fontWeight: 300,
-          lineHeight: 1.6,
-          margin: 0,
-          paddingTop: '20px',
-          transform: 'translateZ(10px)'
+        <div style={{ 
+          marginTop: 'auto', 
+          paddingTop: '24px', 
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px'
         }}>
-          {card.desc}
-        </p>
+          <p style={{
+            fontSize: '14px',
+            color: 'rgba(255, 255, 255, 0.7)',
+            fontWeight: 300,
+            lineHeight: 1.6,
+            margin: 0
+          }}>
+            {card.desc}
+          </p>
+          
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '8px', 
+            marginTop: '8px',
+            opacity: 0,
+            transform: 'translateX(-10px)',
+            transition: 'all 0.5s ease',
+          }} className="group-hover:opacity-100 group-hover:transform-none">
+            <span style={{ fontSize: '10px', color: '#E5C27A', fontWeight: 700, letterSpacing: '0.2em' }}>EXPLORE MODULE</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5C27A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </div>
+        </div>
       </div>
+      
+      {/* Bottom Accent Line */}
+      <div style={{
+        position: 'absolute',
+        bottom: 0,
+        left: '10%',
+        width: '80%',
+        height: '2px',
+        background: 'linear-gradient(90deg, transparent, #E5C27A, transparent)',
+        opacity: 0,
+        transition: 'opacity 0.6s ease'
+      }} className="group-hover:opacity-100" />
     </div>
   );
 };

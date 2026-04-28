@@ -463,7 +463,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
         <h1
           ref={brandsHeadlineRef}
           style={{
-            fontSize: 'clamp(24px, 6vw, 64px)', // Fluid scaling
+            fontSize: 'clamp(24px, 6vw, 72px)', // Fluid scaling
             fontFamily: "'Oswald', sans-serif",
             fontWeight: 800,
             textAlign: 'center',
@@ -485,7 +485,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
           Host activations, launches, and large-scale events that connect with millions.
         </p>
 
-        <div ref={brandsTagRef} className="brand-tag" style={{ bottom: '5%' }}>
+        <div ref={brandsTagRef} className="brand-tag" style={{ bottom: '10%' }}>
           GLOBAL EVENTS • BRAND ACTIVATIONS • LIVE EXPERIENCES
         </div>
       </div>
