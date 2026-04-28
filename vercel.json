@@ -1,10 +1,7 @@
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
   "headers": [
     {
-      "source": "/(.*\\.(png|jpg|jpeg|webp|mp4|webm|svg))",
+      "source": "/(.*).(png|jpg|jpeg|webp|mp4|webm|svg|js|css)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -12,5 +9,8 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
