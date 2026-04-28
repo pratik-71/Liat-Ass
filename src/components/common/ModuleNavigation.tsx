@@ -6,8 +6,7 @@ interface ModuleNavigationProps {
   onBack: () => void;
 }
 
-const ModuleNavigation: React.FC<ModuleNavigationProps> = ({ moduleName }) => {
-  const navigate = useNavigate();
+const ModuleNavigation: React.FC<ModuleNavigationProps> = ({ moduleName, onBack }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -23,9 +22,9 @@ const ModuleNavigation: React.FC<ModuleNavigationProps> = ({ moduleName }) => {
       isScrolled ? 'bg-black/80 backdrop-blur-2xl border-b border-[#C8A96A]/20' : 'bg-transparent border-b border-transparent'
     }`}>
       {/* Brand & Module Link - Hidden on Mobile */}
-      <Link 
-        to="/dashboard"
-        className="hidden md:flex items-center gap-3 md:gap-4"
+      <div 
+        onClick={onBack}
+        className="hidden md:flex items-center gap-3 md:gap-4 cursor-pointer group"
       >
         <span className="text-[9px] md:text-[10px] font-bold tracking-[0.4em] uppercase text-[#C8A96A] transition-all duration-500 group-hover:text-white group-hover:tracking-[0.5em] whitespace-nowrap">
           The Dubai Mall
@@ -34,14 +33,14 @@ const ModuleNavigation: React.FC<ModuleNavigationProps> = ({ moduleName }) => {
         <span className="text-white/60 text-[9px] md:text-[10px] uppercase tracking-[0.2em] group-hover:text-[#E5C27A] transition-colors duration-500 font-medium whitespace-nowrap">
           {moduleName}
         </span>
-      </Link>
+      </div>
 
       {/* Spacing for mobile when Link is hidden */}
       <div className="md:hidden flex-1" />
 
       {/* Back Button */}
       <button
-        onClick={() => navigate('/dashboard')}
+        onClick={onBack}
         className="group relative px-4 md:px-8 py-2 md:py-2.5 overflow-hidden text-[8px] md:text-[9px] font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase transition-all duration-500 border border-[#C8A96A]/30 text-[#E5C27A] hover:text-black cursor-pointer"
       >
         <span className="relative z-10 transition-colors duration-500 flex items-center gap-2">
