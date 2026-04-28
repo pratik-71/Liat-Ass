@@ -172,8 +172,8 @@ const RetailPathSection: React.FC = React.memo(() => {
       gsap.fromTo('.path-card', 
         { opacity: 0, y: 50 },
         { 
-          opacity: 1, y: 0, duration: 1, stagger: 0.15, ease: 'power3.out',
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' }
+          opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out',
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' }
         }
       );
     }, sectionRef);

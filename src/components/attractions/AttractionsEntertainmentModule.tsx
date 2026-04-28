@@ -132,8 +132,8 @@ const GridHeroSection: React.FC = React.memo(() => {
         gsap.fromTo(tile,
           { opacity: 0, y: 40 },
           { 
-            opacity: 1, y: 0, duration: 1, ease: 'power3.out',
-            scrollTrigger: { trigger: tile, start: 'top 85%' }
+            opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
+            scrollTrigger: { trigger: tile, start: 'top 90%' }
           }
         );
       });

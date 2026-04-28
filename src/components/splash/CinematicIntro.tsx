@@ -68,12 +68,29 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
     video.addEventListener('canplay', handlePlaying)
     video.addEventListener('seeked', handlePlaying)
 
+    // Attempt to lock orientation to landscape on mobile
+    const lockOrientation = async () => {
+      try {
+        if (typeof screen !== 'undefined' && screen.orientation && (screen.orientation as any).lock) {
+          await (screen.orientation as any).lock('landscape').catch(() => {});
+        }
+      } catch (e) {}
+    };
+    lockOrientation();
+
     return () => {
       video.removeEventListener('waiting', handleWaiting)
       video.removeEventListener('playing', handlePlaying)
       video.removeEventListener('canplay', handlePlaying)
       video.removeEventListener('seeked', handlePlaying)
       gsap.globalTimeline.resume()
+      
+      // Unlock orientation when intro is done
+      try {
+        if (typeof screen !== 'undefined' && screen.orientation && (screen.orientation as any).unlock) {
+          (screen.orientation as any).unlock();
+        }
+      } catch (e) {}
     }
   }, [])
 
@@ -97,7 +114,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
             const h2 = subliminalTextRef.current.querySelector('h2');
             if (h2) {
               h2.innerText = 'BEYOND SCALE';
-              gsap.fromTo(h2, { scale: 0.9, opacity: 0 }, { scale: 1.1, opacity: 0.12, duration: 8, ease: 'power1.out' });
+              gsap.fromTo(h2, { scale: 0.8, opacity: 0 }, { scale: 1.1, opacity: 0.12, duration: 6, ease: 'power1.out' });
             }
           }
           
@@ -250,10 +267,11 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
     })
 
     tl.to(brandsPhaseRef.current, {
-      scale: 4,
+      scale: 3,
       opacity: 0,
-      duration: 1.0,
-      ease: 'power3.in'
+      duration: 1.4,
+      ease: 'power2.in',
+      force3D: true
     }, 0)
 
     // Fade out Intro Logo instead of zooming it
@@ -280,7 +298,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
   return (
     <div
       ref={containerRef}
-      className={isBuffering ? 'is-buffering' : ''}
+      className={`cinematic-container ${isBuffering ? 'is-buffering' : ''}`}
       style={{
         position: 'fixed', inset: 0, zIndex: 9999,
         backgroundColor: '#000',
@@ -306,9 +324,9 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
         src="/intro_logo.png"
         style={{
           position: 'absolute',
-          top: '40px',
-          left: '40px',
-          height: 'clamp(50px, 8vw, 100px)',
+          top: 'clamp(20px, 4vw, 40px)',
+          left: 'clamp(20px, 4vw, 40px)',
+          height: 'clamp(40px, 6vw, 80px)',
           zIndex: 110,
           pointerEvents: 'none',
           opacity: 0,
@@ -324,8 +342,10 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
         position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
         zIndex: 2, pointerEvents: 'none', opacity: 0, mixBlendMode: 'overlay'
       }}>
-        <h2 style={{ 
-          fontSize: '25vw', fontWeight: 900, color: '#fff', letterSpacing: '-0.05em', margin: 0,
+        <h2 
+          className="subliminal-h2"
+          style={{ 
+          fontSize: 'clamp(80px, 25vw, 400px)', fontWeight: 900, color: '#fff', letterSpacing: '-0.05em', margin: 0,
           fontFamily: "'Oswald', sans-serif", textTransform: 'uppercase', whiteSpace: 'nowrap'
         }}>
           MAGNIFICENT
@@ -357,6 +377,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
       {/* Intro Metrics */}
       <div
         ref={statsRef}
+        className="stats-metric"
         style={{
           position: 'absolute', bottom: '15%', left: '50%',
           transform: 'translateX(-50%)',
@@ -370,17 +391,19 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
           textShadow: '0 10px 50px rgba(0,0,0,0.9), 0 0 30px rgba(255,255,255,0.2)',
           WebkitTextFillColor: '#FFFFFF',
           zIndex: 10, pointerEvents: 'none',
-          whiteSpace: 'nowrap',
-          width: 'max-content',
+          whiteSpace: 'normal',
+          width: '90%',
           willChange: 'transform, opacity',
           opacity: 0,
-          textAlign: 'center'
+          textAlign: 'center',
+          lineHeight: 1.1
         }}
       />
 
       {/* Top Stats Group Overlay (Phase 1) */}
       <div
         ref={topStatsGroupRef}
+        className="top-stats-group"
         style={{
           position: 'absolute',
           top: '14%',
@@ -389,11 +412,10 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          gap: '24px',
+          gap: 'clamp(12px, 2vw, 24px)',
           opacity: 0,
           zIndex: 10,
-          pointerEvents: 'none',
-          whiteSpace: 'nowrap'
+          pointerEvents: 'none'
         }}
       >
         <div className="top-stat-pill">12 million sq ft Area</div>
@@ -433,7 +455,9 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
           alignItems: 'center', justifyContent: 'center',
           backgroundColor: 'rgba(0, 0, 0, 0.4)',
           background: 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%)',
-          opacity: 0, zIndex: 15, pointerEvents: 'none'
+          opacity: 0, zIndex: 15, pointerEvents: 'none',
+          willChange: 'transform, opacity',
+          backfaceVisibility: 'hidden'
         }}
       >
         <h1
@@ -508,6 +532,8 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
           font-size: clamp(11px, 1.6vw, 16px);
           text-shadow: 0 2px 10px rgba(0,0,0,0.5);
           box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+          position: relative;
+          overflow: hidden;
         }
         .center-tag {
           font-family: 'Oswald', sans-serif;
@@ -515,7 +541,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
           color: #FFFFFF;
           text-transform: uppercase;
           letter-spacing: 0.2em;
-          background: rgba(0, 0, 0, 0.85);
+          background: rgba(0, 0, 0, 0.6);
           backdrop-filter: blur(15px);
           padding: 12px 32px;
           border-radius: 4px;
@@ -523,6 +549,8 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
           font-size: clamp(14px, 2.2vw, 22px);
           text-shadow: 0 2px 15px rgba(0,0,0,0.6);
           box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+          position: relative;
+          overflow: hidden;
         }
         .brand-subtext {
           font-family: 'Oswald', sans-serif;
@@ -562,7 +590,7 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
           color: #FFFFFF;
           text-transform: uppercase;
           letter-spacing: 0.25em;
-          background: rgba(0, 0, 0, 0.85);
+          background: rgba(0, 0, 0, 0.6);
           backdrop-filter: blur(20px);
           padding: 12px 28px;
           border-radius: 4px;
@@ -570,6 +598,22 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
           box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 15px rgba(229, 194, 122, 0.1);
           text-shadow: 0 2px 10px rgba(0,0,0,0.5);
           transition: all 0.5s ease;
+          position: relative;
+          overflow: hidden;
+        }
+        .top-stat-pill::after, .corner-tag::after, .center-tag::after {
+          content: '';
+          position: absolute;
+          top: 0; left: -150%;
+          width: 50%; height: 100%;
+          background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+          transform: skewX(-25deg);
+          animation: shimmer-sweep 6s infinite;
+        }
+        @keyframes shimmer-sweep {
+          0% { left: -150%; }
+          50% { left: 250%; }
+          100% { left: 250%; }
         }
         .is-buffering * {
           animation-play-state: paused !important;
@@ -591,6 +635,73 @@ const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
           50% { transform: translate(12%, 9%); }
           70% { transform: translate(-10%, 10%); }
           90% { transform: translate(15%, 8%); }
+        }
+
+        /* Mobile Optimization & Auto-Landscape Fallback */
+        @media (max-width: 768px) {
+          .top-stats-group {
+            flex-direction: column !important;
+            top: 12% !important;
+            gap: 6px !important;
+            transform: translateX(-50%) scale(0.75) !important;
+            width: 100% !important;
+          }
+          .subliminal-h2 {
+            font-size: clamp(40px, 12vh, 120px) !important;
+            opacity: 0.05 !important;
+          }
+          .stats-metric {
+            font-size: clamp(16px, 4vh, 28px) !important;
+            bottom: 25% !important;
+            letter-spacing: 0.05em !important;
+          }
+          .corner-tag {
+            padding: 4px 8px !important;
+            font-size: 8px !important;
+            letter-spacing: 0.1em !important;
+          }
+          .corner-tag.tl { top: 8% !important; left: 2% !important; }
+          .corner-tag.tr { top: 8% !important; right: 2% !important; }
+          .corner-tag.bl { bottom: 12% !important; left: 2% !important; }
+          .corner-tag.br { bottom: 12% !important; right: 2% !important; }
+          
+          .center-tag {
+            padding: 6px 14px !important;
+            font-size: 10px !important;
+            top: 6% !important;
+          }
+          
+          .brand-tag {
+            letter-spacing: 0.15em !important;
+            font-size: 8px !important;
+            width: 95% !important;
+            bottom: 8% !important;
+            text-align: center !important;
+          }
+
+          .brand-subtext {
+            font-size: 16px !important;
+            line-height: 1.3 !important;
+            padding: 0 15px !important;
+          }
+        }
+
+        /* Force Landscape Rotation for Portrait Users */
+        @media (max-width: 900px) and (orientation: portrait) {
+          .cinematic-container {
+            transform: rotate(90deg);
+            transform-origin: center;
+            width: 100vh !important;
+            height: 100vw !important;
+            position: fixed;
+            top: 50% !important;
+            left: 50% !important;
+            margin-top: -50vw !important;
+            margin-left: -50vh !important;
+          }
+          .cinematic-container video {
+            object-fit: cover !important;
+          }
         }
       `}</style>
 
