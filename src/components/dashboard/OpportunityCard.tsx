@@ -203,7 +203,7 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
             fontSize: isHero ? '16px' : '12px',
             fontWeight: 700,
             marginBottom: '20px',
-            letterSpacing: '0.4em',
+            letterSpacing: '0.2em',
             textTransform: 'uppercase',
             color: '#FFFFFF',
             opacity: 0.9,

@@ -144,7 +144,7 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
             fontWeight: 600,
             textTransform: 'uppercase',
             margin: '0 0 16px 0',
-            fontFamily: "'Oswald', sans-serif",
+            fontFamily: "Oswald, sans-serif",
             letterSpacing: '0.02em',
             color: '#ffffffff',
             opacity: 0,
@@ -160,10 +160,11 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
             fontSize: 'clamp(16px, 1.8vw, 20px)',
             color: 'rgba(255, 255, 255, 0.8)',
             letterSpacing: '0.02em',
+
             textTransform: 'none',
             fontWeight: 300,
             maxWidth: '800px',
-            margin: '0 auto 18px',
+            margin: '0 auto 38px',
             opacity: 0,
             lineHeight: 1.5
           }}
@@ -200,7 +201,7 @@ const InvestorDashboard: React.FC<InvestorDashboardProps> = ({ onSelect }) => {
       <div 
         className="luxury-footer"
         style={{
-          marginTop: '100px',
+          marginTop: '50px',
           paddingBottom: '80px',
           zIndex: 20,
           color: 'rgba(255, 255, 255, 1)', 

@@ -28,6 +28,9 @@ body {
   width: 100%;
   min-height: 100vh;
 }
+:root {
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+}
 
 * {
   box-sizing: border-box;
