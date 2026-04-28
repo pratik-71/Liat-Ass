@@ -71,11 +71,6 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
       }}
     >
       <style>{`
-        @keyframes liquid-flow {
-          0% { transform: translate(-10%, -10%) scale(1) rotate(0deg); }
-          50% { transform: translate(10%, 10%) scale(1.1) rotate(5deg); }
-          100% { transform: translate(-10%, -10%) scale(1) rotate(0deg); }
-        }
         @keyframes shine-sweep {
           0% { left: -100%; opacity: 0; }
           30% { opacity: 0.3; }
@@ -85,18 +80,36 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
           0% { background-position: -200% center; }
           100% { background-position: 200% center; }
         }
-        .liquid-gold-bg {
+        .mashrabiya-pattern {
           position: absolute;
-          inset: -30%;
-          background: radial-gradient(circle at 50% 50%, rgba(229, 194, 122, 0.08) 0%, transparent 60%),
-                      radial-gradient(circle at 20% 80%, rgba(200, 169, 106, 0.05) 0%, transparent 50%),
-                      radial-gradient(circle at 80% 20%, rgba(229, 194, 122, 0.05) 0%, transparent 50%);
-          filter: blur(50px);
-          animation: liquid-flow 15s infinite ease-in-out;
+          inset: 0;
+          opacity: 0.04;
+          background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 30-30 30L0 30z' fill='none' stroke='%23C8A96A' stroke-width='1'/%3E%3C/svg%3E");
+          background-size: 40px 40px;
           pointer-events: none;
           z-index: 0;
           will-change: transform;
-          transform: translateZ(0);
+        }
+        .luxury-card-glow {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle at 50% 0%, rgba(200, 169, 106, 0.05) 0%, transparent 70%);
+          pointer-events: none;
+          z-index: 1;
+        }
+        @keyframes chromatic-glitch {
+          0% { text-shadow: 2px 0 0 rgba(255,0,0,0.2), -2px 0 0 rgba(0,255,255,0.2); }
+          25% { text-shadow: -2px 0 0 rgba(255,0,0,0.2), 2px 0 0 rgba(0,255,255,0.2); }
+          50% { text-shadow: 2px 0 0 rgba(255,0,0,0.2), -2px 0 0 rgba(0,255,255,0.2); }
+          75% { text-shadow: -2px 0 0 rgba(255,0,0,0.2), 2px 0 0 rgba(0,255,255,0.2); }
+          100% { text-shadow: 2px 0 0 rgba(255,0,0,0.2), -2px 0 0 rgba(0,255,255,0.2); }
+        }
+        .group:hover .card-title {
+          animation: chromatic-glitch 0.2s infinite;
+          color: #E5C27A !important;
+        }
+        .group:hover .card-counter {
+          filter: drop-shadow(0 0 10px rgba(229, 194, 122, 0.4)) !important;
         }
       `}</style>
 
@@ -109,8 +122,10 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
         pointerEvents: 'none',
         zIndex: 0
       }}>
-        {/* AMBIENT LIQUID GOLD LAYER */}
-        <div className="liquid-gold-bg" />
+        {/* Mashrabiya Geometric Pattern */}
+        <div className="mashrabiya-pattern" />
+        {/* Ambient Glow */}
+        <div className="luxury-card-glow" />
       </div>
 
       {/* CORNER BRACKETS */}
