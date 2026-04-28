@@ -5,7 +5,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
+          "value": "public, max-age=0, must-revalidate"
         }
       ]
     },
@@ -19,7 +19,7 @@
       ]
     },
     {
-      "source": "/(.*)\\.(?:png|jpg|jpeg|webp|svg|mp4|webm|woff2|woff)",
+      "source": "/(.*).(png|jpg|jpeg|webp|mp4|webm|svg|woff2|woff)",
       "headers": [
         {
           "key": "Cache-Control",
