@@ -105,39 +105,20 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
     >
       <style>{`
         @keyframes liquid-flow {
-          0% { transform: translate(-10%, -10%) rotate(0deg); }
-          50% { transform: translate(10%, 10%) rotate(180deg); }
-          100% { transform: translate(-10%, -10%) rotate(360deg); }
-        }
-        @keyframes gold-dust {
-          0% { transform: translateY(0) translateX(0); opacity: 0; }
-          20% { opacity: 0.4; }
-          80% { opacity: 0.4; }
-          100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
+          0% { transform: translate(-5%, -5%) scale(1); }
+          100% { transform: translate(5%, 5%) scale(1.05); }
         }
         .liquid-gold-bg {
           position: absolute;
-          inset: -50%;
-          background: radial-gradient(circle at 50% 50%, rgba(229, 194, 122, 0.08) 0%, transparent 50%),
-                      radial-gradient(circle at 20% 80%, rgba(200, 169, 106, 0.05) 0%, transparent 40%),
-                      radial-gradient(circle at 80% 20%, rgba(138, 110, 63, 0.05) 0%, transparent 40%);
-          filter: blur(40px);
-          animation: liquid-flow 15s infinite alternate ease-in-out;
+          inset: -20%;
+          background: radial-gradient(circle at 50% 50%, rgba(229, 194, 122, 0.05) 0%, transparent 70%),
+                      radial-gradient(circle at 20% 80%, rgba(200, 169, 106, 0.03) 0%, transparent 50%);
+          filter: blur(60px);
+          animation: liquid-flow 20s infinite alternate ease-in-out;
           pointer-events: none;
           z-index: 0;
           will-change: transform;
           transform: translateZ(0);
-          backface-visibility: hidden;
-        }
-        .particle {
-          position: absolute;
-          width: 2px;
-          height: 2px;
-          background: #E5C27A;
-          border-radius: 50%;
-          pointer-events: none;
-          z-index: 1;
-          will-change: transform, opacity;
         }
       `}</style>
 
@@ -152,24 +133,6 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ card, onSelect, onHov
       }}>
         {/* AMBIENT LIQUID GOLD LAYER */}
         <div className="liquid-gold-bg" />
-
-      {/* FLOATING GOLD DUST PARTICLES */}
-      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 1 }}>
-        {React.useMemo(() => [...Array(6)].map((_, i) => (
-          <div 
-            key={i}
-            className="particle"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100 + 20}%`,
-              opacity: 0,
-              animation: `gold-dust ${5 + Math.random() * 5}s infinite linear`,
-              animationDelay: `${Math.random() * 5}s`,
-              transform: `scale(${0.5 + Math.random()})`
-            }}
-          />
-        )), [])}
-      </div>
       </div>
 
       {/* SHIMMER CONTAINER (Refined for Glass Edge) */}
